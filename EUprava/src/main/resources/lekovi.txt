@@ -1,0 +1,2 @@
+1;naziv;opis;kontraindikacije;5;4;300;proizvodjac;kategorija
+2;naziv;opis;kontraindikacije;5;4;300;proizvodjac;kategorija
