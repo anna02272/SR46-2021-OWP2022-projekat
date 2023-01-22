@@ -3,7 +3,7 @@ package com.ftn.EUprava.model;
 import java.time.LocalDateTime;
 
 public class Vest {
-	
+	private Long id;
 	private String nazivVesti;
 	private String sadrzajVesti;
 	private LocalDateTime datumIVremeObjavljivanja;
@@ -17,6 +17,20 @@ public class Vest {
 		this.nazivVesti = nazivVesti;
 		this.sadrzajVesti = sadrzajVesti;
 		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
+	}
+	
+	public Vest(Long id, String nazivVesti, String sadrzajVesti, LocalDateTime datumIVremeObjavljivanja) {
+		super();
+		this.id = id;
+		this.nazivVesti = nazivVesti;
+		this.sadrzajVesti = sadrzajVesti;
+		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getNazivVesti() {
 		return nazivVesti;
@@ -38,8 +52,8 @@ public class Vest {
 	}
 	@Override
 	public String toString() {
-		return "Vest [nazivVesti=" + nazivVesti + ", sadrzajVesti=" + sadrzajVesti + ", datumIVremeObjavljivanja="
-				+ datumIVremeObjavljivanja + "]";
+		return "Vest [id=" + id + ", nazivVesti=" + nazivVesti + ", sadrzajVesti=" + sadrzajVesti
+				+ ", datumIVremeObjavljivanja=" + datumIVremeObjavljivanja + "]";
 	}
 	
 	

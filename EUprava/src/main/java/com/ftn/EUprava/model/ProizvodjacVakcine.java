@@ -1,6 +1,7 @@
 package com.ftn.EUprava.model;
 
 public class ProizvodjacVakcine {
+	private Long id;
 	private String proizvodjac;
 	private String drzavaProizvodnje;
 	
@@ -11,6 +12,19 @@ public class ProizvodjacVakcine {
 		super();
 		this.proizvodjac = proizvodjac;
 		this.drzavaProizvodnje = drzavaProizvodnje;
+	}
+	
+	public ProizvodjacVakcine(Long id, String proizvodjac, String drzavaProizvodnje) {
+		super();
+		this.id = id;
+		this.proizvodjac = proizvodjac;
+		this.drzavaProizvodnje = drzavaProizvodnje;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getProizvodjac() {
 		return proizvodjac;
@@ -26,8 +40,10 @@ public class ProizvodjacVakcine {
 	}
 	@Override
 	public String toString() {
-		return "ProizvodjacVakcine [proizvodjac=" + proizvodjac + ", drzavaProizvodnje=" + drzavaProizvodnje + "]";
+		return "ProizvodjacVakcine [id=" + id + ", proizvodjac=" + proizvodjac + ", drzavaProizvodnje="
+				+ drzavaProizvodnje + "]";
 	}
+	
 	
 	
 }

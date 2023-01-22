@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 
 public class Korisnik {
 	private Long id;
-	private String korisnickoIme;
-	private String lozinka;
 	private String email;
+	private String lozinka;
 	private String ime;
 	private String prezime;
 	private LocalDate datumRodjenja;
+	private Integer jmbg;
 	private String adresa;
 	private Integer brojTelefona;
 	private LocalDateTime datumIVremeRegistracije;
@@ -21,34 +21,47 @@ public class Korisnik {
 		super();
 	}
 	
-	public Korisnik(Long id, String korisnickoIme, String lozinka, String email, String ime, String prezime,
-			LocalDate datumRodjenja, String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije,
-			EUloga uloga) {
+	
+	public Korisnik(String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja, Integer jmbg,
+			String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
 		super();
-		this.id = id;
-		this.korisnickoIme = korisnickoIme;
-		this.lozinka = lozinka;
 		this.email = email;
+		this.lozinka = lozinka;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.datumRodjenja = datumRodjenja;
+		this.jmbg = jmbg;
 		this.adresa = adresa;
 		this.brojTelefona = brojTelefona;
 		this.datumIVremeRegistracije = datumIVremeRegistracije;
 		this.uloga = uloga;
 	}
+
+
+	public Korisnik(Long id, String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja,
+			Integer jmbg, String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.lozinka = lozinka;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.datumRodjenja = datumRodjenja;
+		this.jmbg = jmbg;
+		this.adresa = adresa;
+		this.brojTelefona = brojTelefona;
+		this.datumIVremeRegistracije = datumIVremeRegistracije;
+		this.uloga = uloga;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getKorisnickoIme() {
-		return korisnickoIme;
-	}
-	public void setKorisnickoIme(String korisnickoIme) {
-		this.korisnickoIme = korisnickoIme;
-	}
+	
 	public String getLozinka() {
 		return lozinka;
 	}
@@ -79,6 +92,17 @@ public class Korisnik {
 	public void setDatumRodjenja(LocalDate datumRodjenja) {
 		this.datumRodjenja = datumRodjenja;
 	}
+	
+	public Integer getJmbg() {
+		return jmbg;
+	}
+
+
+	public void setJmbg(Integer jmbg) {
+		this.jmbg = jmbg;
+	}
+
+
 	public String getAdresa() {
 		return adresa;
 	}
@@ -105,8 +129,8 @@ public class Korisnik {
 	}
 	@Override
 	public String toString() {
-		return "Korisnik [id=" + id + ", korisnickoIme=" + korisnickoIme + ", lozinka=" + lozinka + ", email=" + email
-				+ ", ime=" + ime + ", prezime=" + prezime + ", datumRodjenja=" + datumRodjenja + ", adresa=" + adresa
+		return "Korisnik [id=" + id + ", email=" + email + ", lozinka=" + lozinka + ", ime=" + ime + ", prezime="
+				+ prezime + ", datumRodjenja=" + datumRodjenja + ", jmbg=" + jmbg + ", adresa=" + adresa
 				+ ", brojTelefona=" + brojTelefona + ", datumIVremeRegistracije=" + datumIVremeRegistracije + ", uloga="
 				+ uloga + "]";
 	}

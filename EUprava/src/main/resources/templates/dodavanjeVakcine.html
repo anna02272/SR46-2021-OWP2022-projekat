@@ -1,0 +1,30 @@
+<!DOCTYPE html>    
+<html xmlns:th="http://www.thymeleaf.org">    
+   
+ <head>    
+ 	<meta charset="UTF-8">    
+ 	<base href="bURL">    
+ 	<title>Dodaj vakcinu</title>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>  
+ </head>    
+ <body>    
+ 	<ul>    
+ 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>    
+ 	</ul>    
+ 	<form method="post" action="add">    
+ 		<table>    
+ 			<caption>Vakcina</caption>    
+ 			<tr><th>Ime:</th><td><input type="text" value="" name="ime"/></td></tr>    
+ 			<tr><th>Dostupna kolicina:</th><td><input type="number" value="" name="dostupnaKolicina"/></td></tr>   
+ 			<tr><th>Proizvodjac vakcine:</th><td><input type="text" value="" name="proizvodjac" /></td></tr>   
+ 			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
+ 		</table>    
+ 	</form>   
+ 	<br/>  
+ </body>  
+ </html>  		

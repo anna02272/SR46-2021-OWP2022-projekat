@@ -1,0 +1,51 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">     
+	<head>     
+		<meta charset="UTF-8">     
+		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
+		<title>Korisnici</title>     
+		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 </head>     
+	 <body>   
+	 	<ul>     
+	 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 		<table>     
+	 			<caption>Korisnici</caption>     
+	 			<tr>      
+	 				<th>Email</th>     
+	 				<th>Lozinka</th>     
+	 				<th>Ime</th>   
+	 				<th>Prezime</th>   
+	 				<th>Datum Rodjenja</th>   
+	 				<th>JMBG</th>   
+	 				<th>Adresa</th>   
+	 				<th>Broj telefona</th>   
+	 				<th></th>   
+	 			
+	 			</tr>
+	 			<tr th:each="itKorisnik, status: ${korisnici}">  
+	 				<td th:text="${itKorisnik.email}"></td>    
+	 				<td th:text="${itKorisnik.lozinka}"></td>    
+	 				<td th:text="${itKorisnik.ime}"></td>   
+	 				<td th:text="${itKorisnik.prezime}"></td>   
+	 				<td th:text="${itKorisnik.datumRodjenja}"></td>   
+	 				<td th:text="${itKorisnik.jmbg}"></td>   
+	 				<td th:text="${itKorisnik.adresa}"></td>   
+	 				<td th:text="${itKorisnik.brojTelefona}"></td>   
+	 				<td th:text="${itKorisnik.datumIVremeRegistracije}"></td>   
+	 				<td>    
+	 					<form method="post" action="korisnici/obrisi" >     
+	 						<input type="hidden"  name="id"  th:value="${itKorisnik.id}">     
+	 						<input type="submit"  value="Obriši" >    
+	 					</form>    
+	 				</td>   
+	 			</tr>
+	 		</table>
+	 </body>   
+ </html>	

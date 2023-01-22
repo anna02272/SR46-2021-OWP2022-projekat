@@ -1,10 +1,13 @@
 package com.ftn.EUprava.model;
 
+import java.util.ArrayList;
+
+
 public class Vakcina {
+	private Long id;
 	private String ime;
 	private Integer dostupnaKolicina;
 	private ProizvodjacVakcine proizvodjac;
-	
 	
 	public Vakcina() {
 		super();
@@ -14,6 +17,23 @@ public class Vakcina {
 		this.ime = ime;
 		this.dostupnaKolicina = dostupnaKolicina;
 		this.proizvodjac = proizvodjac;
+	}
+	
+	public Vakcina(Long id, String ime, Integer dostupnaKolicina, ProizvodjacVakcine proizvodjac) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.dostupnaKolicina = dostupnaKolicina;
+		this.proizvodjac = proizvodjac;
+	}
+	
+
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public String getIme() {
 		return ime;
@@ -35,7 +55,8 @@ public class Vakcina {
 	}
 	@Override
 	public String toString() {
-		return "Vakcina [ime=" + ime + ", dostupnaKolicina=" + dostupnaKolicina + ", proizvodjac=" + proizvodjac + "]";
+		return "Vakcina [id=" + id + ", ime=" + ime + ", dostupnaKolicina=" + dostupnaKolicina + ", proizvodjac="
+				+ proizvodjac + "]";
 	}
 	
 	

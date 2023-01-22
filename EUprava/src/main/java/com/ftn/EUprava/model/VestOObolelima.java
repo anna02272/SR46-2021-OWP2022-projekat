@@ -3,7 +3,7 @@ package com.ftn.EUprava.model;
 import java.time.LocalDateTime;
 
 public class VestOObolelima {
-	
+	private Long id;
 	private Integer oboleliUPoslednja24h;
 	private Integer testiraniUPoslednja24h;
 	private Integer ukupnoOboleliOdPočetkaPandemije;
@@ -25,6 +25,25 @@ public class VestOObolelima {
 		this.hospitalizovani = hospitalizovani;
 		this.naRespiratoru = naRespiratoru;
 		this.datumIVRemeObjavljivanja = datumIVRemeObjavljivanja;
+	}
+	
+	public VestOObolelima(Long id, Integer oboleliUPoslednja24h, Integer testiraniUPoslednja24h,
+			Integer ukupnoOboleliOdPočetkaPandemije, Integer hospitalizovani, Integer naRespiratoru,
+			LocalDateTime datumIVRemeObjavljivanja) {
+		super();
+		this.id = id;
+		this.oboleliUPoslednja24h = oboleliUPoslednja24h;
+		this.testiraniUPoslednja24h = testiraniUPoslednja24h;
+		this.ukupnoOboleliOdPočetkaPandemije = ukupnoOboleliOdPočetkaPandemije;
+		this.hospitalizovani = hospitalizovani;
+		this.naRespiratoru = naRespiratoru;
+		this.datumIVRemeObjavljivanja = datumIVRemeObjavljivanja;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public Integer getOboleliUPoslednja24h() {
 		return oboleliUPoslednja24h;
@@ -64,10 +83,10 @@ public class VestOObolelima {
 	}
 	@Override
 	public String toString() {
-		return "VestOObolelima [oboleliUPoslednja24h=" + oboleliUPoslednja24h + ", testiraniUPoslednja24h="
-				+ testiraniUPoslednja24h + ", ukupnoOboleliOdPočetkaPandemije=" + ukupnoOboleliOdPočetkaPandemije
-				+ ", hospitalizovani=" + hospitalizovani + ", naRespiratoru=" + naRespiratoru
-				+ ", datumIVRemeObjavljivanja=" + datumIVRemeObjavljivanja + "]";
+		return "VestOObolelima [id=" + id + ", oboleliUPoslednja24h=" + oboleliUPoslednja24h
+				+ ", testiraniUPoslednja24h=" + testiraniUPoslednja24h + ", ukupnoOboleliOdPočetkaPandemije="
+				+ ukupnoOboleliOdPočetkaPandemije + ", hospitalizovani=" + hospitalizovani + ", naRespiratoru="
+				+ naRespiratoru + ", datumIVRemeObjavljivanja=" + datumIVRemeObjavljivanja + "]";
 	}
 	
 }
