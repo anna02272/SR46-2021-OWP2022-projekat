@@ -1,7 +1,6 @@
 package com.ftn.EUprava.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,10 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.model.Vakcina;
+import com.ftn.EUprava.service.ProizvodjacVakcineService;
 import com.ftn.EUprava.service.VakcinaService;
 
 @Controller
@@ -36,7 +34,10 @@ public class VakcinaController implements ServletContextAware {
 	@Autowired
 	private VakcinaService vakcinaService;
 	
-	/** inicijalizacija podataka za kontroler */
+	@Autowired
+	private ProizvodjacVakcineService proizvodjacVakcineService;
+	
+	
 	@PostConstruct
 	public void init() {	
 		bURL = servletContext.getContextPath()+"/";
@@ -58,18 +59,28 @@ public class VakcinaController implements ServletContextAware {
 	}
 	
 	@GetMapping(value="/add")
-	public String create(HttpSession session, HttpServletResponse response){
-		return "dodavanjeVakcine"; // stranica za dodavanje knjige
+	public ModelAndView create() {
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+		
+		// podaci sa nazivom template-a
+		ModelAndView rezultat = new ModelAndView("dodavanjeVakcine"); // naziv template-a
+		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine); // podatak koji se šalje template-u
+
+		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
 	}
 
 	/** obrada podataka forme za unos novog entiteta, post zahtev */
 	// POST: vakcine/add
-	@SuppressWarnings("unused")
 	@PostMapping(value="/add")
 	public void create(@RequestParam String ime, @RequestParam int dostupnaKolicina,  
-			@RequestParam ProizvodjacVakcine proizvodjac, HttpServletResponse response) throws IOException {		
-		Vakcina vakcina = new Vakcina(ime, dostupnaKolicina, proizvodjac);
-		Vakcina saved = vakcinaService.save(vakcina);
+			 @RequestParam Long idProizvodjacaVakcine, HttpServletResponse response) throws IOException {	
+		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
+		if (proizvodjacVakcine == null) {
+			//todo domaci vrati gresku
+		}
+		
+		Vakcina vakcina = new Vakcina(ime, dostupnaKolicina, proizvodjacVakcine);
+		vakcinaService.save(vakcina);
 		response.sendRedirect(bURL+"vakcine");
 	}
 	
@@ -78,15 +89,19 @@ public class VakcinaController implements ServletContextAware {
 	@SuppressWarnings("unused")
 	@PostMapping(value="/edit")
 	public void Edit(@RequestParam Long id, @RequestParam String ime, @RequestParam int dostupnaKolicina,  
-			@RequestParam ProizvodjacVakcine proizvodjac , HttpServletResponse response) throws IOException {	
+			 @RequestParam Long idProizvodjacaVakcine , HttpServletResponse response) throws IOException {	
+		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
+		if (proizvodjacVakcine == null) {
+			//todo domaci vrati gresku
+		}
 		Vakcina vakcina = vakcinaService.findOne(id);
 		if(vakcina != null) {
 			if(ime != null && !ime.trim().equals(""))
 				vakcina.setIme(ime);
 			if(dostupnaKolicina > 0)
 				vakcina.setDostupnaKolicina(dostupnaKolicina);
-			if(proizvodjac != null)
-				vakcina.setProizvodjac(proizvodjac);
+			if(proizvodjacVakcine != null)
+				vakcina.setProizvodjac(proizvodjacVakcine);
 		}
 		Vakcina saved = vakcinaService.update(vakcina);
 		response.sendRedirect(bURL+"vakcine");

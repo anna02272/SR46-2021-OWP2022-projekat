@@ -72,9 +72,8 @@ nav .navigation ul li a:hover {
   color: #947d90;
 }
 .content {
- 
-  height: 50vh;
-  display: flex;
+  margin: 50px 0px 0px 35vh;
+  display: inline-block;
   justify-content: center;
   align-items: center;
 

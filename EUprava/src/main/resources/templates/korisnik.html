@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}">
+	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
+	<title>Korisnik</title>
+</head>
+<body>
+	 <nav>
+	  <div class="navigation">  
+	 	<ul>     
+	 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 	</div>
+	</nav>
+	
+	<section class="content">
+	<div class = "content">
+	<form method="post" action="korisnici/edit">
+		<input type="hidden" name="id" th:value="${korisnik.id}"/>
+		<table class="forma">
+			<caption>Korisnik</caption>
+			<tr><th>Email:</th><td><input type="text" th:value="${korisnik.email}" name="email"/></td></tr>
+			<tr><th>Lozinka:</th><td><input type="password" th:value="${korisnik.lozinka}" name="lozinka"/></td></tr>
+			<tr><th>Ime:</th><td><input type="text" th:value="${korisnik.ime}" name="ime"/></td></tr>
+			<tr><th>Prezime:</th><td><input type="text" th:value="${korisnik.prezime}" name="prezime"/></td></tr>
+			<tr><th>Datum rodjenja:</th><td><input type="date" th:value="${korisnik.datumRodjenja}" name="datumRodjenja"/></td></tr>
+			<tr><th>JMBG:</th><td><input type="text" th:value="${korisnik.jmbg}" name="jmbg"/></td></tr>
+			<tr><th>Adresa:</th><td><input type="text" th:value="${korisnik.adresa}" name="adresa"/></td></tr>
+			<tr><th>Broj telefona:</th><td><input type="number" th:value="${korisnik.brojTelefona}" name="brojTelefona"/></td></tr>
+			
+			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+		
+		</table>
+	</form>
+	
+	<form method="post" action="korisnici/delete">
+		<input type="hidden" name="id" th:value="${korisnik.id}"/>
+		<table class="forma">
+			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+		</table>
+	</form>
+	</div>
+	</section>
+	
+	
+</body>
+</html>

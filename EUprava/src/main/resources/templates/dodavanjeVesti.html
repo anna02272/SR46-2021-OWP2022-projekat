@@ -3,13 +3,13 @@
  <head>    
  	<meta charset="UTF-8">    
  	<base th:href="@{/}">     
+ 	<title>Dodaj vest</title>    
  	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>    
  	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>  
- 	<title>Dodaj proizvodjaca vakcine</title>  
- 
- </head>   
+ 	
+ </head>    
  <body>    
- 	<nav>
+ 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
 	 		<li><a href="vakcine">Vakcine</a></li>     
@@ -20,19 +20,20 @@
 	 	</ul>     
 	 	</div>
 	</nav>
+	
 	<section class="content">
-	<div class = "content">
+	<div class = "content"> 
  	<form method="post" action="add">    
  		<table>    
- 			<caption>Proizvodjac vakcine</caption>    
- 			<tr><th>Naziv proizvodjaca:</th><td><input type="text" value="" name="proizvodjac"/></td></tr>   
- 			<tr><th>Drzava proizvodnje:</th><td><input type="text" value="" name="drzavaProizvodnje"/></td></tr>   
- 			
+ 			<caption>Vest</caption>    
+ 			<tr><th>Naziv:</th><td><input type="text" value="" name="nazivVesti"/></td></tr>    
+ 			<tr><th>Sadrzaj:</th><td><input type="text" value="" name="sadrzajVesti"/></td></tr>   
+ 		   <tr><th>Datum i vreme objavljivanja:</th><td><input type="datetime-local" name="datumIVremeObjavljivanja"/></td></tr>
  			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
  		</table>    
  	</form>   
  	</div>
- 	</section>
+ 		</section>
  	<br/>  
  </body>  
  </html>  		

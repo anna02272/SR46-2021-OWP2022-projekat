@@ -118,10 +118,10 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 	@Override
 	public List<Korisnik> findAll() {
 		String sql = 
-				"SELECT kor.id, kor.email, kor.lozinka, kor.ime, kor.prezime, kor.datumRodjenja,"
-						+ " kor.jmbg, kor.adresa, kor.brojTelefona,  kor.datumIVremeRegistracije, kor.Euloga"
-						+ " FROM korisnici kor " +  
-				"ORDER BY kor.id";
+				"SELECT id, email, lozinka, ime, prezime, datumRodjenja,"
+						+ " jmbg, adresa, brojTelefona,  datumIVremeRegistracije, Euloga"
+						+ " FROM korisnici  " +  
+				"ORDER BY id";
 
 		KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);

@@ -18,6 +18,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ftn.EUprava.dao.ProizvodjacDAO;
 import com.ftn.EUprava.dao.VakcinaDAO;
 import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.model.Vakcina;
@@ -27,6 +28,9 @@ import com.ftn.EUprava.model.Vakcina;
 public class VakcinaDAOImpl implements VakcinaDAO{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private ProizvodjacDAO proizvodjacDAO;
 	
 	private class VakcinaRowCallBackHandler implements RowCallbackHandler {
 
@@ -38,13 +42,12 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 			Long id = resultSet.getLong(index++);
 			String ime = resultSet.getString(index++);
 			Integer dostupnaKolicina = resultSet.getInt(index++);
-			ProizvodjacVakcine proizvodjac= new ProizvodjacVakcine();
-			String proizvodjacString = resultSet.getString(index++);
-			proizvodjac.setProizvodjac(proizvodjacString);
+			Long proizvodjacVakcineId = resultSet.getLong(index++);
+			ProizvodjacVakcine proizvodjacVakcine = proizvodjacDAO.findOne(proizvodjacVakcineId);
 
 			Vakcina vakcina = vakcine.get(id);
 			if (vakcina == null) {
-				vakcina = new Vakcina(id, ime, dostupnaKolicina, proizvodjac);
+				vakcina = new Vakcina(id, ime, dostupnaKolicina, proizvodjacVakcine);
 				vakcine.put(vakcina.getId(), vakcina); // dodavanje u kolekciju
 			}
 		}
@@ -93,11 +96,8 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 				int index = 1;
 				preparedStatement.setString(index++, vakcina.getIme());
 				preparedStatement.setInt(index++, vakcina.getDostupnaKolicina());
-				preparedStatement.setObject(index++, vakcina.getProizvodjac());
+				preparedStatement.setLong(index++, vakcina.getProizvodjac().getId());
 
-
-			
-			
 				
 				return preparedStatement;
 			}
@@ -112,7 +112,7 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 	@Override
 	public int update(Vakcina vakcina) {
 		String sql = "UPDATE vakcina SET ime = ?, dostupnaKolicina = ?, proizvodjacId = ? WHERE id = ?";	
-		boolean uspeh = jdbcTemplate.update(sql, vakcina.getIme() , vakcina.getDostupnaKolicina(), vakcina.getProizvodjac(), vakcina.getId()) == 1;
+		boolean uspeh = jdbcTemplate.update(sql, vakcina.getIme() , vakcina.getDostupnaKolicina(), vakcina.getProizvodjac().getId(), vakcina.getId()) == 1;
 		
 		return uspeh?1:0;
 	}

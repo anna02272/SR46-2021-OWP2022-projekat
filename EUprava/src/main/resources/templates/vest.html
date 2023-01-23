@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}">
+	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
+	<title>Vest</title>
+</head>
+<body>
+	 <nav>
+	  <div class="navigation">  
+	 	<ul>     
+	 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 	</div>
+	</nav>
+	
+	<section class="content">
+	<div class = "content"> 
+	<form method="post" action="vesti/edit">
+		<input type="hidden" name="id" th:value="${vest.id}"/>
+		<table class="forma">
+			<caption>Vest</caption>
+			<tr><th>Naziv:</th><td><input type="text" th:value="${vest.nazivVesti}" name="nazivVesti"/></td></tr>
+			<tr><th>Sadrzaj:</th><td><input type="text" th:value="${vest.sadrzajVesti}" name="sadrzajVesti"/></td></tr>
+			<tr><th>Datum i vreme objavljivanja:</th><td><input type="datetime" th:value="${vest.datumIVremeObjavljivanja}" name="datumIVremeObjavljivanja"/></td></tr>
+			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+		</table>
+	</form>
+	<form method="post" action="vesti/delete">
+		<input type="hidden" name="id" th:value="${vest.id}"/>
+		<table class="forma">
+			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+		</table>
+	</form>
+	
+	</div>
+	</section>
+</body>
+</html>

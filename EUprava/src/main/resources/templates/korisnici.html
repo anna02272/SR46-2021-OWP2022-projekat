@@ -25,30 +25,36 @@
 	 		<table>     
 	 			<caption>Korisnici</caption>     
 	 			<tr>      
-	 				<th>Email</th>     
-	 				<th>Lozinka</th>     
+	 			   <th>R. br.</th>     
+	 				<th></th>  
+	 				<th>Email</th>          
 	 				<th>Ime</th>   
 	 				<th>Prezime</th>   
 	 				<th>Datum Rodjenja</th>   
 	 				<th>JMBG</th>   
 	 				<th>Adresa</th>   
 	 				<th>Broj telefona</th>  
-	 				<th>Datum i vreme registracije</th> 
+	 				<th>Datum i vreme registracije</th>
+	 				<th> Uloga </th> 
 	 				<th></th>   
 	 			
 	 			</tr>
-	 			<tr th:each="itKorisnik, status: ${korisnici}">  
+	 			<tr th:each="itKorisnik, status: ${korisnici}">
+	 			
+	 			<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
+	 				<td><a th:href="|korisnici/details?id=${itKorisnik.id}|" th:text="${itKorisnik.ime}"></a></td>    
+	 	  
 	 				<td th:text="${itKorisnik.email}"></td>    
-	 				<td th:text="${itKorisnik.lozinka}"></td>    
 	 				<td th:text="${itKorisnik.ime}"></td>   
 	 				<td th:text="${itKorisnik.prezime}"></td>   
 	 				<td th:text="${itKorisnik.datumRodjenja}"></td>   
 	 				<td th:text="${itKorisnik.jmbg}"></td>   
 	 				<td th:text="${itKorisnik.adresa}"></td>   
 	 				<td th:text="${itKorisnik.brojTelefona}"></td>   
-	 				<td th:text="${itKorisnik.datumIVremeRegistracije}"></td>   
+	 				<td th:text="${itKorisnik.datumIVremeRegistracije}"></td> 
+	 				<td th:text="${itKorisnik.uloga}"></td>
 	 				<td>    
-	 					<form method="post" action="korisnici/obrisi" >     
+	 					<form method="post" action="korisnici/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itKorisnik.id}">     
 	 						<input type="submit"  value="Obriši" >    
 	 					</form>    
@@ -57,5 +63,8 @@
 	 		</table>
 	 		</div>
 	 		</section>
+	 		<ul>     
+	 		<li><a href="korisnici/add">Dodaj korisnika</a></li>     
+	 	</ul>
 	 </body>   
  </html>	

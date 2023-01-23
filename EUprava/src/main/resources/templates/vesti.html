@@ -1,0 +1,56 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">     
+	<head>     
+		<meta charset="UTF-8">     
+		<base th:href="@{/}">
+		<title>Vesti</title>     
+		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 </head>     
+	 <body>   
+	 	 <nav>
+	  <div class="navigation">  
+	 	<ul>     
+	 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 	</div>
+	</nav>
+	
+	<section class="content">
+	<div class = "content"> 
+	 		<table>     
+	 			<caption>Vesti</caption>     
+	 			<tr>     
+	 				<th>R. br.</th>     
+	 				<th></th>     
+	 				<th>Naziv</th>     
+	 				<th>Sadrzaj</th>      
+	 				<th>Datum i vreme objavljivanja</th>    
+	 				<th></th>    
+	 			</tr>
+	 			<tr th:each="itVest, status: ${vesti}">     
+	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
+	 				<td><a th:href="|vesti/details?id=${itVest.id}|" th:text="${itVest.nazivVesti}"></a></td>    
+	 				<td th:text="${itVest.nazivVesti}"></td>    
+	 				<td th:text="${itVest.sadrzajVesti}"></td>    
+	 				<td th:text="${itVest.datumIVremeObjavljivanja}"></td>    
+	 				<td>    
+	 					<form method="post" action="vesti/delete" >     
+	 						<input type="hidden"  name="id"  th:value="${itVest.id}">     
+	 						<input type="submit"  value="Obriši" >    
+	 					</form>    
+	 				</td>   
+	 			</tr>
+	 		</table>
+	 		</div>
+	 	</section>
+	 	<ul>     
+	 		<li><a href="vesti/add">Dodaj vest</a></li>     
+	 	</ul>
+	 	
+	 </body>   
+ </html>	

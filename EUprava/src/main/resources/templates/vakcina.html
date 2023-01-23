@@ -28,8 +28,11 @@
 			<caption>Vakcina</caption>
 			<tr><th>Ime:</th><td><input type="text" th:value="${vakcina.ime}" name="ime"/></td></tr>
 			<tr><th>Dostupna kolicina:</th><td><input type="number" th:value="${vakcina.dostupnaKolicina}" name="dostupnaKolicina"/></td></tr>
-			<tr><th>Proizvodjac vakcine:</th><td><input type="text" th:value="${vakcina.proizvodjac}" name="proizvodjac"/></td></tr>
-			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+			<tr><th>Proizvodjac vakcine:</th><td><select name = "idProizvodjaca" th:value="${itProizvodjacVakcine}"></select></td></tr>
+
+
+	<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+		
 		</table>
 	</form>
 	

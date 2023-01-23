@@ -6,7 +6,7 @@
  	<base th:href="@{/}"> 
  	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>    
  	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>  
- 	<title>Dodaj vakcinu</title>   
+ 	<title>Dodaj korisnika</title>   
  </head>    
  <body>    
  	 <nav>
@@ -25,20 +25,18 @@
 	<div class = "content">
  	<form method="post" action="add">    
  		<table>    
- 			<caption>Vakcina</caption>    
- 			<tr><th>Ime:</th><td><input type="text" value="" name="ime"/></td></tr>    
- 			<tr><th>Dostupna kolicina:</th><td><input type="number" value="" name="dostupnaKolicina"/></td></tr>
+ 			<caption>Korisnik</caption>    
  			
- 			<tr>
- 				<th>Proizvodjac vakcine:</th>
-				<td>
-					<select name = "idProizvodjaca">
-						<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" th:value="${itProizvodjacVakcine.id}" th:text="|${itProizvodjacVakcine.proizvodjac} , ${itProizvodjacVakcine.drzavaProizvodnje} |">
-						</option>
-					</select>
-					
-				</td>
-			</tr>        
+ 			<tr><th>Email:</th><td><input type="text" value="" name="email"/></td></tr>
+			<tr><th>Lozinka:</th><td><input type="password" value="" name="lozinka"/></td></tr>
+			<tr><th>Ime:</th><td><input type="text" value="" name="ime"/></td></tr>
+			<tr><th>Prezime:</th><td><input type="text" value="" name="prezime"/></td></tr>
+			<tr><th>Datum rodjenja:</th><td><input type="date" value="" name="datumRodjenja"/></td></tr>
+			<tr><th>JMBG:</th><td><input type="text" value="" name="jmbg"/></td></tr>
+			<tr><th>Adresa:</th><td><input type="text" value="" name="adresa"/></td></tr>
+			<tr><th>Broj telefona:</th><td><input type="number" value="" name="brojTelefona"/></td></tr>
+			
+ 			
  			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
  		</table>    
  		

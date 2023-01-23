@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,8 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ftn.EUprava.model.EUloga;
 import com.ftn.EUprava.model.Korisnik;
+import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.service.KorisnikService;
 
 
@@ -221,23 +220,105 @@ public class KorisnikController implements ServletContextAware {
 		response.sendRedirect(bURL + "korisnici");
 	}
 	
+//	@GetMapping
+//	@ResponseBody
+//	public ModelAndView getKorisnici(HttpSession session, HttpServletResponse response){
+//		List<Korisnik> korisnici = korisnikService.findAll();
+//		
+//		// podaci sa nazivom template-a
+//		ModelAndView rezultat = new ModelAndView("korisnici"); // naziv template-a
+//		rezultat.addObject("korisnici", korisnici); // podatak koji se šalje template-u
+//
+//		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
+//	}
+	
+//	@PostMapping(value="/obrisi")
+//	public void obrisiKorisnika(@RequestParam Long id, HttpServletResponse response) throws IOException {				
+//		korisnikService.delete(id);
+//
+//		response.sendRedirect(bURL+"korisnici");
+//	}
+	
+	
 	@GetMapping
-	@ResponseBody
-	public ModelAndView getKorisnici(HttpSession session, HttpServletResponse response){
+	public ModelAndView index() {
 		List<Korisnik> korisnici = korisnikService.findAll();
 		
-		// podaci sa nazivom template-a
-		ModelAndView rezultat = new ModelAndView("korisnici"); // naziv template-a
-		rezultat.addObject("korisnici", korisnici); // podatak koji se šalje template-u
+		ModelAndView rezultat = new ModelAndView("korisnici"); 
+		rezultat.addObject("korisnici", korisnici); 
 
-		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
+		return rezultat; 
 	}
 	
-	@PostMapping(value="/obrisi")
-	public void obrisiKorisnika(@RequestParam Long id, HttpServletResponse response) throws IOException {				
-		korisnikService.delete(id);
-
-		response.sendRedirect(bURL+"korisnici");
+	@GetMapping(value="/add")
+	public String create(HttpSession session, HttpServletResponse response){
+		return "dodavanjeKorisnika"; 
 	}
 
+	@SuppressWarnings("unused")
+	@PostMapping(value="/add")
+	public void create(@RequestParam String email, @RequestParam String lozinka,@RequestParam String ime,  
+			@RequestParam String prezime,@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate datumRodjenja,
+			@RequestParam String jmbg,@RequestParam String adresa, @RequestParam int brojTelefona,
+			 HttpServletResponse response) throws IOException {	
+		
+		Korisnik korisnik = new Korisnik(email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona);
+		Korisnik saved = korisnikService.save(korisnik);
+		response.sendRedirect(bURL+"korisnici");
+	}
+	
+	@SuppressWarnings("unused")
+	@PostMapping(value="/edit")
+	public void Edit(@RequestParam Long id,@RequestParam String email, @RequestParam String lozinka,@RequestParam String ime,  
+			@RequestParam String prezime,@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate datumRodjenja,
+			@RequestParam String jmbg,@RequestParam String adresa, @RequestParam int brojTelefona,  
+		 HttpServletResponse response) throws IOException {	
+		Korisnik korisnik = korisnikService.findOneById(id);
+		if(korisnik != null) {
+			if(email != null && !email.trim().equals(""))
+				korisnik.setEmail(email);
+			if(lozinka != null && !lozinka.trim().equals(""))
+				korisnik.setLozinka(lozinka);
+			if(ime != null && !ime.trim().equals(""))
+				korisnik.setIme(ime);
+			if(prezime != null && !prezime.trim().equals(""))
+				korisnik.setPrezime(prezime);
+			if(datumRodjenja != null)
+				korisnik.setDatumRodjenja(datumRodjenja);
+			if(jmbg != null && !jmbg.trim().equals(""))
+				korisnik.setJmbg(jmbg);
+			if(adresa != null && !adresa.trim().equals(""))
+				korisnik.setAdresa(adresa);
+			if(brojTelefona > 0)
+				korisnik.setBrojTelefona(brojTelefona);
+			
+			
+		}
+		Korisnik saved = korisnikService.update(korisnik);
+		response.sendRedirect(bURL+"korisnici");
+	}
+	
+	
+	@SuppressWarnings("unused")
+	@PostMapping(value="/delete")
+	public void delete(@RequestParam Long id, HttpServletResponse response) throws IOException {		
+		Korisnik deleted = korisnikService.delete(id);
+		response.sendRedirect(bURL+"korisnici");
+	}
+	
+	@GetMapping(value="/details")
+	@ResponseBody
+	public ModelAndView details(@RequestParam Long id) {	
+		Korisnik korisnik  = korisnikService.findOneById(id);
+		
+		
+		ModelAndView rezultat = new ModelAndView("korisnik"); 
+		rezultat.addObject("korisnik", korisnik); 
+
+		return rezultat; 
+	}
+	
+
 }
+
+	
