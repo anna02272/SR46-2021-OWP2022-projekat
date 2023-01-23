@@ -6,7 +6,7 @@ public class VestOObolelima {
 	private Long id;
 	private Integer oboleliUPoslednja24h;
 	private Integer testiraniUPoslednja24h;
-	private Integer ukupnoOboleliOdPočetkaPandemije;
+	private Integer ukupnoOboleliOdPocetkaPandemije;
 	private Integer hospitalizovani;
 	private Integer naRespiratoru;
 	private LocalDateTime datumIVRemeObjavljivanja;
@@ -16,25 +16,25 @@ public class VestOObolelima {
 		super();
 	}
 	public VestOObolelima(Integer oboleliUPoslednja24h, Integer testiraniUPoslednja24h,
-			Integer ukupnoOboleliOdPočetkaPandemije, Integer hospitalizovani, Integer naRespiratoru,
+			Integer ukupnoOboleliOdPocetkaPandemije, Integer hospitalizovani, Integer naRespiratoru,
 			LocalDateTime datumIVRemeObjavljivanja) {
 		super();
 		this.oboleliUPoslednja24h = oboleliUPoslednja24h;
 		this.testiraniUPoslednja24h = testiraniUPoslednja24h;
-		this.ukupnoOboleliOdPočetkaPandemije = ukupnoOboleliOdPočetkaPandemije;
+		this.ukupnoOboleliOdPocetkaPandemije = ukupnoOboleliOdPocetkaPandemije;
 		this.hospitalizovani = hospitalizovani;
 		this.naRespiratoru = naRespiratoru;
 		this.datumIVRemeObjavljivanja = datumIVRemeObjavljivanja;
 	}
 	
 	public VestOObolelima(Long id, Integer oboleliUPoslednja24h, Integer testiraniUPoslednja24h,
-			Integer ukupnoOboleliOdPočetkaPandemije, Integer hospitalizovani, Integer naRespiratoru,
+			Integer ukupnoOboleliOdPocetkaPandemije, Integer hospitalizovani, Integer naRespiratoru,
 			LocalDateTime datumIVRemeObjavljivanja) {
 		super();
 		this.id = id;
 		this.oboleliUPoslednja24h = oboleliUPoslednja24h;
 		this.testiraniUPoslednja24h = testiraniUPoslednja24h;
-		this.ukupnoOboleliOdPočetkaPandemije = ukupnoOboleliOdPočetkaPandemije;
+		this.ukupnoOboleliOdPocetkaPandemije = ukupnoOboleliOdPocetkaPandemije;
 		this.hospitalizovani = hospitalizovani;
 		this.naRespiratoru = naRespiratoru;
 		this.datumIVRemeObjavljivanja = datumIVRemeObjavljivanja;
@@ -57,11 +57,11 @@ public class VestOObolelima {
 	public void setTestiraniUPoslednja24h(Integer testiraniUPoslednja24h) {
 		this.testiraniUPoslednja24h = testiraniUPoslednja24h;
 	}
-	public Integer getUkupnoOboleliOdPočetkaPandemije() {
-		return ukupnoOboleliOdPočetkaPandemije;
+	public Integer getUkupnoOboleliOdPocetkaPandemije() {
+		return ukupnoOboleliOdPocetkaPandemije;
 	}
-	public void setUkupnoOboleliOdPočetkaPandemije(Integer ukupnoOboleliOdPočetkaPandemije) {
-		this.ukupnoOboleliOdPočetkaPandemije = ukupnoOboleliOdPočetkaPandemije;
+	public void setUkupnoOboleliOdPocetkaPandemije(Integer ukupnoOboleliOdPocetkaPandemije) {
+		this.ukupnoOboleliOdPocetkaPandemije = ukupnoOboleliOdPocetkaPandemije;
 	}
 	public Integer getHospitalizovani() {
 		return hospitalizovani;
@@ -85,7 +85,7 @@ public class VestOObolelima {
 	public String toString() {
 		return "VestOObolelima [id=" + id + ", oboleliUPoslednja24h=" + oboleliUPoslednja24h
 				+ ", testiraniUPoslednja24h=" + testiraniUPoslednja24h + ", ukupnoOboleliOdPočetkaPandemije="
-				+ ukupnoOboleliOdPočetkaPandemije + ", hospitalizovani=" + hospitalizovani + ", naRespiratoru="
+				+ ukupnoOboleliOdPocetkaPandemije + ", hospitalizovani=" + hospitalizovani + ", naRespiratoru="
 				+ naRespiratoru + ", datumIVRemeObjavljivanja=" + datumIVRemeObjavljivanja + "]";
 	}
 	

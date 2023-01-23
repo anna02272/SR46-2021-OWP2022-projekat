@@ -87,7 +87,7 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO vakcine (ime, dostupnaKolicina, ProizvodjacId) VALUES (?, ?)";
+				String sql = "INSERT INTO vakcine (ime, dostupnaKolicina, ProizvodjacId) VALUES (?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;

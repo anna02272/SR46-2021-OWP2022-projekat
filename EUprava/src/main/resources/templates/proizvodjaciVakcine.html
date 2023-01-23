@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">     
 	<head>     
 		<meta charset="UTF-8">     
-		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
-		<title>Vakcine</title>     
+		<base th:href="@{/}">
+		<title>Proizvodjaci vakcine</title>     
 		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
 	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
 	 </head>     
@@ -22,26 +22,24 @@
 	<section class="content">
 	<div class = "content">
 	 		<table>     
-	 			<caption>Vakcine</caption>     
+	 			<caption>Proizvodjaci vakcine</caption>     
 	 			<tr>     
 	 				<th>R. br.</th>     
 	 				<th></th>     
-	 				<th>Ime</th>     
-	 				<th>Dostupna Kolicina</th>     
-	 				<th>Proizvodjac vakcine</th>    
-	 				  
+	 				<th>Naziv proizvodjaca</th>     
+	 				<th>Drzava proizvodnje</th>     
+	 				
 	 				<th></th>    
 	 			</tr>
-	 			<tr th:each="itVakcina, status: ${vakcine}">     
+	 			<tr th:each="itProizvodjacVakcine, status: ${proizvodjaciVakcine}">     
 	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
-	 				<td><a th:href="|vakcine/details?id=${itVakcina.id}|" th:text="${itVakcina.ime}"></a></td>    
-	 				<td th:text="${itVakcina.ime}"></td>    
-	 				<td class="broj" th:text="${itVakcina.dostupnaKolicina}"></td>    
-	 				<td th:text="${itVakcina.proizvodjac}"></td>       
+	 				<td><a th:href="|proizvodjaciVakcine/details?id=${itProizvodjacVakcine.id}|" th:text="${itProizvodjacVakcine.proizvodjac}"></a></td>    
+	 				<td th:text="${itProizvodjacVakcine.proizvodjac}"></td>        
+	 				<td th:text="${itProizvodjacVakcine.drzavaProizvodnje}"></td>       
 	 				
 	 				<td>    
-	 					<form method="post" action="vakcine/delete" >     
-	 						<input type="hidden"  name="id"  th:value="${itVakcina.id}">     
+	 					<form method="post" action="proizvodjaciVakcine/delete" >     
+	 						<input type="hidden"  name="id"  th:value="${itProizvodjacVakcine.id}">     
 	 						<input type="submit"  value="Obriši" >    
 	 					</form>    
 	 				</td>   
@@ -50,7 +48,7 @@
 	 		</div>
 	 		</section>
 	 	<ul>     
-	 		<li><a href="vakcine/add">Dodaj vakcinu</a></li>     
+	 		<li><a href="proizvodjaciVakcine/add">Dodaj proizvodjaca vakcine</a></li>     
 	 	</ul>
 	 </body>   
  </html>	

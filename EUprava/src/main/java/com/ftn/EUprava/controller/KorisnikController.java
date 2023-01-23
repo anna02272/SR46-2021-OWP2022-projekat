@@ -209,14 +209,13 @@ public class KorisnikController implements ServletContextAware {
 	public void registracija(@RequestParam(required = true) String email, @RequestParam(required = true) String lozinka,
 			@RequestParam(required = true) String ime, 	@RequestParam(required = true) String prezime, 
 			 @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate datumRodjenja,
-				@RequestParam(required = true) int jmbg,
+				@RequestParam(required = true) String jmbg,
 			@RequestParam(required = true) String adresa,@RequestParam(required = true) int brojTelefona,
-			@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeRegistracije,
-			@RequestParam(required = true) EUloga uloga,
+			
 		
 			HttpSession session, HttpServletResponse response) throws IOException {
 		Korisnik korisnik = new Korisnik( email,  lozinka,  ime,  prezime,  datumRodjenja,  jmbg,
-				 adresa,  brojTelefona,  datumIVremeRegistracije,  uloga);
+				 adresa,  brojTelefona);
 		korisnikService.save(korisnik);
 		
 		response.sendRedirect(bURL + "korisnici");

@@ -1,4 +1,4 @@
-DROP SCHEMA IF EXISTS EUprava;
+`DROP SCHEMA IF EXISTS EUprava;
 CREATE SCHEMA  EUprava DEFAULT CHARACTER SET utf8;
 USE EUprava;
 
@@ -9,14 +9,15 @@ CREATE TABLE Korisnici (
     Ime VARCHAR(50) NOT NULL,
     Prezime VARCHAR(50) NOT NULL,
     DatumRodjenja DATE NOT NULL,
-    JMBG INT(13) NOT NULL UNIQUE,
+    JMBG VARCHAR(13) NOT NULL UNIQUE,
     Adresa VARCHAR(50) NOT NULL,
     BrojTelefona INT NOT NULL,
-    DatumIVremeRegistracije DATETIME,
-    EUloga VARCHAR(20) NOT NULL
+    DatumIVremeRegistracije DATETIME NOT NULL DEFAULT NOW(),
+     EUloga ENUM('MEDICINSKOOSOBLJE', 'PACIJENT', 'ADMINISTRATOR') DEFAULT 'PACIJENT'
 );
 
-CREATE TABLE ProzivodjaciVakcine(
+
+CREATE TABLE ProizvodjaciVakcine(
 	Id BIGINT auto_increment PRIMARY KEY,
 	Proizvodjac VARCHAR(50) NOT NULL,
     DrzavaProizvodnje VARCHAR(50) NOT NULL
@@ -27,7 +28,7 @@ CREATE TABLE Vakcine (
 	Ime VARCHAR(50) NOT NULL,
     DostupnaKolicina INT,
     ProizvodjacId BIGINT,
-	FOREIGN KEY (ProizvodjacId) REFERENCES ProzivodjaciVakcine (Id) 	
+	FOREIGN KEY (ProizvodjacId) REFERENCES ProizvodjaciVakcine (Id) 	
     ON DELETE CASCADE
 );
 
@@ -43,7 +44,7 @@ CREATE TABLE VestiOObolelima (
 	Id BIGINT auto_increment PRIMARY KEY,
 	OboleliUPoslednja24h INT,
     TestiraniUPoslednja24h INT,
-    UkupnoOboleliOdPočetkaPandemije INT,
+    UkupnoOboleliOdPocetkaPandemije INT,
     Hospitalizovani INT,
     NaRespiratoru INT,
     DatumIVremeObjavljivanja datetime
@@ -51,14 +52,19 @@ CREATE TABLE VestiOObolelima (
     );
 
 
-insert into korisnici(email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona, datumivremeregistracije, EUloga) values 
-('domonjianna@gmail.com', 'ana123', 'Ana', 'Domonji', '2002-07-02', 1234567, 'Vinogradska 1', 066949449, '2023-01-05', 'PACIJENT');
+insert into korisnici(email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona) values 
+('domonjianna@gmail.com', 'ana123', 'Ana', 'Domonji', '2002-07-02', 1234567891234, 'Vinogradska 1, Stara Pazova', 066949449);
+insert into korisnici(email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona, eUloga) values 
+('admin@gmail.com', 'admin123', 'Admin', 'Adminko', '1998-06-08', 9858685849385, 'Bulevar oslobodjenja 1,Novi Sad', 0649222822, 'ADMINISTRATOR');
+insert into korisnici(email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona, eUloga) values 
+('mila@gmail.com', 'mila123', 'Mila', 'Milanko', '1997-07-02', 1247658493069, 'Bulevar oslobodjenja 1,Novi Sad', 0628449559, 'MEDICINSKOOSOBLJE');
 
-insert into ProzivodjaciVakcine( proizvodjac, drzavaproizvodnje) values ('Proizvodjac', 'Srbija');
+insert into ProizvodjaciVakcine( proizvodjac, drzavaproizvodnje) values ('Proizvodjac', 'Srbija');
 
 insert into vakcine(ime, dostupnakolicina, ProizvodjacId) values ('Vakcina', 50, 1);
+insert into vakcine(ime, dostupnakolicina, ProizvodjacId) values ('Fajzer', 1000, 1);
 
 insert into vesti(nazivVesti, sadrzajVesti, DatumIVremeObjavljivanja ) values ('Naziv', 'Sadrzaj', '2023-01-01 23:30:11' );
 
-insert into vestiOOBolelima(OboleliUPoslednja24h,TestiraniUPoslednja24h, UkupnoOboleliOdPočetkaPandemije, Hospitalizovani,
+insert into vestiOOBolelima(OboleliUPoslednja24h,TestiraniUPoslednja24h, UkupnoOboleliOdPocetkaPandemije, Hospitalizovani,
 NaRespiratoru, DatumIVremeObjavljivanja) values (10, 20, 100, 10, 1, '2023-01-09 11:11:11' );

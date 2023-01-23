@@ -40,8 +40,7 @@ public class ProizvodjacVakcine {
 	}
 	@Override
 	public String toString() {
-		return "ProizvodjacVakcine [id=" + id + ", proizvodjac=" + proizvodjac + ", drzavaProizvodnje="
-				+ drzavaProizvodnje + "]";
+		return proizvodjac + "," + drzavaProizvodnje  ;
 	}
 	
 	

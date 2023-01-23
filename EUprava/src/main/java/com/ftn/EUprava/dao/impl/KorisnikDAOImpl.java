@@ -44,7 +44,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 			String ime = resultSet.getString(index++);
 			String prezime = resultSet.getString(index++);
 			LocalDate datumRodjenja = resultSet.getObject(index++, LocalDate.class);
-			Integer jmbg = resultSet.getInt(index++);
+			String jmbg = resultSet.getString(index++);
 			String adresa = resultSet.getString(index++);
 			Integer brojTelefona = resultSet.getInt(index++);
 			LocalDateTime datumIVremeRegistracije = resultSet.getObject(index++, LocalDateTime.class);
@@ -136,7 +136,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO korisnici (email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona, datumIVremeRegistracije, EUloga) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO korisnici (email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -145,12 +145,10 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 				preparedStatement.setString(index++, korisnik.getIme());
 				preparedStatement.setString(index++, korisnik.getPrezime());
 				preparedStatement.setObject(index++, korisnik.getDatumRodjenja());
-				preparedStatement.setInt(index++, korisnik.getJmbg());
+				preparedStatement.setString(index++, korisnik.getJmbg());
 				preparedStatement.setString(index++, korisnik.getAdresa());
 				preparedStatement.setInt(index++, korisnik.getBrojTelefona());
-				preparedStatement.setObject(index++, korisnik.getDatumIVremeRegistracije());
-				preparedStatement.setString(index++, korisnik.getUloga().name());
-
+			
 				
 				
 				return preparedStatement;
@@ -166,7 +164,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 	@Override
 	public int update(Korisnik korisnik) {
 		String sql = "UPDATE korisnici SET email = ?, lozinka = ?, ime = ?, prezime = ?, datumRodjenja = ?, "
-				+ " jmbg = ? , adresa = ?, brojTelefona = ? , datumIVremeRegistracije = ?, EUloga =?"
+				+ " jmbg = ? , adresa = ?, brojTelefona = ? "
 				+ "  WHERE id = ?";	
 		boolean uspeh = jdbcTemplate.update(sql, korisnik.getIme() , korisnik.getPrezime(), korisnik.getEmail(), korisnik.getLozinka(), korisnik.getId()) == 1;
 		

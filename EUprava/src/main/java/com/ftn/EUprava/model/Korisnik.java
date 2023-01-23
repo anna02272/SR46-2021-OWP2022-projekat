@@ -11,7 +11,7 @@ public class Korisnik {
 	private String ime;
 	private String prezime;
 	private LocalDate datumRodjenja;
-	private Integer jmbg;
+	private String jmbg;
 	private String adresa;
 	private Integer brojTelefona;
 	private LocalDateTime datumIVremeRegistracije;
@@ -22,7 +22,7 @@ public class Korisnik {
 	}
 	
 	
-	public Korisnik(String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja, Integer jmbg,
+	public Korisnik(String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja, String jmbg,
 			String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
 		super();
 		this.email = email;
@@ -39,7 +39,7 @@ public class Korisnik {
 
 
 	public Korisnik(Long id, String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja,
-			Integer jmbg, String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
+			String jmbg, String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -52,6 +52,21 @@ public class Korisnik {
 		this.brojTelefona = brojTelefona;
 		this.datumIVremeRegistracije = datumIVremeRegistracije;
 		this.uloga = uloga;
+	}
+
+
+	public Korisnik( String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja,
+			String jmbg, String adresa, Integer brojTelefona) {
+		super();
+		
+		this.email = email;
+		this.lozinka = lozinka;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.datumRodjenja = datumRodjenja;
+		this.jmbg = jmbg;
+		this.adresa = adresa;
+		this.brojTelefona = brojTelefona;
 	}
 
 
@@ -93,12 +108,12 @@ public class Korisnik {
 		this.datumRodjenja = datumRodjenja;
 	}
 	
-	public Integer getJmbg() {
+	public String getJmbg() {
 		return jmbg;
 	}
 
 
-	public void setJmbg(Integer jmbg) {
+	public void setJmbg(String jmbg) {
 		this.jmbg = jmbg;
 	}
 
