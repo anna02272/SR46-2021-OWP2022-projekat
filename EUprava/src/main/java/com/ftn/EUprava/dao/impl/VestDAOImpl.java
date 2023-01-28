@@ -43,11 +43,11 @@ public class VestDAOImpl implements VestDAO {
 			Long id = resultSet.getLong(index++);
 			String nazivVesti = resultSet.getString(index++);
 			String sadrzajVesti = resultSet.getString(index++);
-			LocalDateTime datumIVremeRegistracije = resultSet.getTimestamp(index++).toLocalDateTime();
+			LocalDateTime datumIVremeObjavljivanja = resultSet.getTimestamp(index++).toLocalDateTime();
 
 			Vest vest = vesti.get(id);
 			if (vest == null) {
-				vest = new Vest(id, nazivVesti, sadrzajVesti, datumIVremeRegistracije);
+				vest = new Vest(id, nazivVesti, sadrzajVesti, datumIVremeObjavljivanja);
 				vesti.put(vest.getId(), vest); 
 			}
 			
@@ -93,7 +93,7 @@ public class VestDAOImpl implements VestDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO vesti (nazivVesti, sadrzajVesti, datumIVremeRegistracije) VALUES (?, ?, ?)";
+				String sql = "INSERT INTO vesti (nazivVesti, sadrzajVesti, datumIVremeObjavljivanja) VALUES (?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
@@ -114,7 +114,7 @@ public class VestDAOImpl implements VestDAO {
 	@Override
 	public int update(Vest vest) {	
 		
-		String sql = "UPDATE vesti SET nazivVesti = ?, sadrzajVesti = ?,  datumIVremeRegistracije = ? WHERE id = ?";	
+		String sql = "UPDATE vesti SET nazivVesti = ?, sadrzajVesti = ?,  datumIVremeObjavljivanja = ? WHERE id = ?";	
 		boolean uspeh = jdbcTemplate.update(sql, vest.getNazivVesti(), vest.getSadrzajVesti(),  vest.getDatumIVremeObjavljivanja(), vest.getId()) == 1;
 		
 		return uspeh?1:0;

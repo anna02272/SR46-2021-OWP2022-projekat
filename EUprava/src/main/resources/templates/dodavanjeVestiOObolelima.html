@@ -1,0 +1,42 @@
+<!DOCTYPE html>    
+ <html xmlns:th="http://www.thymeleaf.org">    
+ <head>    
+ 	<meta charset="UTF-8">    
+ 	<base th:href="@{/}">     
+ 	<title>Dodaj vest o obolelima</title>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>    
+ 	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>  
+ 	
+ </head>    
+ <body>    
+ 	 <nav>
+	  <div class="navigation">  
+	 	<ul>     
+	 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 	</div>
+	</nav>
+	
+	<section class="content">
+	<div class = "content"> 
+ 	<form method="post" action="add">    
+ 		<table>    
+ 			<caption>Vest o obolelima</caption>    
+ 			<tr><th>Oboleli u poslednja 24h:</th><td><input type="number" value="" name="oboleliUPoslednja24h"/></td></tr>    
+ 			<tr><th>Testirani u poslednja 24h:</th><td><input type="number" value="" name="testiraniUPoslednja24h"/></td></tr>   
+ 		 <tr><th>Ukupni broj obolelih od pocetka pandemije:</th><td><input type="number" value="" name="ukupnoOboleliOdPocetkaPandemije"/></td></tr>   
+ 		 <tr><th>Hospitalizovani:</th><td><input type="number" value="" name="hospitalizovani"/></td></tr>   
+ 		 <tr><th>Na respiratoru:</th><td><input type="number" value="" name="naRespiratoru"/></td></tr>   
+ 		   <tr><th>Datum i vreme objavljivanja:</th><td><input type="datetime-local" name="datumIVremeObjavljivanja"/></td></tr>
+ 			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
+ 		</table>    
+ 	</form>   
+ 	</div>
+ 		</section>
+ 	<br/>  
+ </body>  
+ </html>  		

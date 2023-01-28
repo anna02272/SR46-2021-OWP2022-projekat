@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<base th:href="@{/}">
+	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
+	<title>Vesti o obolelima</title>
+</head>
+<body>
+	 <nav>
+	  <div class="navigation">  
+	 	<ul>     
+	 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 	</div>
+	</nav>
+	
+	<section class="content">
+	<div class = "content"> 
+	<form method="post" action="vestiOObolelima/edit">
+		<input type="hidden" name="id" th:value="${vestOObolelima.id}"/>
+		<table class="forma">
+			<caption>Vest</caption>
+			<tr><th>Oboleli u poslednja 24h:</th><td><input type="number" th:value="${vestOObolelima.oboleliUPoslednja24h}" name="oboleliUPoslednja24h"/></td></tr>
+			<tr><th>Testirani u poslednja 24h:</th><td><input type="number" th:value="${vestOObolelima.testiraniUPoslednja24h}" name="testiraniUPoslednja24h"/></td></tr>
+			<tr><th>Ukupni broj obolelih od pocetka pandemije:</th><td><input type="number" th:value="${vestOObolelima.ukupnoOboleliOdPocetkaPandemije}" name="ukupnoOboleliOdPocetkaPandemije"/></td></tr>
+			<tr><th>Hospitalizovani:</th><td><input type="number" th:value="${vestOObolelima.hospitalizovani}" name="hospitalizovani"/></td></tr>
+			<tr><th>Na respiratoru:</th><td><input type="number" th:value="${vestOObolelima.naRespiratoru}" name="naRespiratoru"/></td></tr>
+				<tr><th>Datum i vreme objavljivanja:</th><td><input type="datetime" th:value="${vestOObolelima.datumIVremeObjavljivanja}" name="datumIVremeObjavljivanja"/></td></tr>
+			<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+		</table>
+	</form>
+	<form method="post" action="vestiOObolelima/delete">
+		<input type="hidden" name="id" th:value="${vestOObolelima.id}"/>
+		<table class="forma">
+			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+		</table>
+	</form>
+	
+	</div>
+	</section>
+</body>
+</html>

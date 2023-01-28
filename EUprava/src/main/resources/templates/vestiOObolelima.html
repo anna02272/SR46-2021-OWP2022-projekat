@@ -1,0 +1,62 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">     
+	<head>     
+		<meta charset="UTF-8">     
+		<base th:href="@{/}">
+		<title>Vesti o obolelima</title>     
+		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 </head>     
+	 <body>   
+	 	 <nav>
+	  <div class="navigation">  
+	 	<ul>     
+	 		<li><a href="vakcine">Vakcine</a></li>     
+	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
+	 		<li><a href="korisnici">Korisnici</a></li>     
+	 	</ul>     
+	 	</div>
+	</nav>
+	
+	<section class="content">
+	<div class = "content"> 
+	 		<table>     
+	 			<caption>Vesti o obolelima</caption>     
+	 			<tr>     
+	 				<th>R. br.</th>     
+	 				<th></th>     
+	 				<th>Oboleli u poslednja 24h:</th>     
+	 				<th>Testirani u poslednja 24h:</th>      
+	 				<th>Ukupni broj obolelih od pocetka pandemije:</th>      
+	 				<th>Hospitalizovani:</th>      
+	 				<th>Na respiratoru:</th>      
+	 				<th>Datum i vreme objavljivanja</th>    
+	 				<th></th>    
+	 			</tr>
+	 			<tr th:each="itVestOObolelima, status: ${vestiOObolelima}">     
+	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
+	 				<td><a th:href="|vestiOObolelima/details?id=${itVestOObolelima.id}|" th:text="${itVestOObolelima.oboleliUPoslednja24h}"></a></td>    
+	 				<td th:text="${itVestOObolelima.oboleliUPoslednja24h}"></td>    
+	 				<td th:text="${itVestOObolelima.testiraniUPoslednja24h}"></td>    
+	 				<td th:text="${itVestOObolelima.ukupnoOboleliOdPocetkaPandemije}"></td>    
+	 				<td th:text="${itVestOObolelima.hospitalizovani}"></td>    
+	 				<td th:text="${itVestOObolelima.naRespiratoru}"></td>    	    
+	 				<td th:text="${itVestOObolelima.datumIVremeObjavljivanja}"></td>    
+	 				<td>    
+	 					<form method="post" action="vestiOObolelima/delete" >     
+	 						<input type="hidden"  name="id"  th:value="${itVestOObolelima.id}">     
+	 						<input type="submit"  value="Obriši" >    
+	 					</form>    
+	 				</td>   
+	 			</tr>
+	 		</table>
+	 		</div>
+	 	</section>
+	 	      <div class = 'btn'>
+	 		<a href="vestiOObolelima/add" class = "btn">Dodaj vest o obolelima</a>     
+	 	</div>
+	 	
+	 </body>   
+ </html>	

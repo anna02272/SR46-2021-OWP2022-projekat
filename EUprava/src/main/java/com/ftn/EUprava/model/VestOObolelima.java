@@ -9,7 +9,7 @@ public class VestOObolelima {
 	private Integer ukupnoOboleliOdPocetkaPandemije;
 	private Integer hospitalizovani;
 	private Integer naRespiratoru;
-	private LocalDateTime datumIVRemeObjavljivanja;
+	private LocalDateTime datumIVremeObjavljivanja;
 	
 	
 	public VestOObolelima() {
@@ -17,19 +17,19 @@ public class VestOObolelima {
 	}
 	public VestOObolelima(Integer oboleliUPoslednja24h, Integer testiraniUPoslednja24h,
 			Integer ukupnoOboleliOdPocetkaPandemije, Integer hospitalizovani, Integer naRespiratoru,
-			LocalDateTime datumIVRemeObjavljivanja) {
+			LocalDateTime datumIVremeObjavljivanja) {
 		super();
 		this.oboleliUPoslednja24h = oboleliUPoslednja24h;
 		this.testiraniUPoslednja24h = testiraniUPoslednja24h;
 		this.ukupnoOboleliOdPocetkaPandemije = ukupnoOboleliOdPocetkaPandemije;
 		this.hospitalizovani = hospitalizovani;
 		this.naRespiratoru = naRespiratoru;
-		this.datumIVRemeObjavljivanja = datumIVRemeObjavljivanja;
+		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
 	}
 	
 	public VestOObolelima(Long id, Integer oboleliUPoslednja24h, Integer testiraniUPoslednja24h,
 			Integer ukupnoOboleliOdPocetkaPandemije, Integer hospitalizovani, Integer naRespiratoru,
-			LocalDateTime datumIVRemeObjavljivanja) {
+			LocalDateTime datumIVremeObjavljivanja) {
 		super();
 		this.id = id;
 		this.oboleliUPoslednja24h = oboleliUPoslednja24h;
@@ -37,7 +37,7 @@ public class VestOObolelima {
 		this.ukupnoOboleliOdPocetkaPandemije = ukupnoOboleliOdPocetkaPandemije;
 		this.hospitalizovani = hospitalizovani;
 		this.naRespiratoru = naRespiratoru;
-		this.datumIVRemeObjavljivanja = datumIVRemeObjavljivanja;
+		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
 	}
 	public Long getId() {
 		return id;
@@ -75,18 +75,18 @@ public class VestOObolelima {
 	public void setNaRespiratoru(Integer naRespiratoru) {
 		this.naRespiratoru = naRespiratoru;
 	}
-	public LocalDateTime getDatumIVRemeObjavljivanja() {
-		return datumIVRemeObjavljivanja;
+	public LocalDateTime getDatumIVremeObjavljivanja() {
+		return datumIVremeObjavljivanja;
 	}
-	public void setDatumIVRemeObjavljivanja(LocalDateTime datumIVRemeObjavljivanja) {
-		this.datumIVRemeObjavljivanja = datumIVRemeObjavljivanja;
+	public void setDatumIVremeObjavljivanja(LocalDateTime datumIVremeObjavljivanja) {
+		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
 	}
 	@Override
 	public String toString() {
 		return "VestOObolelima [id=" + id + ", oboleliUPoslednja24h=" + oboleliUPoslednja24h
 				+ ", testiraniUPoslednja24h=" + testiraniUPoslednja24h + ", ukupnoOboleliOdPočetkaPandemije="
 				+ ukupnoOboleliOdPocetkaPandemije + ", hospitalizovani=" + hospitalizovani + ", naRespiratoru="
-				+ naRespiratoru + ", datumIVRemeObjavljivanja=" + datumIVRemeObjavljivanja + "]";
+				+ naRespiratoru + ", datumIVremeObjavljivanja=" + datumIVremeObjavljivanja + "]";
 	}
 	
 }

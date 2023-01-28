@@ -206,6 +206,7 @@ public class KorisnikController implements ServletContextAware {
 	
 	@PostMapping(value = "/registracija")
 	public void registracija(@RequestParam(required = true) String email, @RequestParam(required = true) String lozinka,
+			@RequestParam(required = true) String ponovljenaLozinka,
 			@RequestParam(required = true) String ime, 	@RequestParam(required = true) String prezime, 
 			 @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate datumRodjenja,
 				@RequestParam(required = true) String jmbg,
@@ -213,12 +214,42 @@ public class KorisnikController implements ServletContextAware {
 			
 		
 			HttpSession session, HttpServletResponse response) throws IOException {
+//		try {
+//			// validacija
+//			Korisnik postojeciKorisnik = korisnikService.findOne(email);
+//			if (postojeciKorisnik != null) {
+//				throw new Exception("Email već postoji!");
+//			}
+//			if (email.equals("") || lozinka.equals("")) {
+//				throw new Exception("Email i lozinka ne smeju biti prazni!");
+//			}
+//			if (!lozinka.equals(ponovljenaLozinka)) {
+//				throw new Exception("Lozinke se ne podudaraju!");
+//			}
+//		
+		
 		Korisnik korisnik = new Korisnik( email,  lozinka,  ime,  prezime,  datumRodjenja,  jmbg,
 				 adresa,  brojTelefona);
 		korisnikService.save(korisnik);
 		
 		response.sendRedirect(bURL + "korisnici");
-	}
+		
+//		} catch (Exception ex) {
+//			// ispis greške
+//			String poruka = ex.getMessage();
+//			if (poruka == "") {
+//				poruka = "Neuspešna registracija!";
+//			}
+
+//			// prosleđivanje
+//			ModelAndView rezultat = new ModelAndView("registracija");
+//			rezultat.addObject("poruka", poruka);
+//
+//			return rezultat;
+		}
+		
+	
+	
 	
 //	@GetMapping
 //	@ResponseBody

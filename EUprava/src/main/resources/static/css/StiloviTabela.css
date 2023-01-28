@@ -1,15 +1,20 @@
 
 table {
 	border-collapse: collapse;
+	margin:5vh;
+
 }
 
 caption {
-	font-size: 16pt
+	font-size: 16pt;
+	margin:10vh
+	
 }
 
 th, td {
 	border: 1px solid Gray;
 	padding: 5px;
+	
 }
 
 td.broj {
@@ -18,15 +23,16 @@ td.broj {
 
 th {
 	color: white;
-	background-color: #BC8F8F;
+	background-color: #3a7563;
 }
 
 tr:nth-child(even) {
-	background-color: #D8BFD8;
+	background-color: #59a985;
 }
 
 input[type="search"] {
 	width: 100%;
+	
 }
 
 nav {
@@ -34,10 +40,11 @@ nav {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #BC8F8F;
+  background-color: #3a7563;
   position: fixed;
   width: 100%;
   height: 45px;
+  
 }
 nav .navigation {
   display: flex;
@@ -70,9 +77,34 @@ nav .navigation ul li a:hover {
 }
 .content {
  
-  height: 50vh;
+  height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
 
 }
+.btn {
+ padding: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+a {
+  color: black;
+}
+
+a.btn {
+  background-color: #3a7563;
+  padding: 1em 1.5em;
+ margin: 0 0 0 150vh;
+  
+ 
+}
+
+a.btn:hover {
+  background-color: #59a985;
+  cursor: pointer;
+}
+
