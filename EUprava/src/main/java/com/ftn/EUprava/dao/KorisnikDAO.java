@@ -1,5 +1,6 @@
 package com.ftn.EUprava.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.ftn.EUprava.model.Korisnik;
@@ -19,5 +20,5 @@ public interface KorisnikDAO {
 	public int update(Korisnik korisnik);
 
 	public int delete(Long id);
-	
-}
+
+	}

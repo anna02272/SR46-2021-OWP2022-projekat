@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ftn.EUprava.model.Vest;
 import com.ftn.EUprava.model.VestOObolelima;
 import com.ftn.EUprava.service.VestOObolelimaService;
-import com.ftn.EUprava.service.VestService;
 
 @Controller
 @RequestMapping(value="/vestiOObolelima")
@@ -69,7 +67,7 @@ public class VestOObolelimaController implements ServletContextAware {
 		public void create(@RequestParam int oboleliUPoslednja24h, @RequestParam int testiraniUPoslednja24h, 
 				@RequestParam int ukupnoOboleliOdPocetkaPandemije, @RequestParam int hospitalizovani, 
 				@RequestParam int naRespiratoru, 
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDateTime datumIVremeObjavljivanja, 
+				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {		
 			VestOObolelima vestOObolelima = new VestOObolelima(oboleliUPoslednja24h, testiraniUPoslednja24h,
 					ukupnoOboleliOdPocetkaPandemije, hospitalizovani, naRespiratoru, datumIVremeObjavljivanja);
@@ -83,7 +81,7 @@ public class VestOObolelimaController implements ServletContextAware {
 		public void Edit(@RequestParam Long id,@RequestParam int oboleliUPoslednja24h, @RequestParam int testiraniUPoslednja24h, 
 				@RequestParam int ukupnoOboleliOdPocetkaPandemije, @RequestParam int hospitalizovani, 
 				@RequestParam int naRespiratoru, 
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDateTime datumIVremeObjavljivanja, 
+				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {	
 			VestOObolelima vestOObolelima = vestOObolelimaService.findOne(id);
 			if(vestOObolelima != null) {

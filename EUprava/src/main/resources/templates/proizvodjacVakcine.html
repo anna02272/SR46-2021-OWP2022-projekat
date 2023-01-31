@@ -8,16 +8,19 @@
 	<title>Proizvodjac vakine</title>
 </head>
 <body>
+<h2>EUprava</h2>
 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li><a href="vakcine">Vakcine</a></li>     
-	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 	<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
+			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
-	 		<li><a href="korisnici">Korisnici</a></li>     
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="">Odjava</a></li>  
 	 	</ul>     
 	 	</div>
+	 	
 	</nav>
 	
 	<section class="content">

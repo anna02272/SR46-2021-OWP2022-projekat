@@ -1,5 +1,6 @@
 package com.ftn.EUprava.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,9 @@ public class DatabaseKorisnikServiceImpl implements KorisnikService{
 		korisnikDAO.delete(id);
 		return korisnik;
 	}
+
+	
+
 
 
 }

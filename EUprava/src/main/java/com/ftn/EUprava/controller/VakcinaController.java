@@ -51,41 +51,52 @@ public class VakcinaController implements ServletContextAware {
 	@GetMapping
 	public ModelAndView index() {
 		List<Vakcina> vakcine = vakcinaService.findAll();
-		// podaci sa nazivom template-a
-		ModelAndView rezultat = new ModelAndView("vakcine"); // naziv template-a
-		rezultat.addObject("vakcine", vakcine); // podatak koji se šalje template-u
+		ModelAndView rezultat = new ModelAndView("vakcine"); 
+		rezultat.addObject("vakcine", vakcine); 
 
-		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
+		return rezultat;
 	}
 	
 	@GetMapping(value="/add")
 	public ModelAndView create() {
 		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
 		
-		// podaci sa nazivom template-a
-		ModelAndView rezultat = new ModelAndView("dodavanjeVakcine"); // naziv template-a
-		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine); // podatak koji se šalje template-u
+		ModelAndView rezultat = new ModelAndView("dodavanjeVakcine"); 
+		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine); 
 
-		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
+		return rezultat; 
 	}
 
-	/** obrada podataka forme za unos novog entiteta, post zahtev */
-	// POST: vakcine/add
-	@PostMapping(value="/add")
-	public void create(@RequestParam String ime, @RequestParam int dostupnaKolicina,  
-			 @RequestParam Long idProizvodjacaVakcine, HttpServletResponse response) throws IOException {	
-		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
-		if (proizvodjacVakcine == null) {
-			//todo domaci vrati gresku
-		}
-		
-		Vakcina vakcina = new Vakcina(ime, dostupnaKolicina, proizvodjacVakcine);
-		vakcinaService.save(vakcina);
-		response.sendRedirect(bURL+"vakcine");
-	}
+//	@PostMapping(value="/add")
+//	public void create(@RequestParam String ime, @RequestParam int dostupnaKolicina,  
+//			 @RequestParam Long idProizvodjacaVakcine, HttpServletResponse response) throws IOException {	
+//		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
+//		if (proizvodjacVakcine == null) {
+//			//todo domaci vrati gresku
+//		}
+//		
+//		Vakcina vakcina = new Vakcina(ime, dostupnaKolicina, proizvodjacVakcine);
+//		vakcinaService.save(vakcina);
+//		response.sendRedirect(bURL+"vakcine");
+//	}
 	
-	/** obrada podataka forme za izmenu postojećeg entiteta, post zahtev */
-	// POST: vakcine/edit
+	@PostMapping(value="/add")
+	public void create(@RequestParam String ime,   
+	     Long idProizvodjacaVakcine, HttpServletResponse response) throws IOException {	
+	    ProizvodjacVakcine proizvodjacVakcine = null;
+	    if (idProizvodjacaVakcine != 0) {
+	        proizvodjacVakcine = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
+	        if (proizvodjacVakcine == null) {
+	            // Handle error
+	        }
+	    }
+	    
+	    Vakcina vakcina = new Vakcina(ime,  proizvodjacVakcine);
+	    vakcinaService.save(vakcina);
+	    response.sendRedirect(bURL+"vakcine");
+	}
+
+	
 	@SuppressWarnings("unused")
 	@PostMapping(value="/edit")
 	public void Edit(@RequestParam Long id, @RequestParam String ime, @RequestParam int dostupnaKolicina,  
@@ -107,8 +118,7 @@ public class VakcinaController implements ServletContextAware {
 		response.sendRedirect(bURL+"vakcine");
 	}
 	
-	/** obrada podataka forme za za brisanje postojećeg entiteta, post zahtev */
-	// POST: vakcine/delete
+
 	@SuppressWarnings("unused")
 	@PostMapping(value="/delete")
 	public void delete(@RequestParam Long id, HttpServletResponse response) throws IOException {		
@@ -121,11 +131,10 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView details(@RequestParam Long id) {	
 		Vakcina vakcina  = vakcinaService.findOne(id);
 		
-		// podaci sa nazivom template-a
-		ModelAndView rezultat = new ModelAndView("vakcina"); // naziv template-a
-		rezultat.addObject("vakcina", vakcina); // podatak koji se šalje template-u
+		ModelAndView rezultat = new ModelAndView("vakcina"); 
+		rezultat.addObject("vakcina", vakcina); 
 
-		return rezultat; // prosleđivanje zahteva zajedno sa podacima template-u
+		return rezultat; 
 	}
 	
 

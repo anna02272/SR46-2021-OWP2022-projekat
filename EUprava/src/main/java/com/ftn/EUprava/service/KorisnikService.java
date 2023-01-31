@@ -12,5 +12,6 @@ public interface KorisnikService {
 	List<Korisnik> findAll(); 
 	Korisnik save(Korisnik korisnik); 
 	Korisnik update(Korisnik korisnik); 
-	Korisnik delete(Long id); 
+	Korisnik delete(Long id);
+	
 }

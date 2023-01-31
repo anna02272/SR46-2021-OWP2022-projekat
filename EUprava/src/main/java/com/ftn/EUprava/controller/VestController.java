@@ -24,7 +24,7 @@ import com.ftn.EUprava.model.Vest;
 import com.ftn.EUprava.service.VestService;
 
 @Controller
-@RequestMapping(value="/vesti")
+@RequestMapping(value= "/vesti")
 public class VestController implements ServletContextAware {
 
 		
@@ -65,7 +65,7 @@ public class VestController implements ServletContextAware {
 		@SuppressWarnings("unused")
 		@PostMapping(value="/add")
 		public void create(@RequestParam String nazivVesti, @RequestParam String sadrzajVesti,  
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDateTime datumIVremeObjavljivanja, 
+				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {		
 			Vest vest = new Vest(nazivVesti, sadrzajVesti, datumIVremeObjavljivanja);
 			Vest saved = vestService.save(vest);
@@ -76,7 +76,7 @@ public class VestController implements ServletContextAware {
 		@SuppressWarnings("unused")
 		@PostMapping(value="/edit")
 		public void Edit(@RequestParam Long id, @RequestParam String nazivVesti, @RequestParam String sadrzajVesti,  
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDateTime datumIVremeObjavljivanja, 
+				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {	
 			Vest vest = vestService.findOne(id);
 			if(vest != null) {

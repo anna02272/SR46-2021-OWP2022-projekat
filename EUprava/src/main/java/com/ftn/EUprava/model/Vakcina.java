@@ -29,6 +29,9 @@ public class Vakcina {
 	
 
 	
+	public Vakcina(String ime2, ProizvodjacVakcine proizvodjacVakcine) {
+		// TODO Auto-generated constructor stub
+	}
 	public Long getId() {
 		return id;
 	}

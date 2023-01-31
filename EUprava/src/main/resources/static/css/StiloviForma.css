@@ -85,3 +85,6 @@ nav .navigation ul li a:hover {
   align-items: center;
 
 }
+p.greska {
+	color: red;
+}

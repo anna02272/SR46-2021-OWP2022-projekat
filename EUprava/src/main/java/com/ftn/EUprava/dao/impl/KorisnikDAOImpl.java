@@ -55,7 +55,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 			if (korisnik == null) {
 				korisnik = new Korisnik(id, email,  lozinka,  ime,  prezime,  datumRodjenja,  jmbg,
 						 adresa,  brojTelefona,  datumIVremeRegistracije,  uloga);
-				korisnici.put(korisnik.getId(), korisnik); 
+				korisnici.put(korisnik.getId(), korisnik); // dodavanje u kolekciju
 			}
 		}
 
@@ -166,9 +166,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 		String sql = "UPDATE korisnici SET email = ?, lozinka = ?, ime = ?, prezime = ?, datumRodjenja = ?, "
 				+ " jmbg = ? , adresa = ?, brojTelefona = ? "
 				+ "  WHERE id = ?";	
-		boolean uspeh = jdbcTemplate.update(sql, korisnik.getEmail() ,korisnik.getLozinka() ,korisnik.getIme() ,
-				korisnik.getPrezime(), korisnik.getDatumRodjenja(), korisnik.getJmbg(),
-				korisnik.getAdresa() , korisnik.getBrojTelefona() ,korisnik.getId()) == 1;
+		boolean uspeh = jdbcTemplate.update(sql, korisnik.getIme() , korisnik.getPrezime(), korisnik.getEmail(), korisnik.getLozinka(), korisnik.getId()) == 1;
 		
 		return uspeh?1:0;
 	}

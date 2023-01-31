@@ -8,14 +8,16 @@
 	<title>Vakcina</title>
 </head>
 <body>
+<h2>EUprava</h2>
 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li><a href="vakcine">Vakcine</a></li>     
-	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 	<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
+			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
-	 		<li><a href="korisnici">Korisnici</a></li>     
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="">Odjava</a></li>      
 	 	</ul>     
 	 	</div>
 	</nav>
@@ -28,8 +30,16 @@
 			<caption>Vakcina</caption>
 			<tr><th>Ime:</th><td><input type="text" th:value="${vakcina.ime}" name="ime"/></td></tr>
 			<tr><th>Dostupna kolicina:</th><td><input type="number" th:value="${vakcina.dostupnaKolicina}" name="dostupnaKolicina"/></td></tr>
-			<tr><th>Proizvodjac vakcine:</th><td><select name = "idProizvodjaca" th:value="${itProizvodjacVakcine}"></select></td></tr>
-
+			<tr>
+ 				<th>Proizvodjac vakcine:</th>
+				<td>
+					<select name = "idProizvodjaca">
+						<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" th:value="${itProizvodjacVakcine.id}" th:text="|${itProizvodjacVakcine.proizvodjac} , ${itProizvodjacVakcine.drzavaProizvodnje} |">
+						</option>
+					</select>
+					
+				</td>
+			</tr>      
 
 	<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
 		

@@ -7,23 +7,55 @@
 		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
 	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
 	 </head>     
-	 <body>   
+	 <body>  
+	 <h2>EUprava</h2> 
 	 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li><a href="vakcine">Vakcine</a></li>     
-	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 		<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
+			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
-	 		<li><a href="korisnici">Korisnici</a></li>     
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a th:if="${session.korisnik == null }" href="">Pocetna</a></li>  
+	 		       
 	 	</ul>     
 	 	</div>
 	</nav>
 	
+		
+	 <section class="registrationForm">
+	<div class = "registrationForm">
+	<table th:unless="${session.korisnik == null}"> 
+	<tr><th>Prijavljeni ste kao</th><td><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a>.</td></tr>
+		<tr>
+			<td colspan="2">
+				<ul>
+					<li><a href="korisnici/logout">Odjava</a></li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+	<table th:if="${session.korisnik == null}">
+		<tr><th>Niste prijavljeni</th></tr>
+		<tr>
+			<td>
+				<ul>
+					<li><a href="registracija.html">Registracija</a></li>
+					<li><a href="prijava.html">Prijava</a></li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+	</div>
+	</section>
+	
 	<section class="content">
 	<div class = "content"> 
+	
+	
 	 		<table>     
-	 			<caption>Vesti o obolelima</caption>     
+	 			<caption>Statistika o obolelima</caption>     
 	 			<tr>     
 	 				<th>R. br.</th>     
 	 				<th></th>     
@@ -37,7 +69,7 @@
 	 			</tr>
 	 			<tr th:each="itVestOObolelima, status: ${vestiOObolelima}">     
 	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
-	 				<td><a th:href="|vestiOObolelima/details?id=${itVestOObolelima.id}|" th:text="${itVestOObolelima.oboleliUPoslednja24h}"></a></td>    
+	 				<td><a th:if="${session.korisnik != null }" th:href="|vestiOObolelima/details?id=${itVestOObolelima.id}|" th:text="${itVestOObolelima.oboleliUPoslednja24h}"></a></td>    
 	 				<td th:text="${itVestOObolelima.oboleliUPoslednja24h}"></td>    
 	 				<td th:text="${itVestOObolelima.testiraniUPoslednja24h}"></td>    
 	 				<td th:text="${itVestOObolelima.ukupnoOboleliOdPocetkaPandemije}"></td>    
@@ -45,7 +77,7 @@
 	 				<td th:text="${itVestOObolelima.naRespiratoru}"></td>    	    
 	 				<td th:text="${itVestOObolelima.datumIVremeObjavljivanja}"></td>    
 	 				<td>    
-	 					<form method="post" action="vestiOObolelima/delete" >     
+	 					<form th:if="${session.korisnik != null }" method="post" action="vestiOObolelima/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itVestOObolelima.id}">     
 	 						<input type="submit"  value="Obriši" >    
 	 					</form>    
@@ -55,7 +87,7 @@
 	 		</div>
 	 	</section>
 	 	      <div class = 'btn'>
-	 		<a href="vestiOObolelima/add" class = "btn">Dodaj vest o obolelima</a>     
+	 		<a th:if="${session.korisnik != null }" href="vestiOObolelima/add" class = "btn">Dodaj vest o obolelima</a>     
 	 	</div>
 	 	
 	 </body>   

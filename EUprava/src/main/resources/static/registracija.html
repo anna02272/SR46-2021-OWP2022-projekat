@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="UTF-8">
+	<base href="">
 	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
+	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
 	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>
-	<base href="/EUprava/">
 	<title>Registracija</title>
 </head>
 <body>
-	<br/>
+	<h2>EUprava</h2>
+<nav>
+
+	  <div class="navigation">  
+	 	<ul>     
+	 
+	 		<li><a href="vesti">Vesti</a></li>   
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 	<li><a href="">Pocetna</a></li>  
+	 		
+	 	</ul>     
+	 	</div >
+	</nav>
+	<br>
+	<br>
+	<br>
+	
+	<table class="korisnik">
+		<tr><th>Niste prijavljeni</th></tr>
+		<tr>
+			<td>
+				<ul>
+					<li><a href="registracija.html">Registracija</a></li>
+					<li><a href="prijava.html">Prijava</a></li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+	
 	<form method="post" action="korisnici/registracija">
 		<table>
 			<caption>Registracija</caption>
@@ -23,6 +52,8 @@
 			<tr><th>Broj telefona:</th><td><input type="number" value="" name="brojTelefona" required/></td></tr>
 			<tr><th></th><td><input type="submit" value="Registruj se" /></td>
 		</table>
+		
 	</form>
+	<p class="greska" th:text="${poruka}></p>
 </body>
 </html>

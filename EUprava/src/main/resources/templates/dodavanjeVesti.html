@@ -2,28 +2,30 @@
  <html xmlns:th="http://www.thymeleaf.org">    
  <head>    
  	<meta charset="UTF-8">    
- 	<base th:href="@{/}">     
+ 	<base th:href="@{/}">        
  	<title>Dodaj vest</title>    
  	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>    
  	<link rel="stylesheet" type="text/css" href="css/StiloviHorizontalniMeni.css"/>  
  	
  </head>    
- <body>    
+ <body> 
+ <h2>EUprava</h2>   
  	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li><a href="vakcine">Vakcine</a></li>     
-	 		<li><a href="proizvodjaciVakcine">Proizvodjaci Vakcine</a></li>
+	 	<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
+			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Vesti o obolelima</a></li>        
-	 		<li><a href="korisnici">Korisnici</a></li>     
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="">Odjava</a></li>  
 	 	</ul>     
 	 	</div>
 	</nav>
 	
 	<section class="content">
 	<div class = "content"> 
- 	<form method="post" action="add">    
+ 	<form method="post" action="vesti/add">    
  		<table>    
  			<caption>Vest</caption>    
  			<tr><th>Naziv:</th><td><input type="text" value="" name="nazivVesti"/></td></tr>    

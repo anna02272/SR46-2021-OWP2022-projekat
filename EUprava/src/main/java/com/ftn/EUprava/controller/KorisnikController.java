@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -19,6 +20,7 @@ import org.jsoup.parser.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +30,7 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ftn.EUprava.model.Korisnik;
-import com.ftn.EUprava.model.ProizvodjacVakcine;
+
 import com.ftn.EUprava.service.KorisnikService;
 
 
@@ -201,8 +203,10 @@ public class KorisnikController implements ServletContextAware {
 		
 		request.getSession().removeAttribute(KORISNIK_KEY);
 		request.getSession().invalidate();
-		response.sendRedirect(bURL+"korisnici/login");
+		response.sendRedirect(bURL+"");
 	}
+	
+	
 	
 	@PostMapping(value = "/registracija")
 	public void registracija(@RequestParam(required = true) String email, @RequestParam(required = true) String lozinka,
@@ -211,41 +215,50 @@ public class KorisnikController implements ServletContextAware {
 			 @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate datumRodjenja,
 				@RequestParam(required = true) String jmbg,
 			@RequestParam(required = true) String adresa,@RequestParam(required = true) int brojTelefona,
-			
 		
 			HttpSession session, HttpServletResponse response) throws IOException {
 //		try {
-//			// validacija
-//			Korisnik postojeciKorisnik = korisnikService.findOne(email);
-//			if (postojeciKorisnik != null) {
-//				throw new Exception("Email već postoji!");
-//			}
-//			if (email.equals("") || lozinka.equals("")) {
-//				throw new Exception("Email i lozinka ne smeju biti prazni!");
-//			}
-//			if (!lozinka.equals(ponovljenaLozinka)) {
-//				throw new Exception("Lozinke se ne podudaraju!");
-//			}
+//		if (email.isEmpty() || lozinka.isEmpty() || ponovljenaLozinka.isEmpty() || ime.isEmpty() || 
+//			prezime.isEmpty() || jmbg.isEmpty() || adresa.isEmpty() ) {
+//			throw new Exception("Sva polja su obavezna!");
+//		}
 //		
-		
+//		//Validate email format
+//		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
+//                            "[a-zA-Z0-9_+&*-]+)*@" + 
+//                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" + 
+//                            "A-Z]{2,7}$"; 
+//		Pattern pat = Pattern.compile(emailRegex); 
+//		if (!pat.matcher(email).matches()) {
+//			throw new Exception("Email nije validan!");
+//		}
+//		
+//		//Validate matching passwords
+//		if (!lozinka.equals(ponovljenaLozinka)) {
+//			throw new Exception("Lozinke se ne podudaraju!");
+//		}
+//		
+//		//Validate birth date
+//		if (datumRodjenja.isAfter(LocalDate.now())) {
+//			throw new Exception("Datum rođenja ne sme biti u budućnosti!");
+//		}
+//		
+//		//Validate JMBG length
+//		if (jmbg.length() != 13) {
+//			throw new Exception("JMBG mora sadržati 13 cifara!");
+//		}	
+//
+
 		Korisnik korisnik = new Korisnik( email,  lozinka,  ime,  prezime,  datumRodjenja,  jmbg,
 				 adresa,  brojTelefona);
 		korisnikService.save(korisnik);
 		
-		response.sendRedirect(bURL + "korisnici");
+		response.sendRedirect(bURL + "prijava.html");
 		
 //		} catch (Exception ex) {
-//			// ispis greške
-//			String poruka = ex.getMessage();
-//			if (poruka == "") {
-//				poruka = "Neuspešna registracija!";
-//			}
-
-//			// prosleđivanje
-//			ModelAndView rezultat = new ModelAndView("registracija");
-//			rezultat.addObject("poruka", poruka);
-//
-//			return rezultat;
+//			
+//		}
+		
 		}
 		
 	
@@ -277,6 +290,8 @@ public class KorisnikController implements ServletContextAware {
 		
 		ModelAndView rezultat = new ModelAndView("korisnici"); 
 		rezultat.addObject("korisnici", korisnici); 
+				
+	
 
 		return rezultat; 
 	}
@@ -349,7 +364,7 @@ public class KorisnikController implements ServletContextAware {
 		return rezultat; 
 	}
 	
-
+	
 }
 
 	

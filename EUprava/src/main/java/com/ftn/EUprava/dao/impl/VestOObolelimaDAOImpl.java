@@ -123,7 +123,7 @@ public class VestOObolelimaDAOImpl implements VestOObolelimaDAO {
 	@Override
 	public int update(VestOObolelima vestObolelima) {	
 		
-		String sql = "UPDATE vestiObolelima SET oboleliUPoslednja24h = ?, testiraniUPoslednja24h = ?,ukupnoOboleliOdPocetkaPandemije = ?, hospitalizovani = ?, naRespiratoru = ?,datumIVremeObjavljivanja = ? WHERE id = ?";	
+		String sql = "UPDATE vestiOObolelima SET oboleliUPoslednja24h = ?, testiraniUPoslednja24h = ?,ukupnoOboleliOdPocetkaPandemije = ?, hospitalizovani = ?, naRespiratoru = ?,datumIVremeObjavljivanja = ? WHERE id = ?";	
 		boolean uspeh = jdbcTemplate.update(sql, vestObolelima.getOboleliUPoslednja24h(), vestObolelima.getTestiraniUPoslednja24h(),
 				vestObolelima.getUkupnoOboleliOdPocetkaPandemije(),vestObolelima.getHospitalizovani(),
 				vestObolelima.getNaRespiratoru(),
