@@ -13,7 +13,7 @@ public class Korisnik {
 	private LocalDate datumRodjenja;
 	private String jmbg;
 	private String adresa;
-	private Integer brojTelefona;
+	private String brojTelefona;
 	private LocalDateTime datumIVremeRegistracije;
 	private EUloga uloga;
 	
@@ -23,7 +23,7 @@ public class Korisnik {
 	
 	
 	public Korisnik(String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja, String jmbg,
-			String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
+			String adresa, String brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
 		super();
 		this.email = email;
 		this.lozinka = lozinka;
@@ -39,7 +39,7 @@ public class Korisnik {
 
 
 	public Korisnik(Long id, String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja,
-			String jmbg, String adresa, Integer brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
+			String jmbg, String adresa, String brojTelefona, LocalDateTime datumIVremeRegistracije, EUloga uloga) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -56,7 +56,7 @@ public class Korisnik {
 
 
 	public Korisnik( String email, String lozinka, String ime, String prezime, LocalDate datumRodjenja,
-			String jmbg, String adresa, Integer brojTelefona) {
+			String jmbg, String adresa, String brojTelefona) {
 		super();
 		
 		this.email = email;
@@ -124,10 +124,10 @@ public class Korisnik {
 	public void setAdresa(String adresa) {
 		this.adresa = adresa;
 	}
-	public Integer getBrojTelefona() {
+	public String getBrojTelefona() {
 		return brojTelefona;
 	}
-	public void setBrojTelefona(Integer brojTelefona) {
+	public void setBrojTelefona(String brojTelefona) {
 		this.brojTelefona = brojTelefona;
 	}
 	public LocalDateTime getDatumIVremeRegistracije() {

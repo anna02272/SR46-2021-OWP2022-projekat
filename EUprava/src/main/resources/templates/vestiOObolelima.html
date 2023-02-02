@@ -12,11 +12,13 @@
 	 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 	<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>    
 	 		<li><a th:if="${session.korisnik == null }" href="">Pocetna</a></li>  
 	 		       
 	 	</ul>     
@@ -49,11 +51,38 @@
 	</table>
 	</div>
 	</section>
-	
 	<section class="content">
 	<div class = "content"> 
 	
+	<table>     
+	 			<caption>Danasnji izvestaj o obolelima</caption>     
+	 			<tr>     
+	 				    
+	 				<th>Oboleli u poslednja 24h:</th>     
+	 				<th>Testirani u poslednja 24h:</th>      
+	 				<th>Ukupni broj obolelih od pocetka pandemije:</th>      
+	 				<th>Hospitalizovani:</th>      
+	 				<th>Na respiratoru:</th>      
+	 				<th>Datum i vreme objavljivanja</th>    
+	 				    
+	 			</tr>
+	 			
+	 			<tr th:each="itVestOObolelima, status: ${vestiOObolelima}" 
+	 			 th:if="${#temporals.format(itVestOObolelima.datumIVremeObjavljivanja, 'yyyy-MM-dd') == #temporals.format(currentDate, 'yyyy-MM-dd')}">    
+	 				<td th:text="${itVestOObolelima.oboleliUPoslednja24h}"></td>    
+	 				<td th:text="${itVestOObolelima.testiraniUPoslednja24h}"></td>    
+	 				<td th:text="${itVestOObolelima.ukupnoOboleliOdPocetkaPandemije}"></td>    
+	 				<td th:text="${itVestOObolelima.hospitalizovani}"></td>    
+	 				<td th:text="${itVestOObolelima.naRespiratoru}"></td>    	    
+	 				<td th:text="${itVestOObolelima.datumIVremeObjavljivanja}"></td>    
+	 				
+	 			</tr>
+	 		</table>
+		</div>
+	</section>
 	
+	<section class="content1">
+	<div class = "content1"> 
 	 		<table>     
 	 			<caption>Statistika o obolelima</caption>     
 	 			<tr>     
@@ -69,7 +98,9 @@
 	 			</tr>
 	 			<tr th:each="itVestOObolelima, status: ${vestiOObolelima}">     
 	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
-	 				<td><a th:if="${session.korisnik != null }" th:href="|vestiOObolelima/details?id=${itVestOObolelima.id}|" th:text="${itVestOObolelima.oboleliUPoslednja24h}"></a></td>    
+	 				<td><a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 				 th:href="|vestiOObolelima/details?id=${itVestOObolelima.id}|" 
+	 				 th:text="${itVestOObolelima.oboleliUPoslednja24h}"></a></td>    
 	 				<td th:text="${itVestOObolelima.oboleliUPoslednja24h}"></td>    
 	 				<td th:text="${itVestOObolelima.testiraniUPoslednja24h}"></td>    
 	 				<td th:text="${itVestOObolelima.ukupnoOboleliOdPocetkaPandemije}"></td>    
@@ -77,7 +108,8 @@
 	 				<td th:text="${itVestOObolelima.naRespiratoru}"></td>    	    
 	 				<td th:text="${itVestOObolelima.datumIVremeObjavljivanja}"></td>    
 	 				<td>    
-	 					<form th:if="${session.korisnik != null }" method="post" action="vestiOObolelima/delete" >     
+	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 					 method="post" action="vestiOObolelima/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itVestOObolelima.id}">     
 	 						<input type="submit"  value="Obriši" >    
 	 					</form>    
@@ -87,7 +119,8 @@
 	 		</div>
 	 	</section>
 	 	      <div class = 'btn'>
-	 		<a th:if="${session.korisnik != null }" href="vestiOObolelima/add" class = "btn">Dodaj vest o obolelima</a>     
+	 		<a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		 href="vestiOObolelima/add" class = "btn">Dodaj vest o obolelima</a>     
 	 	</div>
 	 	
 	 </body>   

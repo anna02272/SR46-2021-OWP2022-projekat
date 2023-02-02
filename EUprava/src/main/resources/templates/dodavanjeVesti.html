@@ -13,24 +13,27 @@
  	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 	<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 	<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>           
 	 		<li><a href="">Odjava</a></li>  
 	 	</ul>     
 	 	</div>
 	</nav>
+	
 	
 	<section class="content">
 	<div class = "content"> 
  	<form method="post" action="vesti/add">    
  		<table>    
  			<caption>Vest</caption>    
- 			<tr><th>Naziv:</th><td><input type="text" value="" name="nazivVesti"/></td></tr>    
- 			<tr><th>Sadrzaj:</th><td><input type="text" value="" name="sadrzajVesti"/></td></tr>   
- 		   <tr><th>Datum i vreme objavljivanja:</th><td><input type="datetime-local" name="datumIVremeObjavljivanja"/></td></tr>
+ 			<tr><th>Naziv:</th><td><input type="text" value="" name="nazivVesti" required/></td></tr>    
+ 			<tr><th>Sadrzaj:</th><td><input type="text" value="" name="sadrzajVesti" required/></td></tr>   
+ 		   <tr><th>Datum i vreme objavljivanja:</th><td><input type="datetime-local" name="datumIVremeObjavljivanja" required/></td></tr>
  			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
  		</table>    
  	</form>   

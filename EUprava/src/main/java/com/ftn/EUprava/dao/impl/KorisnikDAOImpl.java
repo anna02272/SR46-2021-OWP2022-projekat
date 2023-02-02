@@ -12,7 +12,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.jdbc.core.RowMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -46,7 +49,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 			LocalDate datumRodjenja = resultSet.getObject(index++, LocalDate.class);
 			String jmbg = resultSet.getString(index++);
 			String adresa = resultSet.getString(index++);
-			Integer brojTelefona = resultSet.getInt(index++);
+			String brojTelefona = resultSet.getString(index++);
 			LocalDateTime datumIVremeRegistracije = resultSet.getObject(index++, LocalDateTime.class);
 			EUloga uloga = EUloga.valueOf(resultSet.getString(index++));
 			
@@ -62,9 +65,59 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 		public List<Korisnik> getKorisnici() {
 			return new ArrayList<>(korisnici.values());
 		}
+		
 
 	}
-	
+	private class KorisnikRowMapper implements RowMapper<Korisnik> {
+
+		public Korisnik mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+			int index = 1;
+			String email = resultSet.getString(index++);
+			String lozinka = resultSet.getString(index++);
+			String ime = resultSet.getString(index++);
+			String prezime = resultSet.getString(index++);
+			LocalDate datumRodjenja = resultSet.getObject(index++, LocalDate.class);
+			String jmbg = resultSet.getString(index++);
+			String adresa = resultSet.getString(index++);
+			String brojTelefona = resultSet.getString(index++);
+			LocalDateTime datumIVremeRegistracije = resultSet.getObject(index++, LocalDateTime.class);
+			EUloga uloga = EUloga.valueOf(resultSet.getString(index++));
+			
+
+			Korisnik korisnik = new Korisnik(email,  lozinka,  ime,  prezime,  datumRodjenja,  jmbg,
+					 adresa,  brojTelefona,  datumIVremeRegistracije,  uloga);
+			return korisnik;
+		}
+
+	}
+	@Override
+	public Korisnik findOne(String email) {
+		try {
+			String sql = 
+					"SELECT kor.email, kor.lozinka, kor.ime, kor.prezime, kor.datumRodjenja,"
+							+ " kor.jmbg, kor.adresa, kor.brojTelefona,  kor.datumIVremeRegistracije, kor.Euloga"
+							+ " FROM korisnici kor " +  
+					"WHERE kor.email = ? " ;
+					
+			return jdbcTemplate.queryForObject(sql, new KorisnikRowMapper(), email);
+		} catch (EmptyResultDataAccessException ex) {
+			return null;
+		}
+	}
+	@Override
+	public Korisnik findOneByJMBG(String jmbg) {
+		try {
+			String sql = 
+					"SELECT kor.email, kor.lozinka, kor.ime, kor.prezime, kor.datumRodjenja,"
+							+ " kor.jmbg, kor.adresa, kor.brojTelefona,  kor.datumIVremeRegistracije, kor.Euloga"
+							+ " FROM korisnici kor " +  
+					"WHERE kor.jmbg = ? " ;
+					
+			return jdbcTemplate.queryForObject(sql, new KorisnikRowMapper(), jmbg);
+		} catch (EmptyResultDataAccessException ex) {
+			return null;
+		}
+	}
 	@Override
 	public Korisnik findOne(Long id) {
 		String sql = 
@@ -80,20 +133,21 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 		return rowCallbackHandler.getKorisnici().get(0);
 	}
 	
-	@Override
-	public Korisnik findOne(String email) {
-		String sql = 
-				"SELECT kor.id, kor.email, kor.lozinka, kor.ime, kor.prezime, kor.datumRodjenja,"
-						+ " kor.jmbg, kor.adresa, kor.brojTelefona,  kor.datumIVremeRegistracije, kor.Euloga"
-						+ " FROM korisnici kor " +  
-				"WHERE kor.email = ? " + 
-				"ORDER BY kor.id";
-
-		KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
-		jdbcTemplate.query(sql, rowCallbackHandler, email);
-
-		return rowCallbackHandler.getKorisnici().get(0);
-	}
+//	@Override
+//	public Korisnik findOne(String email) {
+//		String sql = 
+//				"SELECT kor.id, kor.email, kor.lozinka, kor.ime, kor.prezime, kor.datumRodjenja,"
+//						+ " kor.jmbg, kor.adresa, kor.brojTelefona,  kor.datumIVremeRegistracije, kor.Euloga"
+//						+ " FROM korisnici kor " +  
+//				"WHERE kor.email = ? " + 
+//				"ORDER BY kor.id";
+//
+//		KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
+//		jdbcTemplate.query(sql, rowCallbackHandler, email);
+//
+//		return rowCallbackHandler.getKorisnici().get(0);
+//		
+//	}
 
 	@Override
 	public Korisnik findOne(String email, String lozinka) {
@@ -147,7 +201,7 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 				preparedStatement.setObject(index++, korisnik.getDatumRodjenja());
 				preparedStatement.setString(index++, korisnik.getJmbg());
 				preparedStatement.setString(index++, korisnik.getAdresa());
-				preparedStatement.setInt(index++, korisnik.getBrojTelefona());
+				preparedStatement.setString(index++, korisnik.getBrojTelefona());
 			
 				
 				
@@ -166,7 +220,8 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 		String sql = "UPDATE korisnici SET email = ?, lozinka = ?, ime = ?, prezime = ?, datumRodjenja = ?, "
 				+ " jmbg = ? , adresa = ?, brojTelefona = ? "
 				+ "  WHERE id = ?";	
-		boolean uspeh = jdbcTemplate.update(sql, korisnik.getIme() , korisnik.getPrezime(), korisnik.getEmail(), korisnik.getLozinka(), korisnik.getId()) == 1;
+		boolean uspeh = jdbcTemplate.update(sql, korisnik.getEmail(),korisnik.getLozinka(),korisnik.getIme() , korisnik.getPrezime(), 
+				korisnik.getDatumRodjenja(), korisnik.getJmbg(), korisnik.getAdresa(), korisnik.getBrojTelefona(),korisnik.getId()) == 1;
 		
 		return uspeh?1:0;
 	}

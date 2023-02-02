@@ -13,11 +13,13 @@
  	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 		<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>       
 	 		<li><a href="">Odjava</a></li>  
 	 	</ul>     
 	 	</div>
@@ -29,14 +31,14 @@
  		<table>    
  			<caption>Korisnik</caption>    
  			
- 			<tr><th>Email:</th><td><input type="text" value="" name="email"/></td></tr>
-			<tr><th>Lozinka:</th><td><input type="password" value="" name="lozinka"/></td></tr>
-			<tr><th>Ime:</th><td><input type="text" value="" name="ime"/></td></tr>
-			<tr><th>Prezime:</th><td><input type="text" value="" name="prezime"/></td></tr>
-			<tr><th>Datum rodjenja:</th><td><input type="date" value="" name="datumRodjenja"/></td></tr>
-			<tr><th>JMBG:</th><td><input type="text" value="" name="jmbg"/></td></tr>
-			<tr><th>Adresa:</th><td><input type="text" value="" name="adresa"/></td></tr>
-			<tr><th>Broj telefona:</th><td><input type="number" value="" name="brojTelefona"/></td></tr>
+ 			<tr><th>Email:</th><td><input type="text" value="" name="email" required/></td></tr>
+			<tr><th>Lozinka:</th><td><input type="password" value="" name="lozinka" required/></td></tr>
+			<tr><th>Ime:</th><td><input type="text" value="" name="ime" required/></td></tr>
+			<tr><th>Prezime:</th><td><input type="text" value="" name="prezime" required/></td></tr>
+			<tr><th>Datum rodjenja:</th><td><input type="date" value="" name="datumRodjenja" required/></td></tr>
+			<tr><th>JMBG:</th><td><input type="text" value="" name="jmbg" required/></td></tr>
+			<tr><th>Adresa:</th><td><input type="text" value="" name="adresa" required/></td></tr>
+			<tr><th>Broj telefona:</th><td><input type="text" value="" name="brojTelefona" required/></td></tr>
 			
  			
  			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    

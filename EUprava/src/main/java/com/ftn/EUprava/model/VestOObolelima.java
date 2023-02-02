@@ -39,6 +39,26 @@ public class VestOObolelima {
 		this.naRespiratoru = naRespiratoru;
 		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
 	}
+	
+	public VestOObolelima(Integer oboleliUPoslednja24h, Integer testiraniUPoslednja24h, Integer hospitalizovani,
+			Integer naRespiratoru, LocalDateTime datumIVremeObjavljivanja) {
+		super();
+		this.oboleliUPoslednja24h = oboleliUPoslednja24h;
+		this.testiraniUPoslednja24h = testiraniUPoslednja24h;
+		this.hospitalizovani = hospitalizovani;
+		this.naRespiratoru = naRespiratoru;
+		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
+	}
+	public VestOObolelima(Long id, Integer oboleliUPoslednja24h, Integer testiraniUPoslednja24h,
+			Integer hospitalizovani, Integer naRespiratoru, LocalDateTime datumIVremeObjavljivanja) {
+		super();
+		this.id = id;
+		this.oboleliUPoslednja24h = oboleliUPoslednja24h;
+		this.testiraniUPoslednja24h = testiraniUPoslednja24h;
+		this.hospitalizovani = hospitalizovani;
+		this.naRespiratoru = naRespiratoru;
+		this.datumIVremeObjavljivanja = datumIVremeObjavljivanja;
+	}
 	public Long getId() {
 		return id;
 	}

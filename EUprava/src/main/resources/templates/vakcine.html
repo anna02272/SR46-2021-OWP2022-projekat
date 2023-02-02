@@ -5,18 +5,25 @@
 		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
 		<title>Vakcine</title>     
 		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
-	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/>   
+	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/> 
+	  	<script src="webjars/jquery/3.2.1/jquery.min.js"></script>
+	<script src="webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+	
+		<script src="js/vakcine.js"></script>
+	
 	 </head>     
 	 <body>   
 	 <h2>EUprava</h2>
 	  <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 		<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>       
 	 	</ul>     
 	 	</div>
 	</nav>
@@ -24,7 +31,8 @@
 	 <section class="registrationForm">
 	<div class = "registrationForm">
 	<table th:unless="${session.korisnik == null}"> 
-	<tr><th>Prijavljeni ste kao</th><td><a th:href="|korisnici/details?id=${session.korisnik.id}|" th:text="${session.korisnik.email}"></a>.</td></tr>
+	<tr><th>Prijavljeni ste kao</th><td><a th:href="|korisnici/details?id=${session.korisnik.id}|" 
+	th:text="${session.korisnik.email}"></a>.</td></tr>
 		<tr>
 			<td colspan="2">
 				<ul>
@@ -50,26 +58,54 @@
 	<section class="content">
 	<div class = "content">
 		
-	 		<table>     
+	 		<table  class="tabela">     
 	 			<caption>Vakcine</caption>     
 	 			<tr>     
 	 				<th>R. br.</th>     
 	 				<th></th>     
 	 				<th>Ime</th>     
 	 				<th>Dostupna Kolicina</th>     
-	 				<th>Proizvodjac vakcine</th>    
+	 				<th>Proizvodjac vakcine</th>  
+  
 	 				  
 	 				<th></th>    
 	 			</tr>
+	 			
+	 			<tr>
+	 				<th></th>     
+	 				<th></th>     
+	 				<th><input type="text" name="ime" th:value="${param.ime}?: null"/></th>   
+	 				<th>
+						min:<input type="number" min="0" th:value="${param.dostupnaKolicinaMin}?: '0'"  step="0.1" name="dostupnaKolicinaMin"/><br/>
+						max:<input type="number" min="0" th:value="${param.dostupnaKolicinaMax}?: '100'"  step="0.1" name="dostupnaKolicinaMax"/>
+					</th>   
+	 				<th>
+						<select name="proizvodjacId">
+							<option value=""></option>
+							<option th:each="itProizvodjacVakcine: ${session.proizvodjaciVakcine}" th:value="${itProizvodjacVakcine.id}" 
+								th:text="|${itProizvodjacVakcine.proizvodjac}, ${itProizvodjacVakcine.drzavaProizvodnje} |"
+								 th:selected="${#strings.equals(itProizvodjacVakcine.id, param.proizvodjacId)}"></option>
+						</select>
+					</th>    
+	 				<th>
+	 				<form  
+	 					method="post" action="vakcine/pretrazi" >      
+	 						<input type="submit"  value="pretrazi" >    
+	 					</form>    
+	 				
+	 			</tr>
+	 			
+	 		
 	 			<tr th:each="itVakcina, status: ${vakcine}">     
 	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
 	 				<td><a th:href="|vakcine/details?id=${itVakcina.id}|" th:text="${itVakcina.ime}"></a></td>    
 	 				<td th:text="${itVakcina.ime}"></td>    
 	 				<td class="broj" th:text="${itVakcina.dostupnaKolicina}"></td>    
-	 				<td th:text="${itVakcina.proizvodjac}"></td>       
-	 				
+	 				<td th:text="|${itVakcina.proizvodjac.proizvodjac} , ${itVakcina.proizvodjac.drzavaProizvodnje} |"></td>       
+	 			
 	 				<td>    
-	 					<form method="post" action="vakcine/delete" >     
+	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 					method="post" action="vakcine/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itVakcina.id}">     
 	 						<input type="submit"  value="Obriši" >    
 	 					</form>    
@@ -79,7 +115,8 @@
 	 		</div>
 	 		</section>
 	 	    <div class = 'btn'> 
-	 	<a href="vakcine/add" class = "btn">Dodaj vakcinu</a>
+	 	<a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 	 href="vakcine/add" class = "btn">Dodaj vakcinu</a>
 	 </div>
 	 </body>   
  </html>	

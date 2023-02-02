@@ -12,9 +12,11 @@
 	 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 	<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
 	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
 	 		<li><a th:if="${session.korisnik == null }" href="">Pocetna</a></li>  
@@ -64,12 +66,14 @@
 	 			</tr>
 	 			<tr th:each="itVest, status: ${vesti}">     
 	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
-	 				<td><a th:if="${session.korisnik != null }" th:href="|vesti/details?id=${itVest.id}|" th:text="${itVest.nazivVesti}"></a></td>    
+	 				<td><a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 				 th:href="|vesti/details?id=${itVest.id}|" th:text="${itVest.nazivVesti}"></a></td>    
 	 				<td th:text="${itVest.nazivVesti}"></td>    
 	 				<td th:text="${itVest.sadrzajVesti}"></td>    
 	 				<td th:text="${itVest.datumIVremeObjavljivanja}"></td>    
 	 				<td>    
-	 					<form th:if="${session.korisnik != null }" method="post" action="vesti/delete" >     
+	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 					 method="post" action="vesti/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itVest.id}">     
 	 						<input type="submit"  value="Obriši" >    
 	 					</form>    
@@ -79,7 +83,8 @@
 	 		</div>
 	 	</section>
 	 	    <div class = 'btn'>  
-	 		<a  th:if="${session.korisnik != null }" href="vesti/add" class = "btn">Dodaj vest</a>     
+	 		<a   th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		 href="vesti/add" class = "btn">Dodaj vest</a>     
 	 	</div>
 	 	
 	 </body>   

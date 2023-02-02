@@ -1,7 +1,9 @@
 package com.ftn.EUprava.controller;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.model.Vakcina;
+import com.ftn.EUprava.model.Vest;
 import com.ftn.EUprava.service.ProizvodjacVakcineService;
 import com.ftn.EUprava.service.VakcinaService;
 
@@ -48,51 +52,64 @@ public class VakcinaController implements ServletContextAware {
 		this.servletContext = servletContext;
 	} 
 	
+//	@GetMapping
+//	public ModelAndView index() {
+//		List<Vakcina> vakcine = vakcinaService.findAll();
+//		ModelAndView rezultat = new ModelAndView("vakcine"); 
+//		rezultat.addObject("vakcine", vakcine); 
+//		return rezultat;
+//	}
+//	@GetMapping
+//	public ModelAndView Index(
+//			@RequestParam(required=false) String ime, 
+//			@RequestParam(required=false) Integer dostupnaKolicinaMin, 
+//			@RequestParam(required=false) Integer dostupnaKolicinaMax,
+//			@RequestParam(required=false) Long proizvodjacId,
+//			HttpSession session) throws IOException {
+//		
+//		if(ime!=null && ime.trim().equals(""))
+//			ime=null;
+//		
+//		
+//		List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+//		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+//
+//		ModelAndView rezultat = new ModelAndView("vakcine");
+//		rezultat.addObject("vakcine", vakcine);
+//		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+//
+//		return rezultat;
+//	}
 	@GetMapping
 	public ModelAndView index() {
-		List<Vakcina> vakcine = vakcinaService.findAll();
+		List<Vakcina> vakcine = vakcinaService.findAll();		
+		
 		ModelAndView rezultat = new ModelAndView("vakcine"); 
 		rezultat.addObject("vakcine", vakcine); 
-
-		return rezultat;
-	}
-	
-	@GetMapping(value="/add")
-	public ModelAndView create() {
-		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
-		
-		ModelAndView rezultat = new ModelAndView("dodavanjeVakcine"); 
-		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine); 
 
 		return rezultat; 
 	}
 
-//	@PostMapping(value="/add")
-//	public void create(@RequestParam String ime, @RequestParam int dostupnaKolicina,  
-//			 @RequestParam Long idProizvodjacaVakcine, HttpServletResponse response) throws IOException {	
-//		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
-//		if (proizvodjacVakcine == null) {
-//			//todo domaci vrati gresku
-//		}
-//		
-//		Vakcina vakcina = new Vakcina(ime, dostupnaKolicina, proizvodjacVakcine);
-//		vakcinaService.save(vakcina);
-//		response.sendRedirect(bURL+"vakcine");
-//	}
 	
+	@GetMapping(value="/add")
+	public String create(HttpSession session, HttpServletResponse response ) {
+		
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+		session.setAttribute("proizvodjaciVakcine", proizvodjaciVakcine);
+		
+
+		return "dodavanjeVakcine"; 
+	}
+	@SuppressWarnings("unused")
 	@PostMapping(value="/add")
-	public void create(@RequestParam String ime,   
-	     Long idProizvodjacaVakcine, HttpServletResponse response) throws IOException {	
-	    ProizvodjacVakcine proizvodjacVakcine = null;
-	    if (idProizvodjacaVakcine != 0) {
-	        proizvodjacVakcine = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
-	        if (proizvodjacVakcine == null) {
-	            // Handle error
-	        }
-	    }
+	public void create(@RequestParam String ime,  @RequestParam(value = "proizvodjacId") @PathVariable("id")
+	     Long proizvodjacId, HttpServletResponse response) throws IOException {	
+	  
+	     ProizvodjacVakcine proizvodjacVakcine = proizvodjacVakcineService.findOne(proizvodjacId);
 	    
-	    Vakcina vakcina = new Vakcina(ime,  proizvodjacVakcine);
-	    vakcinaService.save(vakcina);
+	     Vakcina vakcina = new Vakcina(ime, proizvodjacVakcine);
+	     System.out.println(vakcina);
+	    Vakcina saved = vakcinaService.save(vakcina);
 	    response.sendRedirect(bURL+"vakcine");
 	}
 
@@ -100,19 +117,21 @@ public class VakcinaController implements ServletContextAware {
 	@SuppressWarnings("unused")
 	@PostMapping(value="/edit")
 	public void Edit(@RequestParam Long id, @RequestParam String ime, @RequestParam int dostupnaKolicina,  
-			 @RequestParam Long idProizvodjacaVakcine , HttpServletResponse response) throws IOException {	
-		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(idProizvodjacaVakcine);
-		if (proizvodjacVakcine == null) {
-			//todo domaci vrati gresku
-		}
+			 @RequestParam Long proizvodjacId , HttpServletResponse response) throws IOException {	
+		
+		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(proizvodjacId);
 		Vakcina vakcina = vakcinaService.findOne(id);
 		if(vakcina != null) {
 			if(ime != null && !ime.trim().equals(""))
 				vakcina.setIme(ime);
 			if(dostupnaKolicina > 0)
 				vakcina.setDostupnaKolicina(dostupnaKolicina);
-			if(proizvodjacVakcine != null)
+			if(proizvodjacId != null)
+			{
+			
 				vakcina.setProizvodjac(proizvodjacVakcine);
+			}
+				
 		}
 		Vakcina saved = vakcinaService.update(vakcina);
 		response.sendRedirect(bURL+"vakcine");
@@ -126,16 +145,36 @@ public class VakcinaController implements ServletContextAware {
 		response.sendRedirect(bURL+"vakcine");
 	}
 	
+	
 	@GetMapping(value="/details")
 	@ResponseBody
 	public ModelAndView details(@RequestParam Long id) {	
 		Vakcina vakcina  = vakcinaService.findOne(id);
-		
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
 		ModelAndView rezultat = new ModelAndView("vakcina"); 
 		rezultat.addObject("vakcina", vakcina); 
+		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine); 
 
 		return rezultat; 
 	}
 	
+	@GetMapping(value="/search")
+	@ResponseBody
+	public Map<String, Object> search(
+			@RequestParam(required=false) String ime, 
+			@RequestParam(required=false) Integer dostupnaKolicinaMin, 
+			@RequestParam(required=false) Integer dostupnaKolicinaMax,
+			@RequestParam(required=false) Long proizvodjacId, 
+			HttpSession session)  throws IOException {
+		
+		if(ime!=null && ime.trim().equals(""))
+			ime=null;
+		
+		List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
 
+		Map<String, Object> odgovor = new LinkedHashMap<>();
+		odgovor.put("status", "ok");
+		odgovor.put("vakcine", vakcine);
+		return odgovor;
+	}
 }

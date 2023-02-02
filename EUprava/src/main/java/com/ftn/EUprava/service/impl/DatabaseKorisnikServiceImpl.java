@@ -26,6 +26,10 @@ public class DatabaseKorisnikServiceImpl implements KorisnikService{
 	public Korisnik findOne(String email) {
 		return korisnikDAO.findOne(email);
 	}
+	@Override
+	public Korisnik findOneByJMBG(String jmbg) {
+		return korisnikDAO.findOneByJMBG(jmbg);
+	}
 
 	@Override
 	public Korisnik findOne(String email, String lozinka) {

@@ -1,6 +1,5 @@
 package com.ftn.EUprava.model;
 
-import java.util.ArrayList;
 
 
 public class Vakcina {
@@ -29,8 +28,17 @@ public class Vakcina {
 	
 
 	
-	public Vakcina(String ime2, ProizvodjacVakcine proizvodjacVakcine) {
-		// TODO Auto-generated constructor stub
+	public Vakcina(String ime, ProizvodjacVakcine proizvodjac) {
+		super();
+		this.ime = ime;
+		this.proizvodjac = proizvodjac;
+	}
+
+	public Vakcina(Long id, String ime, Integer dostupnaKolicina) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.dostupnaKolicina = dostupnaKolicina;
 	}
 	public Long getId() {
 		return id;
@@ -56,6 +64,7 @@ public class Vakcina {
 	public void setProizvodjac(ProizvodjacVakcine proizvodjac) {
 		this.proizvodjac = proizvodjac;
 	}
+	
 	@Override
 	public String toString() {
 		return "Vakcina [id=" + id + ", ime=" + ime + ", dostupnaKolicina=" + dostupnaKolicina + ", proizvodjac="

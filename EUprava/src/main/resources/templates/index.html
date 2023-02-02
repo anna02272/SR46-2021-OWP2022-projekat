@@ -10,19 +10,21 @@
 </head>
 <body>
 	<h2>EUprava</h2>
- <nav>
+ 
+		 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 	<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
-		<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-		<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+	 		<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
+			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
-	 		<li><a href="">Pocetna</a></li>  
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>       
+	 		<li><a th:if="${session.korisnik == null }" href="">Pocetna</a></li>  
 	 		
-	   
 	 	</ul>     
-	 	</div >
+	 	</div>
 	</nav>
 	
 <br>
@@ -53,6 +55,5 @@
 		</tr>
 	</table>
 
-	
 </body>
 </html>

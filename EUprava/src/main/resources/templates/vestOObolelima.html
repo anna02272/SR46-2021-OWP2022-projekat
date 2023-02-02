@@ -12,11 +12,13 @@
 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 		<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>     
 	 		<li><a href="">Odjava</a></li>  
 	 	</ul>     
 	 	</div>
@@ -30,7 +32,6 @@
 			<caption>Vest</caption>
 			<tr><th>Oboleli u poslednja 24h:</th><td><input type="number" th:value="${vestOObolelima.oboleliUPoslednja24h}" name="oboleliUPoslednja24h"/></td></tr>
 			<tr><th>Testirani u poslednja 24h:</th><td><input type="number" th:value="${vestOObolelima.testiraniUPoslednja24h}" name="testiraniUPoslednja24h"/></td></tr>
-			<tr><th>Ukupni broj obolelih od pocetka pandemije:</th><td><input type="number" th:value="${vestOObolelima.ukupnoOboleliOdPocetkaPandemije}" name="ukupnoOboleliOdPocetkaPandemije"/></td></tr>
 			<tr><th>Hospitalizovani:</th><td><input type="number" th:value="${vestOObolelima.hospitalizovani}" name="hospitalizovani"/></td></tr>
 			<tr><th>Na respiratoru:</th><td><input type="number" th:value="${vestOObolelima.naRespiratoru}" name="naRespiratoru"/></td></tr>
 				<tr><th>Datum i vreme objavljivanja:</th><td><input type="datetime" th:value="${vestOObolelima.datumIVremeObjavljivanja}" name="datumIVremeObjavljivanja"/></td></tr>

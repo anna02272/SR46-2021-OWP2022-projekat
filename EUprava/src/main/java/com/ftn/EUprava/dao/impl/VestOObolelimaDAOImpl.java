@@ -46,7 +46,7 @@ public class VestOObolelimaDAOImpl implements VestOObolelimaDAO {
 			Integer ukupnoOboleliOdPocetkaPandemije = resultSet.getInt(index++);
 			Integer hospitalizovani = resultSet.getInt(index++);
 			Integer naRespiratoru = resultSet.getInt(index++);
-		 LocalDateTime datumIVremeRegistracije = resultSet.getTimestamp(index++).toLocalDateTime();
+			LocalDateTime datumIVremeRegistracije = resultSet.getTimestamp(index++).toLocalDateTime();
 
 			VestOObolelima vestOObolelima = vestiOObolelima.get(id);
 			if (vestOObolelima == null) {
@@ -62,14 +62,14 @@ public class VestOObolelimaDAOImpl implements VestOObolelimaDAO {
 		}
 
 	}
+	
 
 	@Override
 	public VestOObolelima findOne(Long id) {
-		String sql = 
-				"SELECT id, oboleliUPoslednja24h, testiraniUPoslednja24h,ukupnoOboleliOdPocetkaPandemije,"
-				+ "hospitalizovani, naRespiratoru ,datumIVremeObjavljivanja FROM vestiOObolelima  " + 
-				"WHERE id = ? " + 
-				"ORDER BY id";
+		String sql =  "SELECT a.id, a.OboleliUPoslednja24h, a.TestiraniUPoslednja24h, b.UkupnoOboleliOdPocetkaPandemije,"
+				+ " a.Hospitalizovani, a.NaRespiratoru, a.DatumIVremeObjavljivanja FROM vestioobolelima "
+				+ "a JOIN (SELECT SUM(OboleliUPoslednja24h) AS UkupnoOboleliOdPocetkaPandemije FROM vestioobolelima) b WHERE a.id = ? ORDER BY a.id";
+
 
 		VestOObolelimaRowCallBackHandler rowCallbackHandler = new VestOObolelimaRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, id);
@@ -79,10 +79,10 @@ public class VestOObolelimaDAOImpl implements VestOObolelimaDAO {
 
 	@Override
 	public List<VestOObolelima> findAll() {
-		String sql = 
-				"SELECT id, oboleliUPoslednja24h, testiraniUPoslednja24h,ukupnoOboleliOdPocetkaPandemije,"
-						+ "hospitalizovani, naRespiratoru ,datumIVremeObjavljivanja FROM vestiOObolelima  " + 
-						"ORDER BY id";
+		String sql =  "SELECT a.id, a.OboleliUPoslednja24h, a.TestiraniUPoslednja24h, b.UkupnoOboleliOdPocetkaPandemije,"
+				+ " a.Hospitalizovani, a.NaRespiratoru, a.DatumIVremeObjavljivanja FROM vestioobolelima "
+				+ "a JOIN (SELECT SUM(OboleliUPoslednja24h) AS UkupnoOboleliOdPocetkaPandemije FROM vestioobolelima) b";
+
 
 		VestOObolelimaRowCallBackHandler rowCallbackHandler = new VestOObolelimaRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler);
@@ -98,14 +98,13 @@ public class VestOObolelimaDAOImpl implements VestOObolelimaDAO {
 			
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				String sql = "INSERT INTO vestiOObolelima (oboleliUPoslednja24h, testiraniUPoslednja24h,ukupnoOboleliOdPocetkaPandemije,"
-						+ "hospitalizovani, naRespiratoru ,datumIVremeObjavljivanja) VALUES (?, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO vestiOObolelima (oboleliUPoslednja24h, testiraniUPoslednja24h,"
+						+ "hospitalizovani, naRespiratoru ,datumIVremeObjavljivanja) VALUES (?, ?, ?, ?, ?)";
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
 				preparedStatement.setInt(index++, vestOObolelima.getOboleliUPoslednja24h());
 				preparedStatement.setInt(index++, vestOObolelima.getTestiraniUPoslednja24h());
-				preparedStatement.setInt(index++, vestOObolelima.getUkupnoOboleliOdPocetkaPandemije());
 				preparedStatement.setInt(index++, vestOObolelima.getHospitalizovani());
 				preparedStatement.setInt(index++, vestOObolelima.getNaRespiratoru());
 				preparedStatement.setTimestamp(index++, Timestamp.valueOf(vestOObolelima.getDatumIVremeObjavljivanja()));
@@ -123,9 +122,9 @@ public class VestOObolelimaDAOImpl implements VestOObolelimaDAO {
 	@Override
 	public int update(VestOObolelima vestObolelima) {	
 		
-		String sql = "UPDATE vestiOObolelima SET oboleliUPoslednja24h = ?, testiraniUPoslednja24h = ?,ukupnoOboleliOdPocetkaPandemije = ?, hospitalizovani = ?, naRespiratoru = ?,datumIVremeObjavljivanja = ? WHERE id = ?";	
+		String sql = "UPDATE vestiOObolelima SET oboleliUPoslednja24h = ?, testiraniUPoslednja24h = ?, hospitalizovani = ?, naRespiratoru = ?,datumIVremeObjavljivanja = ? WHERE id = ?";	
 		boolean uspeh = jdbcTemplate.update(sql, vestObolelima.getOboleliUPoslednja24h(), vestObolelima.getTestiraniUPoslednja24h(),
-				vestObolelima.getUkupnoOboleliOdPocetkaPandemije(),vestObolelima.getHospitalizovani(),
+				vestObolelima.getHospitalizovani(),
 				vestObolelima.getNaRespiratoru(),
 				vestObolelima.getDatumIVremeObjavljivanja(), vestObolelima.getId()) == 1;
 		

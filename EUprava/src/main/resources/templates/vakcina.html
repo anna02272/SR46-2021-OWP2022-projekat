@@ -12,11 +12,13 @@
 	 <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 	<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 <li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>         
 	 		<li><a href="">Odjava</a></li>      
 	 	</ul>     
 	 	</div>
@@ -25,31 +27,37 @@
 	<section class="content">
 	<div class = "content">
 	<form method="post" action="vakcine/edit">
-		<input type="hidden" name="id" th:value="${vakcina.id}"/><!-- popuni value atribut vrednošću -->
+		<input type="hidden" name="id" th:value="${vakcina.id}"/>
 		<table class="forma">
 			<caption>Vakcina</caption>
 			<tr><th>Ime:</th><td><input type="text" th:value="${vakcina.ime}" name="ime"/></td></tr>
-			<tr><th>Dostupna kolicina:</th><td><input type="number" th:value="${vakcina.dostupnaKolicina}" name="dostupnaKolicina"/></td></tr>
+			<tr><th>Dostupna kolicina:</th><td><input type="number" th:value="${vakcina.dostupnaKolicina}"
+			 name="dostupnaKolicina" readonly/></td></tr>
 			<tr>
  				<th>Proizvodjac vakcine:</th>
 				<td>
-					<select name = "idProizvodjaca">
-						<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" th:value="${itProizvodjacVakcine.id}" th:text="|${itProizvodjacVakcine.proizvodjac} , ${itProizvodjacVakcine.drzavaProizvodnje} |">
+					<select name = "proizvodjacId">
+						<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" 
+						th:value="${itProizvodjacVakcine.id}" 
+						th:text="|${itProizvodjacVakcine.proizvodjac} , ${itProizvodjacVakcine.drzavaProizvodnje} |"
+						 th:selected="${itProizvodjacVakcine.id == vakcina.proizvodjac.id}">
 						</option>
 					</select>
 					
 				</td>
 			</tr>      
 
-	<tr><th></th><td><input type="submit" value="Izmeni"/></td></tr>
+	<tr><th></th><td><input  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	type="submit" value="Izmeni"/></td></tr>
 		
 		</table>
 	</form>
 	
-	<form method="post" action="vakcine/delete">
+	<form  method="post" action="vakcine/delete">
 		<input type="hidden" name="id" th:value="${vakcina.id}"/>
 		<table class="forma">
-			<tr><th></th><td><input type="submit" value="Obriši"/></td></tr>
+			<tr><th></th><td><input  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+			 type="submit" value="Obriši"/></td></tr>
 		</table>
 	</form>
 	</div>

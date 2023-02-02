@@ -11,4 +11,7 @@ public interface VakcinaService {
 	Vakcina save(Vakcina vakcina); 
 	Vakcina update(Vakcina vakcina); 
 	Vakcina delete(Long id); 
+	List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, 
+			Long proizvodjacId);
+
 }

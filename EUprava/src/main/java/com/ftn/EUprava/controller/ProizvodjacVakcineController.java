@@ -63,7 +63,7 @@ public class ProizvodjacVakcineController implements ServletContextAware {
 	
 	@SuppressWarnings("unused")
 	@PostMapping(value="/add")
-	public void create(@RequestParam String proizvodjac, @RequestParam String drzavaProizvodnje,  
+	public void create(@RequestParam(required = true) String proizvodjac, @RequestParam(required = true) String drzavaProizvodnje,  
 			 HttpServletResponse response) throws IOException {		
 		ProizvodjacVakcine proizvodjacVakcine = new ProizvodjacVakcine(proizvodjac, drzavaProizvodnje);
 		ProizvodjacVakcine saved = proizvodjacVackineService.save(proizvodjacVakcine);
@@ -72,7 +72,8 @@ public class ProizvodjacVakcineController implements ServletContextAware {
 	
 	@SuppressWarnings("unused")
 	@PostMapping(value="/edit")
-	public void Edit(@RequestParam Long id, @RequestParam String proizvodjac, @RequestParam String drzavaProizvodnje,  
+	public void Edit(@RequestParam Long id, @RequestParam(required = true) String proizvodjac, 
+			@RequestParam(required = true) String drzavaProizvodnje,  
 		 HttpServletResponse response) throws IOException {	
 		ProizvodjacVakcine proizvodjacVakcine = proizvodjacVackineService.findOne(id);
 		if(proizvodjacVakcine != null) {

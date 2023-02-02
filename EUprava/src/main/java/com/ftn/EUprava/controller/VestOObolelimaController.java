@@ -1,6 +1,7 @@
 package com.ftn.EUprava.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,16 +47,20 @@ public class VestOObolelimaController implements ServletContextAware {
 			this.servletContext = servletContext;
 		} 
 		
+		
+
 		@GetMapping
 		public ModelAndView index() {
 			List<VestOObolelima> vestiOObolelima = vestOObolelimaService.findAll();		
 			
 			ModelAndView rezultat = new ModelAndView("vestiOObolelima"); 
 			rezultat.addObject("vestiOObolelima", vestiOObolelima); 
+			 rezultat.addObject("currentDate", LocalDateTime.now());
 
 			return rezultat; 
 		}
 
+		
 		@GetMapping(value="/add")
 		public String create(HttpSession session, HttpServletResponse response){
 			return "dodavanjeVestiOObolelima"; 
@@ -64,13 +69,13 @@ public class VestOObolelimaController implements ServletContextAware {
 		
 		@SuppressWarnings("unused")
 		@PostMapping(value="/add")
-		public void create(@RequestParam int oboleliUPoslednja24h, @RequestParam int testiraniUPoslednja24h, 
-				@RequestParam int ukupnoOboleliOdPocetkaPandemije, @RequestParam int hospitalizovani, 
-				@RequestParam int naRespiratoru, 
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
+		public void create(@RequestParam(required = true) int oboleliUPoslednja24h, @RequestParam(required = true) int testiraniUPoslednja24h, 
+				 @RequestParam(required = true) int hospitalizovani, 
+				@RequestParam(required = true) int naRespiratoru, 
+				@RequestParam(required = true) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {		
 			VestOObolelima vestOObolelima = new VestOObolelima(oboleliUPoslednja24h, testiraniUPoslednja24h,
-					ukupnoOboleliOdPocetkaPandemije, hospitalizovani, naRespiratoru, datumIVremeObjavljivanja);
+					 hospitalizovani, naRespiratoru, datumIVremeObjavljivanja);
 			VestOObolelima saved = vestOObolelimaService.save(vestOObolelima);
 			response.sendRedirect(bURL+"vestiOObolelima");
 		}
@@ -78,10 +83,11 @@ public class VestOObolelimaController implements ServletContextAware {
 	
 		@SuppressWarnings("unused")
 		@PostMapping(value="/edit")
-		public void Edit(@RequestParam Long id,@RequestParam int oboleliUPoslednja24h, @RequestParam int testiraniUPoslednja24h, 
-				@RequestParam int ukupnoOboleliOdPocetkaPandemije, @RequestParam int hospitalizovani, 
-				@RequestParam int naRespiratoru, 
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
+		public void Edit(@RequestParam Long id,@RequestParam(required = true) int oboleliUPoslednja24h,
+				@RequestParam(required = true) int testiraniUPoslednja24h, 
+				 @RequestParam(required = true) int hospitalizovani, 
+				@RequestParam(required = true) int naRespiratoru, 
+				@RequestParam(required = true) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {	
 			VestOObolelima vestOObolelima = vestOObolelimaService.findOne(id);
 			if(vestOObolelima != null) {
@@ -89,8 +95,7 @@ public class VestOObolelimaController implements ServletContextAware {
 					vestOObolelima.setOboleliUPoslednja24h(oboleliUPoslednja24h);
 				if(testiraniUPoslednja24h > 0)
 					vestOObolelima.setTestiraniUPoslednja24h(testiraniUPoslednja24h);
-				if(ukupnoOboleliOdPocetkaPandemije > 0)
-					vestOObolelima.setUkupnoOboleliOdPocetkaPandemije(ukupnoOboleliOdPocetkaPandemije);
+			
 				if(hospitalizovani> 0)
 					vestOObolelima.setHospitalizovani(hospitalizovani);
 				if(naRespiratoru > 0)

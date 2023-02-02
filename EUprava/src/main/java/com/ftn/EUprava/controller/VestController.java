@@ -64,8 +64,8 @@ public class VestController implements ServletContextAware {
 		
 		@SuppressWarnings("unused")
 		@PostMapping(value="/add")
-		public void create(@RequestParam String nazivVesti, @RequestParam String sadrzajVesti,  
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
+		public void create(@RequestParam(required = true) String nazivVesti, @RequestParam(required = true) String sadrzajVesti,  
+				@RequestParam(required = true) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {		
 			Vest vest = new Vest(nazivVesti, sadrzajVesti, datumIVremeObjavljivanja);
 			Vest saved = vestService.save(vest);
@@ -75,8 +75,8 @@ public class VestController implements ServletContextAware {
 	
 		@SuppressWarnings("unused")
 		@PostMapping(value="/edit")
-		public void Edit(@RequestParam Long id, @RequestParam String nazivVesti, @RequestParam String sadrzajVesti,  
-				@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
+		public void Edit(@RequestParam Long id, @RequestParam(required = true) String nazivVesti, @RequestParam(required = true) String sadrzajVesti,  
+				@RequestParam(required = true) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime datumIVremeObjavljivanja, 
 				HttpServletResponse response) throws IOException {	
 			Vest vest = vestService.findOne(id);
 			if(vest != null) {

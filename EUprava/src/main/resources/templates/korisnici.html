@@ -12,11 +12,13 @@
 	  <nav>
 	  <div class="navigation">  
 	 	<ul>     
-	 		<li th:if="${session.korisnik != null }"><a href="korisnici" >Korisnici</a></li>
+	 		<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 		><a href="korisnici" >Korisnici</a></li>
 			<li th:if="${session.korisnik != null }"><a href="vakcine">Vakcine</a></li>
-			<li th:if="${session.korisnik != null }"><a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
+			<li  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
+			<a href="proizvodjaciVakcine">Proizvodjaci vakcine</a></li>
 	 		<li><a href="vesti">Vesti</a></li>   
-	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>        
+	 		<li><a href="vestiOObolelima">Statistika o obolelima</a></li>          
 	 	</ul>     
 	 	</div >
 	</nav>
@@ -48,7 +50,7 @@
 	</section>
 	
 	  <section class="content">
-	<div class = "content">
+	<div class = "content" th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}">
 	 
 	 		<table>     
 	 			<caption>Korisnici</caption>     
@@ -70,7 +72,8 @@
 	 			<tr th:each="itKorisnik, status: ${korisnici}">
 	 			
 	 			<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
-	 				<td><a th:href="|korisnici/details?id=${itKorisnik.id}|" th:text="${itKorisnik.ime}"></a></td>    
+	 				<td><a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 				th:href="|korisnici/details?id=${itKorisnik.id}|" th:text="${itKorisnik.ime}"></a></td>    
 	 	  
 	 				<td th:text="${itKorisnik.email}"></td>    
 	 				<td th:text="${itKorisnik.ime}"></td>   
@@ -82,7 +85,8 @@
 	 				<td th:text="${itKorisnik.datumIVremeRegistracije}"></td> 
 	 				<td th:text="${itKorisnik.uloga}"></td>
 	 				<td>    
-	 					<form method="post" action="korisnici/delete" >     
+	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
+	 					method="post" action="korisnici/delete" >     
 	 						<input type="hidden"  name="id"  th:value="${itKorisnik.id}">     
 	 						<input type="submit"  value="Obriši" >    
 	 					</form>    
