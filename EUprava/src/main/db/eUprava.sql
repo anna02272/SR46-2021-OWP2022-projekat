@@ -31,6 +31,7 @@ CREATE TABLE Vakcine (
     ON DELETE CASCADE
 );
 
+
 CREATE TABLE Vesti (
 	Id BIGINT auto_increment PRIMARY KEY,
 	NazivVesti VARCHAR(50) NOT NULL,
@@ -48,6 +49,41 @@ CREATE TABLE VestiOObolelima (
     DatumIVremeObjavljivanja datetime
     
     );
+    CREATE TABLE PrimljeneVakcine(
+	Id bigint  auto_increment PRIMARY KEY,
+	KorisnikId BIGINT,
+	VakcinaId BIGINT,
+     EDoza ENUM('PRVA', 'DRUGA', 'TRECA', 'CETVRTA') ,
+     DatumIVremeVakcinacije DATETIME NOT NULL DEFAULT NOW(),
+	FOREIGN KEY (KorisnikId) REFERENCES Korisnici (Id) 	
+    ON DELETE CASCADE,
+	FOREIGN KEY (VakcinaId) REFERENCES Vakcine (Id) 	
+    ON DELETE CASCADE
+); 
+CREATE TABLE PrijaveZaVakcinaciju(
+	Id bigint  auto_increment PRIMARY KEY,
+	KorisnikId BIGINT,
+	VakcinaId BIGINT,
+     EDoza ENUM('PRVA', 'DRUGA', 'TRECA', 'CETVRTA'),
+	DatumIVremePrijave DATETIME NOT NULL DEFAULT NOW(),
+	FOREIGN KEY (KorisnikId) REFERENCES Korisnici (Id) 	
+    ON DELETE CASCADE,
+	FOREIGN KEY (VakcinaId) REFERENCES Vakcine (Id) 	
+    ON DELETE CASCADE
+);
+
+CREATE TABLE Nabavke(
+Id bigint  auto_increment PRIMARY KEY,
+VakcinaId BIGINT,
+Kolicina INT default 0,
+DatumIVremeNabavke DATETIME NOT NULL DEFAULT NOW(),
+ Komentar VARCHAR(50) ,
+EStatus ENUM('POSLAT', 'PRIHVACEN', 'POSLAT_NA_REVIZIJU', 'ODBIJEN') DEFAULT 'POSLAT',
+ FOREIGN KEY (VakcinaId) REFERENCES Vakcine (Id) 	
+    ON DELETE CASCADE
+);
+
+
 insert into korisnici(email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona) values 
 ('domonjianna@gmail.com', 'ana123', 'Ana', 'Domonji', '2002-07-02', 1234567891234, 'Vinogradska 1, Stara Pazova', "+38166949449");
 insert into korisnici(email, lozinka, ime, prezime, datumRodjenja, jmbg, adresa, brojTelefona, eUloga) values 
@@ -68,8 +104,17 @@ NaRespiratoru, DatumIVremeObjavljivanja) values (10, 20,  1, 1, '2023-01-09 11:1
 insert into vestiOOBolelima(OboleliUPoslednja24h,TestiraniUPoslednja24h , Hospitalizovani,
 NaRespiratoru, DatumIVremeObjavljivanja) values (5, 10,  1, 1, '2023-01-09 11:11:11' );
 
+insert into primljeneVakcine(korisnikid, vakcinaid, edoza) values (1, 2, "PRVA");
+
+insert into prijaveZaVakcinaciju(korisnikid, vakcinaid, edoza) values (1, 2, "DRUGA");
+
+insert into nabavke(vakcinaId, kolicina, komentar) values (2, 3, " ");
+
 SELECT * FROM KORISNICI;
 select * from ProizvodjaciVakcine;
 select * from vakcine;
 select * from vesti;
 select * from vestiOObolelima;
+select * from primljeneVakcine;
+select * from prijaveZaVakcinaciju;
+select * from nabavke;

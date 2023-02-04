@@ -66,7 +66,6 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 				"SELECT v.id, v.ime, v.dostupnaKolicina, v.ProizvodjacId FROM vakcine v " + 
 				"WHERE v.id = ? " + 
 				"ORDER BY v.id";
-
 		VakcinaRowCallBackHandler rowCallbackHandler = new VakcinaRowCallBackHandler();
 		jdbcTemplate.query(sql, rowCallbackHandler, id);
 
@@ -143,60 +142,108 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 
 	}
 	
-
-	@Override
 	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, Long proizvodjacId) {
-
-		ArrayList<Object> listaArgumenata = new ArrayList<Object>();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "SELECT v.id, v.ime, v.dostupnaKolicina, p.id, p.proizvodjac FROM vakcine v " + 
+				"LEFT JOIN proizvodjaciVakcine p ON v.proizvodjacId = p.id");
+		List<Object> params = new ArrayList<>();
+		boolean whereIncluded = false;
 		
-		String sql = "SELECT v.id, v.ime, v.dostupnaKolicina, p.id, p.proizvodjac FROM vakcine v " + 
-				"LEFT JOIN proizvodjaciVakcine p ON v.proizvodjacId = p.id";
-		
-		StringBuffer whereSql = new StringBuffer(" WHERE ");
-		boolean imaArgumenata = false;
-		
-		if(ime!=null) {
-			ime = "%" + ime + "%";
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.ime LIKE ?");
-			imaArgumenata = true;
-			listaArgumenata.add(ime);
+		if (ime != null && !ime.isEmpty()) {
+			sb.append(" WHERE LOWER(v.ime) LIKE LOWER(?)");
+			params.add("%" + ime + "%");
+			whereIncluded = true;
 		}
 		
-		if(proizvodjacId!=null) {
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.proizvodjacId = ?");
-			imaArgumenata = true;
-			listaArgumenata.add(proizvodjacId);
+		if (dostupnaKolicinaMin != null) {
+			if (!whereIncluded) {
+				sb.append(" WHERE v.dostupnaKolicina >= ?");
+			} else {
+				sb.append(" AND v.dostupnaKolicina >= ?");
+			}
+			params.add(dostupnaKolicinaMin);
+			whereIncluded = true;
 		}
 		
-		if(dostupnaKolicinaMin!=null) {
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.dostupnaKolicina >= ?");
-			imaArgumenata = true;
-			listaArgumenata.add(dostupnaKolicinaMax);
+		if (dostupnaKolicinaMax != null) {
+			if (!whereIncluded) {
+				sb.append(" WHERE v.dostupnaKolicina <= ?");
+			} else {
+				sb.append(" AND v.dostupnaKolicina <= ?");
+			}
+			params.add(dostupnaKolicinaMax);
+			whereIncluded = true;
 		}
 		
-		if(dostupnaKolicinaMax!=null) {
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.dostupnaKolicina <= ?");
-			imaArgumenata = true;
-			listaArgumenata.add(dostupnaKolicinaMax);
+		if (proizvodjacId != null) {
+			if (!whereIncluded) {
+				sb.append(" WHERE p.id = ?");
+			} else {
+				sb.append(" AND p.id = ?");
+			}
+			params.add(proizvodjacId);
+			whereIncluded = true;
 		}
-		
-		if(imaArgumenata)
-			sql=sql + whereSql.toString()+" ORDER BY v.id";
-		else
-			sql=sql + " ORDER BY v.id";
-		System.out.println(sql);
-		
-		return jdbcTemplate.query(sql, listaArgumenata.toArray(), new VakcinaRowMapper());
-	}
 	
+		String sql = sb.toString();
+		VakcinaRowCallBackHandler rowCallbackHandler = new VakcinaRowCallBackHandler();
+		jdbcTemplate.query(sql, params.toArray(), rowCallbackHandler);
+		return rowCallbackHandler.getVakcine();
+	}
+
+	
+//	@Override
+//	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, Long proizvodjacId) {
+//
+//		ArrayList<Object> listaArgumenata = new ArrayList<Object>();
+//		
+//		String sql = "SELECT v.id, v.ime, v.dostupnaKolicina, p.id, p.proizvodjac FROM vakcine v " + 
+//				"LEFT JOIN proizvodjaciVakcine p ON v.proizvodjacId = p.id";
+//		
+//		StringBuffer whereSql = new StringBuffer(" WHERE ");
+//		boolean imaArgumenata = false;
+//		
+//		if(ime!=null) {
+//			ime = "%" + ime + "%";
+//			if(imaArgumenata)
+//				whereSql.append(" WHERE ");
+//			whereSql.append("v.ime LIKE ?");
+//			imaArgumenata = true;
+//			listaArgumenata.add(ime);
+//		}
+//		
+//		if(proizvodjacId!=null) {
+//			if(imaArgumenata)
+//				whereSql.append(" AND ");
+//			whereSql.append(" v.proizvodjacId = ?");
+//			imaArgumenata = true;
+//			listaArgumenata.add(proizvodjacId);
+//		}
+//		
+//		if(dostupnaKolicinaMin!=null) {
+//			if(imaArgumenata)
+//				whereSql.append(" AND ");
+//			whereSql.append(" v.dostupnaKolicina >= ?");
+//			imaArgumenata = true;
+//			listaArgumenata.add(dostupnaKolicinaMax);
+//		}
+//		
+//		if(dostupnaKolicinaMax!=null) {
+//			if(imaArgumenata)
+//				whereSql.append(" AND ");
+//			whereSql.append("  v.dostupnaKolicina <= ?");
+//			imaArgumenata = true;
+//			listaArgumenata.add(dostupnaKolicinaMax);
+//		}
+//		
+//		if(imaArgumenata)
+//			sql=sql + whereSql.toString()+" ORDER BY v.id";
+//		else
+//			sql=sql + " ORDER BY v.id";
+//		
+//		return jdbcTemplate.query(sql, listaArgumenata.toArray(), new VakcinaRowMapper());
+//	}
+//	
 	@Override
 	public List<Vakcina> find(HashMap<String, Object> mapaArgumenata) {
 		

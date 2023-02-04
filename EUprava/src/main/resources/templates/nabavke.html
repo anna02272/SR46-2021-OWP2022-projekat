@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">     
 	<head>     
 		<meta charset="UTF-8">     
-		<base th:href="@{/}"><!-- popuni href atribut vrednosšću context path-a -->
-		<title>Vakcine</title>     
+		<base th:href="@{/}">
+		<title>Nabavke</title>     
 		<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
 	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/> 
 	 	
@@ -58,59 +58,37 @@
 	</section>
 	
 	<section class="content">
-	<div class = "content" th:if="${vakcine}">
+	<div class = "content" th:if="${nabavke}">
 		
 	 		<table  class="tabela">     
-	 			<caption>Vakcine</caption>     
+	 			<caption>Nabavke</caption>     
 	 			<tr>     
 	 				<th>R. br.</th>     
 	 				<th></th>     
-	 				<th>Ime</th>     
-	 				<th>Dostupna Kolicina</th>     
-	 				<th>Proizvodjac vakcine</th>  
+	 				<th>Vakcina</th>     
+	 				<th>Kolicina</th>     
+	 				<th>Datum i vreme nabavke</th>  
+	 				<th>Komentar</th>
+	 				<th>Status</th>
   
 	 				  
 	 				<th></th>    
 	 			</tr>
 	 			
-	 				<tr>  
-	 				<th></th>     
-	 				<th></th>     
-	 				<th><input type="text" name="ime" th:value="${param.ime}"/></th>   
-	 				<th>
-						min:<input type="number" min="0" th:value="${param.dostupnaKolicinaMin}?: '0'"  step="0.1" name="dostupnaKolicinaMin"/><br/>
-						max:<input type="number" min="0" th:value="${param.dostupnaKolicinaMax}?: '100'"  step="0.1" name="dostupnaKolicinaMax"/>
-					</th>   
-	 				<th>
-						<select name="proizvodjacId">
-							<option value=""></option>
-							<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" th:value="${itProizvodjacVakcine.id}" 
-								th:text="|${itProizvodjacVakcine.proizvodjac}, ${itProizvodjacVakcine.drzavaProizvodnje} |"
-								 th:selected="${#strings.equals(itProizvodjacVakcine.id, param.proizvodjacId)}"></option>
-						</select>
-						
-					</th>    
-	 				<th>
-	 				<form  
-	 					method="post"  action="vakcine/search" >      
-	 						<input type="submit"  value="Pretrazi" >    
-	 					</form>    
-	 				
-	 			</tr>
-	 			
-	 		
-	 			<tr th:each="itVakcina, status: ${vakcine}">     
+	 			<tr th:each="itNabavka, status: ${nabavke}">     
 	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
-	 				<td><a th:href="|vakcine/details?id=${itVakcina.id}|" th:text="${itVakcina.ime}"></a></td>    
-	 				<td th:text="${itVakcina.ime}"></td>    
-	 				<td class="broj" th:text="${itVakcina.dostupnaKolicina}"></td>    
-	 				<td th:text="|${itVakcina.proizvodjac.proizvodjac} , ${itVakcina.proizvodjac.drzavaProizvodnje} |"></td>       
+	 				<td><a th:href="|nabavke/details?id=${itNabavka.id}|" th:text="${itNabavka.vakcina.ime}"></a></td>    
+	 				<td th:text="${itNabavka.vakcina.ime}"></td>    
+	 				<td class="broj" th:text="${itNabavka.kolicina}"></td>   
+	 				<td th:text="${itNabavka.datumIVremeNabavke}"></td>   
+	 				<td th:text="${itNabavka.komentar}"></td>   
+	 				<td th:text="${itNabavka.status}"></td>    
 	 			
 	 				<td>    
-	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
-	 					method="post" action="vakcine/delete" >     
-	 						<input type="hidden"  name="id"  th:value="${itVakcina.id}">     
-	 						<input type="submit"  value="Obriši" >    
+	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'}"
+	 					method="post" action="nabavke/delete" >     
+	 						<input type="hidden"  name="id"  th:value="${itNabavka.id}">     
+	 						<input type="submit"  value="Otkazi nabavku" >    
 	 					</form>    
 	 				</td>   
 	 			</tr>
@@ -118,8 +96,8 @@
 	 		</div>
 	 		</section>
 	 	    <div class = 'btn'> 
-	 	<a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
-	 	 href="vakcine/add" class = "btn">Dodaj vakcinu</a>
+	 	<a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'}"
+	 	 href="nabavke/add" class = "btn">Dodaj zahtev za nabavku</a>
 	 </div>
 	 </body>   
  </html>	

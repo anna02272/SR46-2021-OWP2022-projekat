@@ -4,7 +4,7 @@
  <head>    
  	<meta charset="UTF-8">    
  		<base th:href="@{/}">
- 		<title>Dodaj vakcinu</title>  
+ 		<title>Dodaj nabavku</title>  
  	<link rel="stylesheet"  type="text/css"  href="css/StiloviTabela.css"/>     
 	 	<link rel="stylesheet"  type="text/css" href="css/StiloviHorizontalniMeni.css"/> 
  	   
@@ -42,24 +42,43 @@
 	
 	<section class="content">
 	<div class = "content">
- 	<form method="post" action="vakcine/add">    
+ 	<form method="post" action="nabavke/add">    
  		<table>    
- 			<caption>Vakcina</caption>    
- 			<tr><th>Ime:</th><td><input type="text" value="" name="ime" required/></td></tr>   
+ 			<caption>Nabavka</caption>    
+ 			
  			
  			<tr>
- 				<th>Proizvodjac vakcine:</th>
+ 				<th>Vakcina:</th>
 				<td>
-					<select name = "proizvodjacId">
-						<option th:each="itProizvodjacVakcine: ${session.proizvodjaciVakcine}" 
-						th:value="${itProizvodjacVakcine.id}" 
-						th:text="|${itProizvodjacVakcine.proizvodjac} , ${itProizvodjacVakcine.drzavaProizvodnje} |">
+					<select name = "vakcinaId">
+						<option th:each="itVakcine: ${session.vakcine}" 
+						th:value="${itVakcine.id}" 
+						th:text="|${itVakcine.ime}  |">
 						</option>
 					</select>
 					
 				</td>
 			</tr>        
- 			<tr><th></th><td><input type="submit" value="Dodaj"/></td>    
+			<tr><th>Kolicina:</th><td><input type="number" value="" name="kolicina" required/></td></tr>  
+			
+			<tr><th>Komentar:</th><td><input type="text" value="" name="komentar"  th:if="${session.korisnik != null && session.korisnik.uloga.toString() != 'MEDICINSKOOSOBLJE'}"/></td></tr>  
+			
+				 <tr>
+ 				<th>Status:</th>
+				<td>
+			    <select name="status" >
+			      <option th:each="estatus: ${T(com.ftn.EUprava.model.EStatus).values()}" 
+			                th:value="${estatus}" 
+			              th:text="${estatus}">
+			      </option>
+			    </select>
+			  </td>
+				
+			</tr>      
+			
+ 			<tr><th></th><td><input type="submit" value="Dodaj"/></td> 
+ 			
+ 			   
  		</table>    
  		
  	</form>   

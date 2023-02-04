@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,43 +53,37 @@ public class VakcinaController implements ServletContextAware {
 		this.servletContext = servletContext;
 	} 
 	
+
+	@GetMapping
+	public ModelAndView Index(
+			@RequestParam(required=false) String ime, 
+			@RequestParam(required=false) Integer dostupnaKolicinaMin, 
+			@RequestParam(required=false) Integer dostupnaKolicinaMax,
+			@RequestParam(required=false) Long proizvodjacId,
+			HttpSession session) throws IOException {
+		
+		if(ime!=null && ime.trim().equals(""))
+			ime=null;
+		
+		
+		List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+
+		ModelAndView rezultat = new ModelAndView("vakcine");
+		rezultat.addObject("vakcine", vakcine);
+		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+		return rezultat;
+		
+	}
 //	@GetMapping
 //	public ModelAndView index() {
-//		List<Vakcina> vakcine = vakcinaService.findAll();
+//		List<Vakcina> vakcine = vakcinaService.findAll();		
+//		
 //		ModelAndView rezultat = new ModelAndView("vakcine"); 
 //		rezultat.addObject("vakcine", vakcine); 
-//		return rezultat;
-//	}
-//	@GetMapping
-//	public ModelAndView Index(
-//			@RequestParam(required=false) String ime, 
-//			@RequestParam(required=false) Integer dostupnaKolicinaMin, 
-//			@RequestParam(required=false) Integer dostupnaKolicinaMax,
-//			@RequestParam(required=false) Long proizvodjacId,
-//			HttpSession session) throws IOException {
-//		
-//		if(ime!=null && ime.trim().equals(""))
-//			ime=null;
-//		
-//		
-//		List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
-//		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
 //
-//		ModelAndView rezultat = new ModelAndView("vakcine");
-//		rezultat.addObject("vakcine", vakcine);
-//		rezultat.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
-//
-//		return rezultat;
+//		return rezultat; 
 //	}
-	@GetMapping
-	public ModelAndView index() {
-		List<Vakcina> vakcine = vakcinaService.findAll();		
-		
-		ModelAndView rezultat = new ModelAndView("vakcine"); 
-		rezultat.addObject("vakcine", vakcine); 
-
-		return rezultat; 
-	}
 
 	
 	@GetMapping(value="/add")
@@ -116,8 +111,11 @@ public class VakcinaController implements ServletContextAware {
 	
 	@SuppressWarnings("unused")
 	@PostMapping(value="/edit")
-	public void Edit(@RequestParam Long id, @RequestParam String ime, @RequestParam int dostupnaKolicina,  
-			 @RequestParam Long proizvodjacId , HttpServletResponse response) throws IOException {	
+	public void Edit(@RequestParam Long id, 
+			@RequestParam String ime,
+			@RequestParam int dostupnaKolicina,  
+			 @RequestParam Long proizvodjacId ,
+			 HttpServletResponse response) throws IOException {	
 		
 		ProizvodjacVakcine proizvodjacVakcine  = proizvodjacVakcineService.findOne(proizvodjacId);
 		Vakcina vakcina = vakcinaService.findOne(id);
@@ -158,23 +156,57 @@ public class VakcinaController implements ServletContextAware {
 		return rezultat; 
 	}
 	
-	@GetMapping(value="/search")
-	@ResponseBody
-	public Map<String, Object> search(
-			@RequestParam(required=false) String ime, 
-			@RequestParam(required=false) Integer dostupnaKolicinaMin, 
-			@RequestParam(required=false) Integer dostupnaKolicinaMax,
-			@RequestParam(required=false) Long proizvodjacId, 
-			HttpSession session)  throws IOException {
+//	@GetMapping(value="/search")
+//	public String searchForm(Model model) {
+//	    model.addAttribute("vakcine", new Vakcina());
+//	    return "vakcine";
+//	}
+//
+//	@PostMapping(value="/search")
+//	public String search(
+//	        @RequestParam(required=false) String ime, 
+//	        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
+//	        @RequestParam(required=false) Integer dostupnaKolicinaMax,
+//	        @RequestParam(required=false) Long proizvodjacId, 
+//	        Model model)  throws IOException {
+//
+//	    if(ime!=null && ime.trim().equals(""))
+//	        ime=null;
+//
+//	  
+//	    List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+//
+//	    model.addAttribute("vakcine", vakcine);
+//	    return "vakcine";
+//	}
+	@PostMapping(value ="/search")
+	public ModelAndView pretraga( @RequestParam(required=false) String ime, 
+	        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
+	        @RequestParam(required=false) Integer dostupnaKolicinaMax,
+	        @RequestParam(required=false) Long proizvodjacId
+			,HttpServletResponse response) throws IOException {
+		
+		ModelAndView vakcineView = new ModelAndView("vakcine");
+		List<ProizvodjacVakcine> proizvodjaci = proizvodjacVakcineService.findAll();
+
+		System.out.println(ime + " ime");
+		System.out.println(dostupnaKolicinaMin + " dostupnaKolicinaMin");
+		System.out.println(dostupnaKolicinaMax + " dostupnaKolicinaMax");
+		System.out.println(proizvodjacId + "proizvodjacId");
+	
 		
 		if(ime!=null && ime.trim().equals(""))
 			ime=null;
-		
-		List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+//		Integer intdostupnaKolicinaMin = "".equals(dostupnaKolicinaMin) || dostupnaKolicinaMin == null ? 0 : Integer.parseInt(dostupnaKolicinaMin);
+//		Integer intdostupnaKolicinaMax = "".equals(dostupnaKolicinaMax) || dostupnaKolicinaMax == null ? 0 : Integer.parseInt(dostupnaKolicinaMax);
+//		Long longProizvodjacId = "".equals(proizvodjacId) || proizvodjacId == null ? 0L : Long.parseLong(proizvodjacId);
 
-		Map<String, Object> odgovor = new LinkedHashMap<>();
-		odgovor.put("status", "ok");
-		odgovor.put("vakcine", vakcine);
-		return odgovor;
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax,  proizvodjacId);
+		vakcineView.addObject("vakcine", vakcineFilter);
+		vakcineView.addObject("proizvodjaci", proizvodjaci);
+		return vakcineView;
+		
+	
 	}
+
 }

@@ -204,10 +204,14 @@ public class KorisnikController implements ServletContextAware {
 		if(korisnik != null) {
 			if(email != null && !email.trim().equals(""))
 				korisnik.setEmail(email);
-			if(lozinka != null && !lozinka.trim().equals("") && ponovljenaLozinka != null && !ponovljenaLozinka.trim().equals("")) {
+			
+			
+			if(lozinka != null && !lozinka.trim().equals("") && ponovljenaLozinka != null 
+					&& !ponovljenaLozinka.trim().equals("")) {
 				  if(!lozinka.equals(ponovljenaLozinka)) {
 					  response.getWriter().println("<script>alert('Lozinke se ne poklapaju!'); "
-					  		+ "window.location.href='" + bURL + "korisnici/details?id=" + id + "';</script>");
+					  		+ "window.location.href='" + bURL + "korisnici/details?id=" + id +
+					  		"';</script>");
 					    return;
 				  } else {
 				    korisnik.setLozinka(lozinka);
