@@ -138,10 +138,10 @@
 			     <td><a th:href="|prijaveZaVakcinaciju/details?id=${itPrijava.id}|"
 			      th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'}" >Daj vakcinu</a></td>
 			    <td>
-			        <form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'PACIJENT'}"
+			        <form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'}"
 			            method="post" action="prijaveZaVakcinaciju/delete" >
 			            <input type="hidden"  name="id"  th:value="${itPrijava.id}">
-			            <input type="submit"  value="Otkazi" >
+			            <input type="submit"  value="Obrisi" >
 			        </form>
 			    </td>
 
@@ -151,6 +151,9 @@
 	 		</table>
 	 		</div>
 	 		</section>
+	 		<div class="alert" th:if="${errorMessage}">
+			  <span th:text="${errorMessage}"></span>
+			</div>
 	 	    <div class = 'btn'> 
 	 	<a  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'PACIJENT'}"
 	 	 href="prijaveZaVakcinaciju/add" class = "btn">Prijavi se za vakcinaciju</a>

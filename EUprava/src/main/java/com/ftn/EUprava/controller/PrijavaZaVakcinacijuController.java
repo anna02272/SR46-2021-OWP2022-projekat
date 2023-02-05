@@ -3,8 +3,11 @@ package com.ftn.EUprava.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -23,12 +26,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ftn.EUprava.model.EDoza;
 import com.ftn.EUprava.model.EStatus;
 import com.ftn.EUprava.model.Korisnik;
 import com.ftn.EUprava.model.Nabavka;
 import com.ftn.EUprava.model.PrijavaZaVakcinaciju;
+import com.ftn.EUprava.model.PrimljenaVakcina;
 import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.model.Vakcina;
 import com.ftn.EUprava.service.KorisnikService;
@@ -119,7 +124,6 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 	     Vakcina vakcina = vakcinaService.findOne(vakcinaId);
 	    
 	     PrijavaZaVakcinaciju prijavaZaVakcinaciju = new PrijavaZaVakcinaciju(korisnik, vakcina, doza);
-	     System.out.println(prijavaZaVakcinaciju);
 	     PrijavaZaVakcinaciju saved = prijavaZaVakcinacijuService.save(prijavaZaVakcinaciju);
 	    response.sendRedirect(bURL+"prijaveZaVakcinaciju");
 	}
@@ -164,10 +168,148 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 	@PostMapping(value = "/dajVakcinu")
 	public String dajVakcinu(@RequestParam("korisnikId") Long korisnikId,
 	                        @RequestParam("vakcinaId") Long vakcinaId,
-	                        @RequestParam("doza") EDoza doza) {
+	                        @RequestParam("doza") EDoza doza, 
+	                        RedirectAttributes redirectAttributes) {
 		
+		  // Ako je doza PRVA
+	    if (doza == EDoza.PRVA) {
+	        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM primljeneVakcine WHERE korisnikId = ? "
+	        		+ "AND EDoza = 'PRVA'", 
+	            new Object[]{korisnikId}, Integer.class);
+	        
+	        // If PRVA doza postoji, vrati error
+	        if (count > 0) {
+	            redirectAttributes.addFlashAttribute("errorMessage", "Prva doza je vec primljena");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	    }
+
+	    // Ako je doza DRUGA
+	    if (doza == EDoza.DRUGA) {
+	        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM primljeneVakcine WHERE korisnikId = ?"
+	        		+ " AND (EDoza = 'PRVA' OR EDoza = 'DRUGA')", 
+	            new Object[]{korisnikId}, Integer.class);
+	        
+	        // Ako PRVA i DRUGA doza postoje, vrati error
+	        if (count == 2) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", "Druga doza je vec primljena");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	        
+	        // Ako samo PRVA doza postoji, proveri vreme izmedju PRVA doza i trenutnog vremena
+	       
+	        if (count == 1) {
+	        	Timestamp datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
+	            		+ " FROM primljeneVakcine WHERE korisnikId = ? AND EDoza = 'PRVA'",
+	                new Object[]{korisnikId}, Timestamp.class);
+
+				LocalDateTime datumIVremeVakcinacijeLDT = datumIVremeVakcinacije.toLocalDateTime();
+				LocalDateTime nowLDT = LocalDateTime.now();
+			
+				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacijeLDT, nowLDT);
+			
+				if (differenceInMinutes < 3) {
+					 redirectAttributes.addFlashAttribute("errorMessage", "Nije proslo 3 meseca od prve doze");
+		             return "redirect:/prijaveZaVakcinaciju";
+				}
+	        }
+
+	        
+	        // Ako ni PRVA ni DRUGA doza ne postoje vrati error
+	        if (count == 0) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", "Nije primljena prva doza");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	    }
+	    // Ako je doza TRECA
+	    if (doza == EDoza.TRECA) {
+	        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM primljeneVakcine WHERE "
+	        		+ "korisnikId = ? AND (EDoza = 'PRVA' OR EDoza = 'DRUGA' OR EDoza = 'TRECA')", 
+	            new Object[]{korisnikId}, Integer.class);
+	        
+	        // Ako PRVA,DRUGA, TRECA doza postoje, vrati error
+	        if (count == 3) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", " Treca doza je vec primljena");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	        
+	        // Ako samo PRVA i DRUGA doza postoji, proveri vreme izmedju DRUGA doza i trenutnog vremena
+	       
+	        if (count == 2) {
+	        	Timestamp datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
+	            		+ " FROM primljeneVakcine WHERE korisnikId = ? AND EDoza = 'DRUGA'",
+	                new Object[]{korisnikId}, Timestamp.class);
+
+				LocalDateTime datumIVremeVakcinacijeLDT = datumIVremeVakcinacije.toLocalDateTime();
+				LocalDateTime nowLDT = LocalDateTime.now();
+			
+				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacijeLDT, nowLDT);
+			
+				if (differenceInMinutes < 6) {
+					 redirectAttributes.addFlashAttribute("errorMessage", "Nije proslo 6 meseca od druge doze");
+		             return "redirect:/prijaveZaVakcinaciju";
+				}
+	        }
+
+	     // Ako  DRUGA  doza ne postoje vrati error
+	        if (count == 1) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", "Nije primljena druga doza");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	        // Ako ni PRVA ni DRUGA ni TRECA doza ne postoje vrati error
+	        if (count == 0) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", "Nije primljena prva doza");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	    }
+	    // Ako je doza CETVRTA
+	    if (doza == EDoza.CETVRTA) {
+	        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM primljeneVakcine WHERE korisnikId = ? AND"
+	        		+ " (EDoza = 'PRVA' OR EDoza = 'DRUGA' OR EDoza = 'TRECA' OR EDoza = 'CETVRTA')", 
+	            new Object[]{korisnikId}, Integer.class);
+	        
+	        // Ako SVE doze postoje, vrati error
+	        if (count == 4) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", "Cetvrta doza je vec primljena");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	        
+	        // Ako PRVA DRUGA i TRECA doza postoji, proveri vreme izmedju TRECA doza i trenutnog vremena
+	       
+	        if (count == 3) {
+	        	Timestamp datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
+	            		+ " FROM primljeneVakcine WHERE korisnikId = ? AND EDoza = 'TRECA'",
+	                new Object[]{korisnikId}, Timestamp.class);
+
+				LocalDateTime datumIVremeVakcinacijeLDT = datumIVremeVakcinacije.toLocalDateTime();
+				LocalDateTime nowLDT = LocalDateTime.now();
+			
+				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacijeLDT, nowLDT);
+			
+				if (differenceInMinutes < 3) {
+					 redirectAttributes.addFlashAttribute("errorMessage", "Nije proslo 3 meseca od trece doze");
+		             return "redirect:/prijaveZaVakcinaciju";
+				}
+	        }
+	     // Ako  TRECA  doza ne postoje vrati error
+	        if (count == 2) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", "Nije primljena treca doza");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	     // Ako  DRUGA  doza ne postoje vrati error
+	        if (count == 1) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", "Nije primljena druga doza");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	        // Ako ni PRVA ni DRUGA ni TRECA doza ne postoje vrati error
+	        if (count == 0) {
+	        	 redirectAttributes.addFlashAttribute("errorMessage", " Nije primljena prva doza");
+	             return "redirect:/prijaveZaVakcinaciju";
+	        }
+	    }
+
 	    jdbcTemplate.update("INSERT INTO primljeneVakcine(korisnikId, vakcinaId, EDoza) values(?, ?, ?)",
-                korisnikId, vakcinaId, doza.toString());
+	            korisnikId, vakcinaId, doza.toString());
 
 	    jdbcTemplate.update("UPDATE vakcine SET dostupnaKolicina = dostupnaKolicina - 1 WHERE id = ?",
 	    		vakcinaId);
@@ -175,9 +317,12 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 
 	    jdbcTemplate.update("DELETE FROM prijaveZaVakcinaciju WHERE korisnikid = ?", korisnikId);
 
-	
+
 	   return "redirect:/prijaveZaVakcinaciju";
 	}
 
+	        
+
+	
 	
 }

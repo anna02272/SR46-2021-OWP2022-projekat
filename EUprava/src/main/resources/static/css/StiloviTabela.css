@@ -123,4 +123,11 @@ a.btn:hover {
   background-color: #59a985;
   cursor: pointer;
 }
-
+.alert{
+	color : red;
+	 height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	
+}
