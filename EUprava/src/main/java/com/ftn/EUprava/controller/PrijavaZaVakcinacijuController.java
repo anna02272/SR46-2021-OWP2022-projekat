@@ -199,16 +199,15 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 	        // Ako samo PRVA doza postoji, proveri vreme izmedju PRVA doza i trenutnog vremena
 	       
 	        if (count == 1) {
-	        	Timestamp datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
+	        	LocalDateTime datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
 	            		+ " FROM primljeneVakcine WHERE korisnikId = ? AND EDoza = 'PRVA'",
-	                new Object[]{korisnikId}, Timestamp.class);
+	                new Object[]{korisnikId}, LocalDateTime.class);
 
-				LocalDateTime datumIVremeVakcinacijeLDT = datumIVremeVakcinacije.toLocalDateTime();
 				LocalDateTime nowLDT = LocalDateTime.now();
 			
-				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacijeLDT, nowLDT);
+				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacije, nowLDT);
 			
-				if (differenceInMinutes < 3) {
+				if (differenceInMinutes <= 3) {
 					 redirectAttributes.addFlashAttribute("errorMessage", "Nije proslo 3 meseca od prve doze");
 		             return "redirect:/prijaveZaVakcinaciju";
 				}
@@ -236,16 +235,15 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 	        // Ako samo PRVA i DRUGA doza postoji, proveri vreme izmedju DRUGA doza i trenutnog vremena
 	       
 	        if (count == 2) {
-	        	Timestamp datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
+	        	LocalDateTime datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
 	            		+ " FROM primljeneVakcine WHERE korisnikId = ? AND EDoza = 'DRUGA'",
-	                new Object[]{korisnikId}, Timestamp.class);
+	                new Object[]{korisnikId}, LocalDateTime.class);
 
-				LocalDateTime datumIVremeVakcinacijeLDT = datumIVremeVakcinacije.toLocalDateTime();
 				LocalDateTime nowLDT = LocalDateTime.now();
 			
-				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacijeLDT, nowLDT);
+				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacije, nowLDT);
 			
-				if (differenceInMinutes < 6) {
+				if (differenceInMinutes <= 6) {
 					 redirectAttributes.addFlashAttribute("errorMessage", "Nije proslo 6 meseca od druge doze");
 		             return "redirect:/prijaveZaVakcinaciju";
 				}
@@ -277,16 +275,19 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 	        // Ako PRVA DRUGA i TRECA doza postoji, proveri vreme izmedju TRECA doza i trenutnog vremena
 	       
 	        if (count == 3) {
-	        	Timestamp datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
+	        	LocalDateTime datumIVremeVakcinacije = jdbcTemplate.queryForObject("SELECT DatumIVremeVakcinacije"
 	            		+ " FROM primljeneVakcine WHERE korisnikId = ? AND EDoza = 'TRECA'",
-	                new Object[]{korisnikId}, Timestamp.class);
+	                new Object[]{korisnikId}, LocalDateTime.class);
 
-				LocalDateTime datumIVremeVakcinacijeLDT = datumIVremeVakcinacije.toLocalDateTime();
 				LocalDateTime nowLDT = LocalDateTime.now();
 			
-				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacijeLDT, nowLDT);
+				long differenceInMinutes = ChronoUnit.MINUTES.between(datumIVremeVakcinacije, nowLDT);
 			
-				if (differenceInMinutes < 3) {
+				System.out.println(datumIVremeVakcinacije);
+				System.out.println(nowLDT);
+				System.out.println(differenceInMinutes);
+				
+				if (differenceInMinutes <= 3) {
 					 redirectAttributes.addFlashAttribute("errorMessage", "Nije proslo 3 meseca od trece doze");
 		             return "redirect:/prijaveZaVakcinaciju";
 				}
