@@ -5,9 +5,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.time.Instant;
-import java.time.Duration;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -32,6 +29,7 @@ import com.ftn.EUprava.model.EStatus;
 import com.ftn.EUprava.model.Korisnik;
 import com.ftn.EUprava.model.Nabavka;
 import com.ftn.EUprava.model.PrijavaZaVakcinaciju;
+import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.model.Vakcina;
 import com.ftn.EUprava.service.KorisnikService;
 import com.ftn.EUprava.service.PrijavaZaVakcinacijuService;
@@ -66,16 +64,34 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 		this.servletContext = servletContext;
 	} 
 
+//	@GetMapping
+//	public ModelAndView index() {
+//		List<PrijavaZaVakcinaciju> prijaveZaVakcinaciju = prijavaZaVakcinacijuService.findAll();	
+//		
+//		ModelAndView rezultat = new ModelAndView("prijaveZaVakcinaciju"); 
+//		rezultat.addObject("prijaveZaVakcinaciju", prijaveZaVakcinaciju); 
+//
+//		return rezultat; 
+//	}
 	@GetMapping
-	public ModelAndView index() {
-		List<PrijavaZaVakcinaciju> prijaveZaVakcinaciju = prijavaZaVakcinacijuService.findAll();	
+	public ModelAndView Index(
+			@RequestParam(required=false) String ime, 
+			@RequestParam(required=false) String prezime, 
+			@RequestParam(required=false) String jmbg,
+			
+			HttpSession session) throws IOException {
 		
-		ModelAndView rezultat = new ModelAndView("prijaveZaVakcinaciju"); 
-		rezultat.addObject("prijaveZaVakcinaciju", prijaveZaVakcinaciju); 
+		
+		
+		List<PrijavaZaVakcinaciju> prijaveZaVakcinaciju = prijavaZaVakcinacijuService.find(ime, prezime, jmbg);
+		List<Korisnik> korisnici = korisnikService.findAll();
 
-		return rezultat; 
+		ModelAndView rezultat = new ModelAndView("prijaveZaVakcinaciju");
+		rezultat.addObject("prijaveZaVakcinaciju", prijaveZaVakcinaciju);
+		rezultat.addObject("korisnici", korisnici);
+		return rezultat;
+		
 	}
-
 	
 	@GetMapping(value="/add")
 	public String create(HttpSession session, HttpServletResponse response ) {
@@ -128,18 +144,23 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 		return rezultat; 
 	}
 	
-//	@PostMapping(value = "/search")
-//	public ModelAndView search(@RequestParam(required=false) String ime, 
-//	                           @RequestParam(required=false) String prezime, 
-//	                           @RequestParam(required=false) String jmbg) {
-//	  List<PrijavaZaVakcinaciju> prijaveZaVakcinaciju = prijavaZaVakcinacijuService.findAll();
-//	  List<Korisnik> korisniciFilter = korisnikService.find(ime, prezime, jmbg);
-//	  ModelAndView rezlutat = new ModelAndView("prijaveZaVakcinaciju");
-//	  rezlutat.addObject("korisnici", korisniciFilter);
-//	  rezlutat.addObject("prijaveZaVakcinaciju", prijaveZaVakcinaciju);
-//	  return rezlutat;
-//	}
-
+	@PostMapping(value = "/search")
+	public ModelAndView search(@RequestParam(required=false) String ime, 
+	                           @RequestParam(required=false) String prezime, 
+	                           @RequestParam(required=false) String jmbg) {
+		
+		 ModelAndView rezlutat = new ModelAndView("prijaveZaVakcinaciju");
+	  List<Korisnik> korisnici = korisnikService.findAll();
+	  List<PrijavaZaVakcinaciju> prijaveFilter = prijavaZaVakcinacijuService.find(ime, prezime, jmbg);
+		
+	  rezlutat.addObject("prijaveZaVakcinaciju", prijaveFilter);
+	  rezlutat.addObject("korisnici", korisnici);
+	  
+	  
+	  return rezlutat;
+	}
+	
+	
 	@PostMapping(value = "/dajVakcinu")
 	public String dajVakcinu(@RequestParam("korisnikId") Long korisnikId,
 	                        @RequestParam("vakcinaId") Long vakcinaId,

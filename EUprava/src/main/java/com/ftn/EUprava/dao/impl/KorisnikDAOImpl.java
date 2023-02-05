@@ -133,21 +133,6 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 		return rowCallbackHandler.getKorisnici().get(0);
 	}
 	
-//	@Override
-//	public Korisnik findOne(String email) {
-//		String sql = 
-//				"SELECT kor.id, kor.email, kor.lozinka, kor.ime, kor.prezime, kor.datumRodjenja,"
-//						+ " kor.jmbg, kor.adresa, kor.brojTelefona,  kor.datumIVremeRegistracije, kor.Euloga"
-//						+ " FROM korisnici kor " +  
-//				"WHERE kor.email = ? " + 
-//				"ORDER BY kor.id";
-//
-//		KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
-//		jdbcTemplate.query(sql, rowCallbackHandler, email);
-//
-//		return rowCallbackHandler.getKorisnici().get(0);
-//		
-//	}
 
 	@Override
 	public Korisnik findOne(String email, String lozinka) {
@@ -234,42 +219,5 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 	}
 	
 	
-	public List<Korisnik> find(String ime, String prezime, String jmbg) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT ime, prezime, jmbg FROM Korisnici");
-        List<Object> params = new ArrayList<>();
-        boolean whereIncluded = false;
-
-        if (ime != null && !ime.isEmpty()) {
-            sb.append(" WHERE LOWER(Ime) LIKE LOWER(?)");
-            params.add("%" + ime + "%");
-            whereIncluded = true;
-        }
-
-        if (prezime != null && !prezime.isEmpty()) {
-            if (!whereIncluded) {
-                sb.append(" WHERE LOWER(Prezime) LIKE LOWER(?)");
-            } else {
-                sb.append(" AND LOWER(Prezime) LIKE LOWER(?)");
-            }
-            params.add("%" + prezime + "%");
-            whereIncluded = true;
-        }
-
-        if (jmbg != null && !jmbg.isEmpty()) {
-            if (!whereIncluded) {
-                sb.append(" WHERE JMBG = ?");
-            } else {
-                sb.append(" AND JMBG = ?");
-            }
-            params.add(jmbg);
-            whereIncluded = true;
-        }
-
-        String sql = sb.toString();
-        KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
-        jdbcTemplate.query(sql, params.toArray(), rowCallbackHandler);
-        return rowCallbackHandler.getKorisnici();
-    }
-
+	
 }

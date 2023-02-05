@@ -80,9 +80,41 @@
 	 				<tr>  
 	 				<th></th>     
 	 				 
-	 				<th><input type="text" name="ime" th:value="${param.ime}"/></th>  
-	 				<th><input type="text" name="prezime" th:value="${param.prezime}"/></th>  
-	 				<th><input type="text" name="jmbg" th:value="${param.jmbg}"/></th>   
+	 				<th>
+						<select name="ime">
+							<option value=""></option>
+							<option th:each="itKor:${korisnici}" 
+							th:value="${itKor.ime}" 
+								th:text="|${itKor.ime} |"
+								 th:selected="${#strings.equals(itKor.ime, param.ime)}"
+								 th:if = "${itKor.uloga.toString() == 'PACIJENT'}"></option>
+						</select>
+						
+					</th>    
+					<th>
+						<select name="prezime">
+							<option value=""></option>
+							<option th:each="itKor:${korisnici}" 
+							th:value="${itKor.prezime}" 
+								th:text="|${itKor.prezime} |"
+								 th:selected="${#strings.equals(itKor.prezime, param.prezime)}"
+								  th:if = "${itKor.uloga.toString() == 'PACIJENT'}"></option>
+						</select>
+						
+					</th>    
+					<th>
+						<select name="jmbg">
+							<option value=""></option>
+							<option th:each="itKor:${korisnici}" 
+							th:value="${itKor.jmbg}" 
+								th:text="|${itKor.jmbg} |"
+								 th:selected="${#strings.equals(itKor.jmbg, param.jmbg)}"
+								  th:if = "${itKor.uloga.toString() == 'PACIJENT'}"></option>
+						</select>
+						
+					</th>    
+					
+	 				  
 	 				<th></th>  
 	 				<th></th>  
 	 				<th></th>  

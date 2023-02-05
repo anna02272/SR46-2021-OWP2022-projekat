@@ -67,7 +67,8 @@
 	 				<th></th>     
 	 				<th>Ime</th>     
 	 				<th>Dostupna Kolicina</th>     
-	 				<th>Proizvodjac vakcine</th>  
+	 				<th>Proizvodjac vakcine</th> 
+	 				<th>Drzava proizvodnje</th> 
   
   
 	 				  
@@ -83,18 +84,28 @@
 						max:<input type="number" min="0" th:value="${param.dostupnaKolicinaMax}?: '100'"  step="0.1" name="dostupnaKolicinaMax"/>
 					</th>   
 	 				<th>
-						<select name="proizvodjacId">
+						<select name="proizvodjac">
 							<option value=""></option>
-							<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" th:value="${itProizvodjacVakcine.id}" 
-								th:text="|${itProizvodjacVakcine.proizvodjac}, ${itProizvodjacVakcine.drzavaProizvodnje} |"
-								 th:selected="${#strings.equals(itProizvodjacVakcine.id, param.proizvodjacId)}"></option>
+							<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" 
+							th:value="${itProizvodjacVakcine.proizvodjac}" 
+								th:text="|${itProizvodjacVakcine.proizvodjac}|"
+								 th:selected="${#strings.equals(itProizvodjacVakcine.proizvodjac, param.proizvodjac)}"></option>
+						</select>
+						
+					</th>    
+					<th>
+						<select name="drzava">
+							<option value=""></option>
+							<option th:each="itProizvodjacVakcine: ${proizvodjaciVakcine}" 
+							th:value="${itProizvodjacVakcine.drzavaProizvodnje}" 
+								th:text="|${itProizvodjacVakcine.drzavaProizvodnje}|"
+								 th:selected="${#strings.equals(itProizvodjacVakcine.drzavaProizvodnje, param.drzavaProizvodnje)}"></option>
 						</select>
 						
 					</th>    
 	 				<th>
-	 				 
 	 						<input type="submit"  value="Pretrazi" >    
-	 					
+	 					</th>
 	 				
 	 			</tr>
 	 			<tr>     
@@ -105,7 +116,9 @@
 	 				<th>	<input type="submit"  formaction="vakcine/ascKolicina" value="Rastuci" > 	
 	 				<input type="submit" formaction="vakcine/descKolicina" value="Opadajuci" >   </th>     
 	 				<th>	<input type="submit" formaction="vakcine/ascProizvodjac"  value="Rastuci" > 
-	 					<input type="submit" formaction="vakcine/descProizvodjac" value="Opadajuci" >   </th>     
+	 					<input type="submit" formaction="vakcine/descProizvodjac" value="Opadajuci" >   </th>  
+	 					<th>	<input type="submit" formaction="vakcine/ascDrzava"  value="Rastuci" > 
+	 					<input type="submit" formaction="vakcine/descDrzava" value="Opadajuci" >   </th>     
 	 				
 	 				  
 	 				<th></th>    
@@ -118,7 +131,8 @@
 	 				<td><a th:href="|vakcine/details?id=${itVakcina.id}|" th:text="${itVakcina.ime}"></a></td>    
 	 				<td th:text="${itVakcina.ime}"></td>    
 	 				<td class="broj" th:text="${itVakcina.dostupnaKolicina}"></td>    
-	 				<td th:text="|${itVakcina.proizvodjac} |"></td>       
+	 				<td th:text="|${itVakcina.proizvodjac.proizvodjac} |"></td>  
+	 				<td th:text="|${itVakcina.proizvodjac.drzavaProizvodnje} |"></td>       
 	 				
 	 				<td>    
 	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"

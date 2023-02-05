@@ -61,12 +61,7 @@ public class DatabaseKorisnikServiceImpl implements KorisnikService{
 		return korisnik;
 	}
 
-	@Override
-	public List<Korisnik> find(String ime, String prezime, String jmbg) {
-		
-		return korisnikDAO.find( ime,  prezime,  jmbg);
-
-	}
+	
 
 
 

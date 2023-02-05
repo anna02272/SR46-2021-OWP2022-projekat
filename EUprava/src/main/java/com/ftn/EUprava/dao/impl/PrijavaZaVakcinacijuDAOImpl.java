@@ -134,4 +134,44 @@ public class PrijavaZaVakcinacijuDAOImpl implements PrijavaZaVakcinacijuDAO{
 		return jdbcTemplate.update(sql, id);
 	}
 	
+	public List<PrijavaZaVakcinaciju> find(String ime, String prezime,  String jmbg) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Select * from prijaveZaVakcinaciju p");
+	    List<Object> params = new ArrayList<>();
+	    boolean whereIncluded = false;
+	    
+	    if (ime != null && !ime.trim().isEmpty()) {
+	        if (whereIncluded) {
+	            sb.append(" and p.korisnikId in (select k.id from korisnici k where k.ime = ?)");
+	        } else {
+	            sb.append(" where p.korisnikId in (select k.id from korisnici k where k.ime = ?)");
+	            whereIncluded = true;
+	        }
+	        params.add(ime);
+	    }
+	    if (prezime != null && !prezime.trim().isEmpty()) {
+	        if (whereIncluded) {
+	            sb.append(" and p.korisnikId in (select k.id from korisnici k where k.prezime = ?)");
+	        } else {
+	            sb.append(" where  p.korisnikId in  (select k.id from korisnici k where k.prezime = ?)");
+	            whereIncluded = true;
+	        }
+	        params.add(prezime);
+	    }
+	    if (jmbg != null && !jmbg.trim().isEmpty()) {
+	        if (whereIncluded) {
+	            sb.append(" and p.korisnikId in (select k.id from korisnici k where k.jmbg = ?)");
+	        } else {
+	            sb.append(" where  p.korisnikId in (select k.id from korisnici k where k.jmbg = ?)");
+	            whereIncluded = true;
+	        }
+	        params.add(jmbg);
+	    }
+	    String sql = sb.toString();
+	    PrijavaRowCallBackHandler rowCallbackHandler = new PrijavaRowCallBackHandler();
+	    jdbcTemplate.query(sql, params.toArray(), rowCallbackHandler);
+	    return rowCallbackHandler.getPrijaveZaVakcinaciju();
+	}
+
+	
 }

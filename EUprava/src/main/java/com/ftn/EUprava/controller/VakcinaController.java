@@ -55,7 +55,8 @@ public class VakcinaController implements ServletContextAware {
 			@RequestParam(required=false) String ime, 
 			@RequestParam(required=false) Integer dostupnaKolicinaMin, 
 			@RequestParam(required=false) Integer dostupnaKolicinaMax,
-			@RequestParam(required=false) Long proizvodjacId,
+			@RequestParam(required=false) String proizvodjac,
+			@RequestParam(required=false) String drzava,
 			
 			HttpSession session) throws IOException {
 		
@@ -63,7 +64,7 @@ public class VakcinaController implements ServletContextAware {
 			ime=null;
 		
 		
-		List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
 		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
 
 		ModelAndView rezultat = new ModelAndView("vakcine");
@@ -100,7 +101,6 @@ public class VakcinaController implements ServletContextAware {
 	     ProizvodjacVakcine proizvodjacVakcine = proizvodjacVakcineService.findOne(proizvodjacId);
 	    
 	     Vakcina vakcina = new Vakcina(ime, proizvodjacVakcine);
-	     System.out.println(vakcina);
 	    Vakcina saved = vakcinaService.save(vakcina);
 	    response.sendRedirect(bURL+"vakcine");
 	}
@@ -158,20 +158,20 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView pretraga( @RequestParam(required=false) String ime, 
 	        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
 	        @RequestParam(required=false) Integer dostupnaKolicinaMax,
-	        @RequestParam(required=false) Long proizvodjacId,
+	    	@RequestParam(required=false) String proizvodjac,
+			@RequestParam(required=false) String drzava,
 	      
 			HttpServletResponse response) throws IOException {
 		
 		ModelAndView rezlutat = new ModelAndView("vakcine");
 		
 		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
-		
 
 		
 		if(ime!=null && ime.trim().equals(""))
 			ime=null;
 
-		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax,  proizvodjacId);
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax,  proizvodjac, drzava);
 		rezlutat.addObject("vakcine", vakcineFilter);
 		rezlutat.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
 		return rezlutat;
@@ -182,7 +182,8 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView ascIme(@RequestParam(required = false) String ime,
 	                            @RequestParam(required = false) Integer dostupnaKolicinaMin,
 	                            @RequestParam(required = false) Integer dostupnaKolicinaMax,
-	                            @RequestParam(required = false) Long proizvodjacId,
+	                        	@RequestParam(required=false) String proizvodjac,
+	                			@RequestParam(required=false) String drzava,
 	                            HttpServletResponse response) throws IOException {
 	    ModelAndView result = new ModelAndView("vakcine");
 
@@ -192,7 +193,7 @@ public class VakcinaController implements ServletContextAware {
 	        ime = null;
 	    }
 
-	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
 	    vakcineFilter.sort(Comparator.comparing(Vakcina::getIme));
 	    result.addObject("vakcine", vakcineFilter);
 	    result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
@@ -204,7 +205,8 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView descIme(@RequestParam(required=false) String ime, 
 		        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
 		        @RequestParam(required=false) Integer dostupnaKolicinaMax,
-		        @RequestParam(required=false) Long proizvodjacId,
+		    	@RequestParam(required=false) String proizvodjac,
+				@RequestParam(required=false) String drzava,
 		        HttpServletResponse response) throws IOException {
 		
 		ModelAndView result = new ModelAndView("vakcine");
@@ -214,7 +216,7 @@ public class VakcinaController implements ServletContextAware {
 		if(ime!=null && ime.trim().equals(""))
 			ime=null;
 		
-		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
 		
 		vakcineFilter.sort(Comparator.comparing(Vakcina::getIme).reversed());
 		
@@ -226,7 +228,8 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView ascKolicina(@RequestParam(required = false) String ime,
 	                            @RequestParam(required = false) Integer dostupnaKolicinaMin,
 	                            @RequestParam(required = false) Integer dostupnaKolicinaMax,
-	                            @RequestParam(required = false) Long proizvodjacId,
+	                        	@RequestParam(required=false) String proizvodjac,
+	                			@RequestParam(required=false) String drzava,
 	                            HttpServletResponse response) throws IOException {
 	    ModelAndView result = new ModelAndView("vakcine");
 
@@ -236,7 +239,7 @@ public class VakcinaController implements ServletContextAware {
 	        ime = null;
 	    }
 
-	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
 	    vakcineFilter.sort(Comparator.comparing(Vakcina::getDostupnaKolicina));
 	    result.addObject("vakcine", vakcineFilter);
 	    result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
@@ -248,7 +251,8 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView descKolicina(@RequestParam(required=false) String ime, 
 		        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
 		        @RequestParam(required=false) Integer dostupnaKolicinaMax,
-		        @RequestParam(required=false) Long proizvodjacId,
+		    	@RequestParam(required=false) String proizvodjac,
+				@RequestParam(required=false) String drzava,
 		        HttpServletResponse response) throws IOException {
 		
 		ModelAndView result = new ModelAndView("vakcine");
@@ -258,7 +262,7 @@ public class VakcinaController implements ServletContextAware {
 		if(ime!=null && ime.trim().equals(""))
 			ime=null;
 		
-		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
 		
 		vakcineFilter.sort(Comparator.comparing(Vakcina::getDostupnaKolicina).reversed());
 		
@@ -270,7 +274,8 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView ascProizvodjac(@RequestParam(required = false) String ime,
 	                            @RequestParam(required = false) Integer dostupnaKolicinaMin,
 	                            @RequestParam(required = false) Integer dostupnaKolicinaMax,
-	                            @RequestParam(required = false) Long proizvodjacId,
+	                        	@RequestParam(required=false) String proizvodjac,
+	                			@RequestParam(required=false) String drzava,
 	                            HttpServletResponse response) throws IOException {
 	    ModelAndView result = new ModelAndView("vakcine");
 
@@ -280,8 +285,8 @@ public class VakcinaController implements ServletContextAware {
 	        ime = null;
 	    }
 
-	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
-	    vakcineFilter.sort(Comparator.comparing(vakcina -> vakcina.getProizvodjac().toString()));
+	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
+	    vakcineFilter.sort(Comparator.comparing(vakcina -> vakcina.getProizvodjac().getProizvodjac().toString()));
 
 	    result.addObject("vakcine", vakcineFilter);
 	    result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
@@ -293,7 +298,8 @@ public class VakcinaController implements ServletContextAware {
 	public ModelAndView descProizvodjac(@RequestParam(required=false) String ime, 
 		        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
 		        @RequestParam(required=false) Integer dostupnaKolicinaMax,
-		        @RequestParam(required=false) Long proizvodjacId,
+		        @RequestParam(required=false) String proizvodjac,
+    			@RequestParam(required=false) String drzava,
 		        HttpServletResponse response) throws IOException {
 		
 		ModelAndView result = new ModelAndView("vakcine");
@@ -303,9 +309,58 @@ public class VakcinaController implements ServletContextAware {
 		if(ime!=null && ime.trim().equals(""))
 			ime=null;
 		
-		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
 		
-		Comparator<Vakcina> proizvodjacComparator = Comparator.comparing(vakcina -> vakcina.getProizvodjac().toString(), 
+		Comparator<Vakcina> proizvodjacComparator = Comparator.comparing(vakcina -> vakcina.getProizvodjac().getProizvodjac().toString(), 
+		        Comparator.reverseOrder());
+		vakcineFilter.sort(proizvodjacComparator);
+
+		result.addObject("vakcine", vakcineFilter);
+		result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+		return result;
+	}
+	@PostMapping(value = "/ascDrzava")
+	public ModelAndView ascDrzava(@RequestParam(required = false) String ime,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMin,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMax,
+	                        	@RequestParam(required=false) String proizvodjac,
+	                			@RequestParam(required=false) String drzava,
+	                            HttpServletResponse response) throws IOException {
+	    ModelAndView result = new ModelAndView("vakcine");
+
+	    List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+
+	    if (ime != null && ime.trim().equals("")) {
+	        ime = null;
+	    }
+
+	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
+	    vakcineFilter.sort(Comparator.comparing(vakcina -> vakcina.getProizvodjac().getDrzavaProizvodnje().toString()));
+
+	    result.addObject("vakcine", vakcineFilter);
+	    result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+	    return result;
+	}
+
+	
+	@PostMapping(value = "/descDrzava")
+	public ModelAndView descDrzava(@RequestParam(required=false) String ime, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMax,
+		        @RequestParam(required=false) String proizvodjac,
+    			@RequestParam(required=false) String drzava,
+		        HttpServletResponse response) throws IOException {
+		
+		ModelAndView result = new ModelAndView("vakcine");
+		
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+		
+		if(ime!=null && ime.trim().equals(""))
+			ime=null;
+		
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjac, drzava);
+		
+		Comparator<Vakcina> proizvodjacComparator = Comparator.comparing(vakcina -> vakcina.getProizvodjac().getProizvodjac().toString(), 
 		        Comparator.reverseOrder());
 		vakcineFilter.sort(proizvodjacComparator);
 

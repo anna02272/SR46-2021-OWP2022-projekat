@@ -50,9 +50,9 @@ public class DatabaseVakcinaServiceImpl implements VakcinaService {
 	}
 	
 	@Override
-	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, Long proizvodjacId) {
+	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, String proizvodjac, String drzava) {
 		
-		return vakcinaDAO.find( ime,  dostupnaKolicinaMin,  dostupnaKolicinaMax,  proizvodjacId);
+		return vakcinaDAO.find( ime,  dostupnaKolicinaMin,  dostupnaKolicinaMax,  proizvodjac, drzava);
 
 	}
 	

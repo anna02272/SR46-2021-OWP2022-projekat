@@ -22,6 +22,5 @@ public interface KorisnikDAO {
 
 	public int delete(Long id);
 	
-	public List<Korisnik> find(String ime, String prezime, String jmbg);
-
+	
 	}

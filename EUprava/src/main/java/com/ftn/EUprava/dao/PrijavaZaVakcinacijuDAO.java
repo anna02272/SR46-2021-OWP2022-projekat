@@ -14,5 +14,6 @@ public interface PrijavaZaVakcinacijuDAO {
 
 
 	public int delete(Long id);
-	
+	public List<PrijavaZaVakcinaciju> find(String ime, String prezime, String jmbg);
+
 }

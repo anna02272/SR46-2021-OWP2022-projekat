@@ -17,7 +17,7 @@ public interface VakcinaDAO {
 	public int delete(Long id);
 	
 	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax,
-			Long proizvodjacId);
+			String proizvodjac, String drzava);
 
 	
 	

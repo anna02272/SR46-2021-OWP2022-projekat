@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.EUprava.dao.PrijavaZaVakcinacijuDAO;
 import com.ftn.EUprava.dao.VakcinaDAO;
+import com.ftn.EUprava.model.Korisnik;
 import com.ftn.EUprava.model.PrijavaZaVakcinaciju;
 import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.model.Vakcina;
@@ -50,6 +51,11 @@ public class DatabasePrijavaZaVakcinacijuServiceImpl implements PrijavaZaVakcina
 		}
 		return prijavaZaVakcinaciju;
 	}
-	
+	@Override
+	public List<PrijavaZaVakcinaciju> find(String ime, String prezime, String jmbg) {
+		
+		return prijavaZaVakcinacijuDAO.find( ime,  prezime,  jmbg);
+
+	}
 	
 }

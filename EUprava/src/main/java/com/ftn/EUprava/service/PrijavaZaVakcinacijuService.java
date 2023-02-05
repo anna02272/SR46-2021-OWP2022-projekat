@@ -10,4 +10,5 @@ public interface PrijavaZaVakcinacijuService {
 	List<PrijavaZaVakcinaciju> findAll(); 
 	PrijavaZaVakcinaciju save(PrijavaZaVakcinaciju prijavaZaVakcinaciju); 
 	PrijavaZaVakcinaciju delete(Long id); 
+	List<PrijavaZaVakcinaciju> find(String ime, String prezime, String jmbg);
 }

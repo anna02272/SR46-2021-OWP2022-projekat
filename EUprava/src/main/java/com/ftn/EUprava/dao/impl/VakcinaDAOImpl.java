@@ -126,7 +126,7 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 	}
 	
 	
-	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, Long proizvodjacId) {
+	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, String proizvodjac, String drzava) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "SELECT v.id, v.ime, v.dostupnaKolicina, p.id, p.proizvodjac FROM vakcine v " + 
 				"LEFT JOIN proizvodjaciVakcine p ON v.proizvodjacId = p.id");
@@ -159,15 +159,25 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 			whereIncluded = true;
 		}
 		
-		if (proizvodjacId != null) {
-			if (!whereIncluded) {
-				sb.append(" WHERE p.id = ?");
-			} else {
-				sb.append(" AND p.id = ?");
-			}
-			params.add(proizvodjacId);
-			whereIncluded = true;
-		}
+		if (proizvodjac != null && !proizvodjac.trim().isEmpty()) {
+	        if (whereIncluded) {
+	            sb.append(" and v.proizvodjacId in (select p.id from proizvodjaciVakcine p where p.proizvodjac = ?)");
+	        } else {
+	            sb.append(" where v.proizvodjacId in (select p.id from proizvodjaciVakcine p where p.proizvodjac = ?)");
+	            whereIncluded = true;
+	        }
+	        params.add(proizvodjac);
+	    }
+		if (drzava != null && !drzava.trim().isEmpty()) {
+	        if (whereIncluded) {
+	            sb.append(" and v.proizvodjacId in (select p.id from proizvodjaciVakcine p where p.drzavaProizvodnje = ?)");
+	        } else {
+	            sb.append(" where v.proizvodjacId in (select p.id from proizvodjaciVakcine p where p.drzavaProizvodnje = ?)");
+	            whereIncluded = true;
+	        }
+	        params.add(drzava);
+	    }
+		
 	
 		String sql = sb.toString();
 		VakcinaRowCallBackHandler rowCallbackHandler = new VakcinaRowCallBackHandler();
