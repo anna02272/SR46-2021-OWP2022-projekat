@@ -107,7 +107,7 @@ public class PrijavaZaVakcinacijuDAOImpl implements PrijavaZaVakcinacijuDAO{
 
 				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				int index = 1;
-				preparedStatement.setLong(index++, prijavaZaVakcinaciju.getPacijent().getId());
+				preparedStatement.setLong(index++, prijavaZaVakcinaciju.getKorisnik().getId());
 
 				preparedStatement.setLong(index++, prijavaZaVakcinaciju.getVakcina().getId());
 				

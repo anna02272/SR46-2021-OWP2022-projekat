@@ -52,7 +52,8 @@
 					<select  name = "korisnikId">
 						<option th:each="itKorisnik: ${session.korisnici}" 
 						th:value="${itKorisnik.id}" 
-						th:text="|${itKorisnik.ime}  ${itKorisnik.prezime} |">
+						th:text="|${itKorisnik.ime}  ${itKorisnik.prezime} |"
+						th:if = "${itKorisnik.uloga.toString() == 'PACIJENT' && itKorisnik.id == session.korisnik.id}" >
 						</option>
 					</select>
 					
@@ -64,7 +65,8 @@
 					<select name = "vakcinaId">
 						<option th:each="itVakcina: ${session.vakcine}" 
 						th:value="${itVakcina.id}" 
-						th:text="|${itVakcina.ime} |">
+						th:text="|${itVakcina.ime} |"
+						th:if="${itVakcina.dostupnaKolicina > 0 }">
 						</option>
 					</select>
 					

@@ -5,7 +5,7 @@
 	<base th:href="@{/}">
 	<link rel="stylesheet" type="text/css" href="css/StiloviForma.css"/>
 	<link rel="stylesheet" type="text/css" href="css/StiloviKorisnik.css"/>
-	<title>Nabavka</title>
+	<title>Prijava za vakcinaciju</title>
 </head>
 <body>
 <h2>EUprava</h2>
@@ -33,39 +33,46 @@
 	<section class="content">
 	<div class = "content">
 	
-	<form  method="post" action="nabavke/edit">
-		<input type="hidden" name="id" th:value="${nabavka.id}"/>
+	<form  method="post" action="prijaveZaVakcinaciju/dajVakcinu">
+		<input type="hidden" name="id" th:value="${prijavaZaVakcinaciju.id}"/>
 		<table class="forma">
-			<caption>Nabavka</caption>
+			<caption>Daj vakcinu</caption>
 			<tr>
-			
+ 				<th>Korisnik:</th>
+				<td>
+					<select name = "korisnikId" >
+						<option th:each="itKorisnik: ${korisnici}" 
+						th:value="${itKorisnik.id}" 
+						th:text="|${itKorisnik.ime} ${itKorisnik.prezime}  |"
+						 th:selected="${itKorisnik.id == prijavaZaVakcinaciju.korisnik.id}" >
+						
+						</option>
+					</select>
+
+				</td>
+			</tr>      
+			<tr>
  				<th>Vakcina:</th>
 				<td>
-					<select name = "vakcinaId">
+				<select name = "vakcinaId" >
 						<option th:each="itVakcine: ${vakcine}" 
 						th:value="${itVakcine.id}" 
 						th:text="|${itVakcine.ime}  |"
-						 th:selected="${itVakcine.id == nabavka.vakcina.id}">
+						 th:selected="${itVakcine.id == prijavaZaVakcinaciju.vakcina.id}" >
 						</option>
 					</select>
-					
-					
+
 				</td>
 			</tr>      
-			<tr><th>Kolicina:</th><td><input type="number" th:value="${nabavka.kolicina}"
-			 name="kolicina" required/></td></tr>
-			 
-			 <tr><th>Komentar:</th><td><input 
-			 type="text" th:value="${nabavka.komentar}" name="komentar"/></td></tr>
 			 <tr>
- 				<th>Status:</th>
+ 				<th>Doza:</th>
 				<td>
-			    <select name="status" >
+			    <select name="doza" >
 			      <option  
-			       th:each="estatus: ${T(com.ftn.EUprava.model.EStatus).values()}" 
-			                th:value="${estatus}" 
-			              th:text="${estatus}"
-			               th:selected="${estatus == nabavka.status}">
+			       th:each="edoza: ${T(com.ftn.EUprava.model.EDoza).values()}" 
+			                th:value="${edoza}" 
+			              th:text="${edoza}"
+			               th:selected="${edoza == prijavaZaVakcinaciju.doza}">
 			      </option>
 			    </select>
 			  </td>
@@ -74,14 +81,8 @@
 			   
 		
 			<tr><th></th><td><input th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'}"
-			 type="submit" value="Izmeni"/></td></tr>
-			 
-			<tr><th></th><td><input th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
-			 type="submit" value="Odbij/ Vrati na reviziju"/></td></tr>
-			 
-			 <input th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
-		type="hidden" name="id" th:value="${nabavka.id}"/>
-			<tr><th></th><td><input type="submit" formaction="nabavke/odobri" value="Odobri"/></td></tr>
+			 type="submit" value="Daj vakcinu"/></td></tr>
+			
 		</form>
 	
 		

@@ -50,7 +50,7 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 			Vakcina vakcina = vakcine.get(id);
 			if (vakcina == null) {
 				vakcina = new Vakcina(id, ime, dostupnaKolicina, proizvodjacVakcine);
-				vakcine.put(vakcina.getId(), vakcina); // dodavanje u kolekciju
+				vakcine.put(vakcina.getId(), vakcina); 
 			}
 		}
 
@@ -125,22 +125,6 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 		return jdbcTemplate.update(sql, id);
 	}
 	
-	private class VakcinaRowMapper implements RowMapper<Vakcina> {
-
-		@Override
-		public Vakcina mapRow(ResultSet rs, int rowNum) throws SQLException {
-			int index = 1;
-			Long vakcinaId = rs.getLong(index++);
-			String vakcinaIme = rs.getString(index++);
-			Integer vakcinaKolicina = rs.getInt(index++);
-			Long proizvodjacVakcineId = rs.getLong(index++);
-			ProizvodjacVakcine vakcinaProizvodjac = proizvodjacDAO.findOne(proizvodjacVakcineId);
-
-			Vakcina vakcina = new Vakcina(vakcinaId, vakcinaIme, vakcinaKolicina, vakcinaProizvodjac);
-			return vakcina;
-		}
-
-	}
 	
 	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, Long proizvodjacId) {
 		StringBuilder sb = new StringBuilder();
@@ -192,108 +176,5 @@ public class VakcinaDAOImpl implements VakcinaDAO{
 	}
 
 	
-//	@Override
-//	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax, Long proizvodjacId) {
-//
-//		ArrayList<Object> listaArgumenata = new ArrayList<Object>();
-//		
-//		String sql = "SELECT v.id, v.ime, v.dostupnaKolicina, p.id, p.proizvodjac FROM vakcine v " + 
-//				"LEFT JOIN proizvodjaciVakcine p ON v.proizvodjacId = p.id";
-//		
-//		StringBuffer whereSql = new StringBuffer(" WHERE ");
-//		boolean imaArgumenata = false;
-//		
-//		if(ime!=null) {
-//			ime = "%" + ime + "%";
-//			if(imaArgumenata)
-//				whereSql.append(" WHERE ");
-//			whereSql.append("v.ime LIKE ?");
-//			imaArgumenata = true;
-//			listaArgumenata.add(ime);
-//		}
-//		
-//		if(proizvodjacId!=null) {
-//			if(imaArgumenata)
-//				whereSql.append(" AND ");
-//			whereSql.append(" v.proizvodjacId = ?");
-//			imaArgumenata = true;
-//			listaArgumenata.add(proizvodjacId);
-//		}
-//		
-//		if(dostupnaKolicinaMin!=null) {
-//			if(imaArgumenata)
-//				whereSql.append(" AND ");
-//			whereSql.append(" v.dostupnaKolicina >= ?");
-//			imaArgumenata = true;
-//			listaArgumenata.add(dostupnaKolicinaMax);
-//		}
-//		
-//		if(dostupnaKolicinaMax!=null) {
-//			if(imaArgumenata)
-//				whereSql.append(" AND ");
-//			whereSql.append("  v.dostupnaKolicina <= ?");
-//			imaArgumenata = true;
-//			listaArgumenata.add(dostupnaKolicinaMax);
-//		}
-//		
-//		if(imaArgumenata)
-//			sql=sql + whereSql.toString()+" ORDER BY v.id";
-//		else
-//			sql=sql + " ORDER BY v.id";
-//		
-//		return jdbcTemplate.query(sql, listaArgumenata.toArray(), new VakcinaRowMapper());
-//	}
-//	
-	@Override
-	public List<Vakcina> find(HashMap<String, Object> mapaArgumenata) {
-		
-		ArrayList<Object> listaArgumenata = new ArrayList<Object>();
-		
-		String sql = "SELECT v.id, v.ime, v.dostupnaKolicina, p.id, p.proizvodjac FROM vakcine v " + 
-				"LEFT JOIN proizvodjaciVakcine p ON v.proizvodjacId = p.id";
-		
-		StringBuffer whereSql = new StringBuffer(" WHERE ");
-		boolean imaArgumenata = false;
-		
-		if(mapaArgumenata.containsKey("ime")) {
-			String ime = "%" + mapaArgumenata.get("ime") + "%";
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.ime LIKE ?");
-			imaArgumenata = true;
-			listaArgumenata.add(ime);
-		}
-		
-		if(mapaArgumenata.containsKey("dostupnaKolicinaMin")) {
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.dostupnaKolicina >= ?");
-			imaArgumenata = true;
-			listaArgumenata.add(mapaArgumenata.get("dostupnaKolicinaMin"));
-		}
-		
-		if(mapaArgumenata.containsKey("dostupnaKolicinaMax")) {
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.dostupnaKolicina <= ?");
-			imaArgumenata = true;
-			listaArgumenata.add(mapaArgumenata.get("dostupnaKolicinaMax"));
-		}
-		if(mapaArgumenata.containsKey("proizvodjacId")) {
-			if(imaArgumenata)
-				whereSql.append(" AND ");
-			whereSql.append("v.proizvodjacId = ?");
-			imaArgumenata = true;
-			listaArgumenata.add(mapaArgumenata.get("proizvodjacId"));
-		}
-		
-		
-		if(imaArgumenata)
-			sql=sql + whereSql.toString()+" ORDER BY v.id";
-		else
-			sql=sql + " ORDER BY v.id";
-		
-		
-		return jdbcTemplate.query(sql, listaArgumenata.toArray(), new VakcinaRowMapper());
-	}
+	
 }

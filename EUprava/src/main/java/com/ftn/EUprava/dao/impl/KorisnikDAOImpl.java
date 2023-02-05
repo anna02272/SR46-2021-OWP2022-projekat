@@ -232,5 +232,44 @@ public class KorisnikDAOImpl implements KorisnikDAO {
 		String sql = "DELETE FROM korisnici WHERE id = ?";
 		return jdbcTemplate.update(sql, id);
 	}
+	
+	
+	public List<Korisnik> find(String ime, String prezime, String jmbg) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ime, prezime, jmbg FROM Korisnici");
+        List<Object> params = new ArrayList<>();
+        boolean whereIncluded = false;
+
+        if (ime != null && !ime.isEmpty()) {
+            sb.append(" WHERE LOWER(Ime) LIKE LOWER(?)");
+            params.add("%" + ime + "%");
+            whereIncluded = true;
+        }
+
+        if (prezime != null && !prezime.isEmpty()) {
+            if (!whereIncluded) {
+                sb.append(" WHERE LOWER(Prezime) LIKE LOWER(?)");
+            } else {
+                sb.append(" AND LOWER(Prezime) LIKE LOWER(?)");
+            }
+            params.add("%" + prezime + "%");
+            whereIncluded = true;
+        }
+
+        if (jmbg != null && !jmbg.isEmpty()) {
+            if (!whereIncluded) {
+                sb.append(" WHERE JMBG = ?");
+            } else {
+                sb.append(" AND JMBG = ?");
+            }
+            params.add(jmbg);
+            whereIncluded = true;
+        }
+
+        String sql = sb.toString();
+        KorisnikRowCallBackHandler rowCallbackHandler = new KorisnikRowCallBackHandler();
+        jdbcTemplate.query(sql, params.toArray(), rowCallbackHandler);
+        return rowCallbackHandler.getKorisnici();
+    }
 
 }

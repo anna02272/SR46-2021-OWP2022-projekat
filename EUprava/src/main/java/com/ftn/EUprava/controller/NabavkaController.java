@@ -128,8 +128,8 @@ public class NabavkaController implements ServletContextAware {
 	}
 	
 	
-	@PostMapping("odobri")
-	public String approveOrder(@RequestParam("vakcinaId") Long vakcinaId,
+	@PostMapping(value ="/odobri")
+	public String odobri(@RequestParam("vakcinaId") Long vakcinaId,
 	                           @RequestParam("kolicina") Integer kolicina,
 	                           @RequestParam("status") EStatus status,
 	                           @RequestParam("komentar") String komentar,
@@ -142,7 +142,8 @@ public class NabavkaController implements ServletContextAware {
 
 	    jdbcTemplate.update("DELETE FROM nabavke WHERE id = ?", nabavkaId);
 
-	    return "nabavke";
+	    
+	   return "redirect:/nabavke";
 	}
 
 	

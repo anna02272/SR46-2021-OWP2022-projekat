@@ -44,7 +44,7 @@
 	<div class = "content">
  	<form method="post" action="nabavke/add">    
  		<table>    
- 			<caption>Nabavka</caption>    
+ 			<caption>Zahtev za nabavku</caption>    
  			
  			
  			<tr>
@@ -61,7 +61,7 @@
 			</tr>        
 			<tr><th>Kolicina:</th><td><input type="number" value="" name="kolicina" required/></td></tr>  
 			
-			<tr><th>Komentar:</th><td><input type="text" value="" name="komentar"  th:if="${session.korisnik != null && session.korisnik.uloga.toString() != 'MEDICINSKOOSOBLJE'}"/></td></tr>  
+			<tr><th>Komentar:</th><td><input type="text" value="" name="komentar" /></td></tr>  
 			
 				 <tr>
  				<th>Status:</th>
@@ -76,7 +76,7 @@
 				
 			</tr>      
 			
- 			<tr><th></th><td><input type="submit" value="Dodaj"/></td> 
+ 			<tr><th></th><td><input type="submit" value="Posalji zahtev"/></td> 
  			
  			   
  		</table>    

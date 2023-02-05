@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.EUprava.dao.KorisnikDAO;
 import com.ftn.EUprava.model.Korisnik;
+import com.ftn.EUprava.model.Vakcina;
 import com.ftn.EUprava.service.KorisnikService;
 
 
@@ -60,7 +61,12 @@ public class DatabaseKorisnikServiceImpl implements KorisnikService{
 		return korisnik;
 	}
 
-	
+	@Override
+	public List<Korisnik> find(String ime, String prezime, String jmbg) {
+		
+		return korisnikDAO.find( ime,  prezime,  jmbg);
+
+	}
 
 
 

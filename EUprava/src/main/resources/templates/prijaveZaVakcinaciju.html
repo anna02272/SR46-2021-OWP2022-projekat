@@ -65,24 +65,46 @@
 	 		<table  class="tabela">     
 	 			<caption>Prijave za vakcinaciju</caption>     
 	 			<tr>     
-	 				<th>R. br.</th>     
-	 				<th>Korisnik</th>     
+	 				<th>R. br.</th> 
+	 				<th>Ime pacijenta</th> 
+	 				<th>Prezime pacijenta</th> 
+	 				<th>Jmbg pacijenta</th>     
 	 				<th>Vakcina</th>     
 	 				<th>Doza</th>  
 	 				<th>Datum i vreme prijave</th> 
 	 				<th></th>   
 	 				<th></th>   
+	 				  
 	 			</tr>
-	 			
+	 			<form  method="post"  action="prijaveZaVakcinaciju/search" >     
+	 				<tr>  
+	 				<th></th>     
+	 				 
+	 				<th><input type="text" name="ime" th:value="${param.ime}"/></th>  
+	 				<th><input type="text" name="prezime" th:value="${param.prezime}"/></th>  
+	 				<th><input type="text" name="jmbg" th:value="${param.jmbg}"/></th>   
+	 				<th></th>  
+	 				<th></th>  
+	 				<th></th>  
+	 				<th></th>    
+	 				<th>
+	 				 
+	 						<input type="submit"  value="Pretrazi" >    
+	 				
+	 			</tr>
 	 		
 	 			<tr th:each="itPrijava, status: ${prijaveZaVakcinaciju}" 
 	 			th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'PACIJENT'} ?
-	 			 ${itPrijava.pacijent.id == session.korisnik.id} : true">
+	 			 ${itPrijava.korisnik.id == session.korisnik.id} : true">
 			    <td class="broj" th:text="${(status.index + 1)+'.'}"></td>
-			    <td th:text="|${itPrijava.pacijent.ime} ${itPrijava.pacijent.prezime} |"></td>
+			    <td th:text="|${itPrijava.korisnik.ime} |"></td>
+			     <td th:text="|${itPrijava.korisnik.prezime} |"></td>
+			      <td th:text="|${itPrijava.korisnik.jmbg}  |"></td>
 			    <td th:text="|${itPrijava.vakcina.ime}|"></td>
 			    <td th:text="${itPrijava.doza}"></td>
 			    <td th:text="${itPrijava.datumIVremePrijave}"></td>
+			     <td><a th:href="|prijaveZaVakcinaciju/details?id=${itPrijava.id}|"
+			      th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'}" >Daj vakcinu</a></td>
 			    <td>
 			        <form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'PACIJENT'}"
 			            method="post" action="prijaveZaVakcinaciju/delete" >
@@ -92,13 +114,7 @@
 			    </td>
 
 
-	 				<td>    
-	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'}"
-	 					method="post" action="prijaveZaVakcinaciju/dajVakcinu" >     
-	 						<input type="hidden"  name="id"  th:value="${itPrijava.id}">     
-	 						<input type="submit"  value="Daj vakcinu" >    
-	 					</form>    
-	 				</td>   
+	 				
 	 			</tr>
 	 		</table>
 	 		</div>

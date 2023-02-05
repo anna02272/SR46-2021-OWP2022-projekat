@@ -75,7 +75,12 @@
 	 				<th></th>    
 	 			</tr>
 	 			
-	 			<tr th:each="itNabavka, status: ${nabavke}">     
+	 			<tr th:each="itNabavka, status: ${nabavke}"
+	 			th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'} ?
+					 ${itNabavka.status.toString() == 'POSLAT'} : 
+		 				(${session.korisnik != null && session.korisnik.uloga.toString() == 'MEDICINSKOOSOBLJE'} ? 
+						${itNabavka.status.toString() != 'POSLAT'} : true)">
+
 	 				<td class="broj" th:text="${(status.index + 1)+'.'}"></td>     
 	 				<td><a th:href="|nabavke/details?id=${itNabavka.id}|" th:text="${itNabavka.vakcina.ime}"></a></td>    
 	 				<td th:text="${itNabavka.vakcina.ime}"></td>    

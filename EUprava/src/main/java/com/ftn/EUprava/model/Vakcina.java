@@ -18,13 +18,6 @@ public class Vakcina {
 		this.proizvodjac = proizvodjac;
 	}
 	
-	public Vakcina(Long id, String ime, Integer dostupnaKolicina, ProizvodjacVakcine proizvodjac) {
-		super();
-		this.id = id;
-		this.ime = ime;
-		this.dostupnaKolicina = dostupnaKolicina;
-		this.proizvodjac = proizvodjac;
-	}
 	
 
 	
@@ -39,6 +32,14 @@ public class Vakcina {
 		this.id = id;
 		this.ime = ime;
 		this.dostupnaKolicina = dostupnaKolicina;
+	}
+
+	public Vakcina(Long id, String ime, Integer dostupnaKolicina, ProizvodjacVakcine proizvodjac) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.dostupnaKolicina = dostupnaKolicina;
+		this.proizvodjac = proizvodjac;
 	}
 	public Long getId() {
 		return id;

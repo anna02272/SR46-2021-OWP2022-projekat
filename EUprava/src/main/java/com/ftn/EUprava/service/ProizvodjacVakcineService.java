@@ -11,4 +11,5 @@ public interface ProizvodjacVakcineService {
 	ProizvodjacVakcine save(ProizvodjacVakcine proizvodjacVakcine); 
 	ProizvodjacVakcine update(ProizvodjacVakcine proizvodjacVakcine); 
 	ProizvodjacVakcine delete(Long id); 
+	
 }

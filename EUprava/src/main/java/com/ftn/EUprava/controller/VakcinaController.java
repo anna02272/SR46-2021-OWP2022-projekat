@@ -1,10 +1,8 @@
 package com.ftn.EUprava.controller;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ftn.EUprava.model.ProizvodjacVakcine;
 import com.ftn.EUprava.model.Vakcina;
-import com.ftn.EUprava.model.Vest;
 import com.ftn.EUprava.service.ProizvodjacVakcineService;
 import com.ftn.EUprava.service.VakcinaService;
 
@@ -60,6 +56,7 @@ public class VakcinaController implements ServletContextAware {
 			@RequestParam(required=false) Integer dostupnaKolicinaMin, 
 			@RequestParam(required=false) Integer dostupnaKolicinaMax,
 			@RequestParam(required=false) Long proizvodjacId,
+			
 			HttpSession session) throws IOException {
 		
 		if(ime!=null && ime.trim().equals(""))
@@ -156,57 +153,164 @@ public class VakcinaController implements ServletContextAware {
 		return rezultat; 
 	}
 	
-//	@GetMapping(value="/search")
-//	public String searchForm(Model model) {
-//	    model.addAttribute("vakcine", new Vakcina());
-//	    return "vakcine";
-//	}
-//
-//	@PostMapping(value="/search")
-//	public String search(
-//	        @RequestParam(required=false) String ime, 
-//	        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
-//	        @RequestParam(required=false) Integer dostupnaKolicinaMax,
-//	        @RequestParam(required=false) Long proizvodjacId, 
-//	        Model model)  throws IOException {
-//
-//	    if(ime!=null && ime.trim().equals(""))
-//	        ime=null;
-//
-//	  
-//	    List<Vakcina> vakcine = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
-//
-//	    model.addAttribute("vakcine", vakcine);
-//	    return "vakcine";
-//	}
+
 	@PostMapping(value ="/search")
 	public ModelAndView pretraga( @RequestParam(required=false) String ime, 
 	        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
 	        @RequestParam(required=false) Integer dostupnaKolicinaMax,
-	        @RequestParam(required=false) Long proizvodjacId
-			,HttpServletResponse response) throws IOException {
+	        @RequestParam(required=false) Long proizvodjacId,
+	      
+			HttpServletResponse response) throws IOException {
 		
-		ModelAndView vakcineView = new ModelAndView("vakcine");
-		List<ProizvodjacVakcine> proizvodjaci = proizvodjacVakcineService.findAll();
+		ModelAndView rezlutat = new ModelAndView("vakcine");
+		
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+		
 
-		System.out.println(ime + " ime");
-		System.out.println(dostupnaKolicinaMin + " dostupnaKolicinaMin");
-		System.out.println(dostupnaKolicinaMax + " dostupnaKolicinaMax");
-		System.out.println(proizvodjacId + "proizvodjacId");
-	
 		
 		if(ime!=null && ime.trim().equals(""))
 			ime=null;
-//		Integer intdostupnaKolicinaMin = "".equals(dostupnaKolicinaMin) || dostupnaKolicinaMin == null ? 0 : Integer.parseInt(dostupnaKolicinaMin);
-//		Integer intdostupnaKolicinaMax = "".equals(dostupnaKolicinaMax) || dostupnaKolicinaMax == null ? 0 : Integer.parseInt(dostupnaKolicinaMax);
-//		Long longProizvodjacId = "".equals(proizvodjacId) || proizvodjacId == null ? 0L : Long.parseLong(proizvodjacId);
 
 		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax,  proizvodjacId);
-		vakcineView.addObject("vakcine", vakcineFilter);
-		vakcineView.addObject("proizvodjaci", proizvodjaci);
-		return vakcineView;
+		rezlutat.addObject("vakcine", vakcineFilter);
+		rezlutat.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+		return rezlutat;
 		
 	
 	}
+	@PostMapping(value = "/ascIme")
+	public ModelAndView ascIme(@RequestParam(required = false) String ime,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMin,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMax,
+	                            @RequestParam(required = false) Long proizvodjacId,
+	                            HttpServletResponse response) throws IOException {
+	    ModelAndView result = new ModelAndView("vakcine");
 
+	    List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+
+	    if (ime != null && ime.trim().equals("")) {
+	        ime = null;
+	    }
+
+	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+	    vakcineFilter.sort(Comparator.comparing(Vakcina::getIme));
+	    result.addObject("vakcine", vakcineFilter);
+	    result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+	    return result;
+	}
+
+	
+	@PostMapping(value = "/descIme")
+	public ModelAndView descIme(@RequestParam(required=false) String ime, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMax,
+		        @RequestParam(required=false) Long proizvodjacId,
+		        HttpServletResponse response) throws IOException {
+		
+		ModelAndView result = new ModelAndView("vakcine");
+		
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+		
+		if(ime!=null && ime.trim().equals(""))
+			ime=null;
+		
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		
+		vakcineFilter.sort(Comparator.comparing(Vakcina::getIme).reversed());
+		
+		result.addObject("vakcine", vakcineFilter);
+		result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+		return result;
+	}
+	@PostMapping(value = "/ascKolicina")
+	public ModelAndView ascKolicina(@RequestParam(required = false) String ime,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMin,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMax,
+	                            @RequestParam(required = false) Long proizvodjacId,
+	                            HttpServletResponse response) throws IOException {
+	    ModelAndView result = new ModelAndView("vakcine");
+
+	    List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+
+	    if (ime != null && ime.trim().equals("")) {
+	        ime = null;
+	    }
+
+	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+	    vakcineFilter.sort(Comparator.comparing(Vakcina::getDostupnaKolicina));
+	    result.addObject("vakcine", vakcineFilter);
+	    result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+	    return result;
+	}
+
+	
+	@PostMapping(value = "/descKolicina")
+	public ModelAndView descKolicina(@RequestParam(required=false) String ime, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMax,
+		        @RequestParam(required=false) Long proizvodjacId,
+		        HttpServletResponse response) throws IOException {
+		
+		ModelAndView result = new ModelAndView("vakcine");
+		
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+		
+		if(ime!=null && ime.trim().equals(""))
+			ime=null;
+		
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		
+		vakcineFilter.sort(Comparator.comparing(Vakcina::getDostupnaKolicina).reversed());
+		
+		result.addObject("vakcine", vakcineFilter);
+		result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+		return result;
+	}
+	@PostMapping(value = "/ascProizvodjac")
+	public ModelAndView ascProizvodjac(@RequestParam(required = false) String ime,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMin,
+	                            @RequestParam(required = false) Integer dostupnaKolicinaMax,
+	                            @RequestParam(required = false) Long proizvodjacId,
+	                            HttpServletResponse response) throws IOException {
+	    ModelAndView result = new ModelAndView("vakcine");
+
+	    List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+
+	    if (ime != null && ime.trim().equals("")) {
+	        ime = null;
+	    }
+
+	    List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+	    vakcineFilter.sort(Comparator.comparing(vakcina -> vakcina.getProizvodjac().toString()));
+
+	    result.addObject("vakcine", vakcineFilter);
+	    result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+	    return result;
+	}
+
+	
+	@PostMapping(value = "/descProizvodjac")
+	public ModelAndView descProizvodjac(@RequestParam(required=false) String ime, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMin, 
+		        @RequestParam(required=false) Integer dostupnaKolicinaMax,
+		        @RequestParam(required=false) Long proizvodjacId,
+		        HttpServletResponse response) throws IOException {
+		
+		ModelAndView result = new ModelAndView("vakcine");
+		
+		List<ProizvodjacVakcine> proizvodjaciVakcine = proizvodjacVakcineService.findAll();
+		
+		if(ime!=null && ime.trim().equals(""))
+			ime=null;
+		
+		List<Vakcina> vakcineFilter = vakcinaService.find(ime, dostupnaKolicinaMin, dostupnaKolicinaMax, proizvodjacId);
+		
+		Comparator<Vakcina> proizvodjacComparator = Comparator.comparing(vakcina -> vakcina.getProizvodjac().toString(), 
+		        Comparator.reverseOrder());
+		vakcineFilter.sort(proizvodjacComparator);
+
+		result.addObject("vakcine", vakcineFilter);
+		result.addObject("proizvodjaciVakcine", proizvodjaciVakcine);
+		return result;
+	}
 }

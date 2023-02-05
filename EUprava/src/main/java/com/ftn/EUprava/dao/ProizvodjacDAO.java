@@ -15,4 +15,6 @@ public interface ProizvodjacDAO {
 	public int update(ProizvodjacVakcine proizvodjacVakcine);
 
 	public int delete(Long id);
+
+	
 }

@@ -1,6 +1,5 @@
 package com.ftn.EUprava.dao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.ftn.EUprava.model.Vakcina;
@@ -20,7 +19,6 @@ public interface VakcinaDAO {
 	public List<Vakcina> find(String ime, Integer dostupnaKolicinaMin, Integer dostupnaKolicinaMax,
 			Long proizvodjacId);
 
-	List<Vakcina> find(HashMap<String, Object> mapaArgumenata);
 	
 	
 }

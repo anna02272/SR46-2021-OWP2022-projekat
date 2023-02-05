@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class PrimljenaVakcina {
 	
 	private Long id;
-	private Korisnik pacijent;
+	private Korisnik korisnik;
 	private Vakcina vakcina;
 	private EDoza doza;
 	private LocalDateTime datumIVremeVakcinacije;
@@ -15,12 +15,7 @@ public class PrimljenaVakcina {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Korisnik getPacijent() {
-		return pacijent;
-	}
-	public void setPacijent(Korisnik pacijent) {
-		this.pacijent = pacijent;
-	}
+	
 	public Vakcina getVakcina() {
 		return vakcina;
 	}
@@ -39,29 +34,34 @@ public class PrimljenaVakcina {
 	public void setDatumIVremeVakcinacije(LocalDateTime datumIVremeVakcinacije) {
 		this.datumIVremeVakcinacije = datumIVremeVakcinacije;
 	}
-	public PrimljenaVakcina(Long id, Korisnik pacijent, Vakcina vakcina, EDoza doza,
+	public Korisnik getKorisnik() {
+		return korisnik;
+	}
+	public void setKorisnik(Korisnik korisnik) {
+		this.korisnik = korisnik;
+	}
+	public PrimljenaVakcina(Long id, Korisnik korisnik, Vakcina vakcina, EDoza doza,
 			LocalDateTime datumIVremeVakcinacije) {
 		super();
 		this.id = id;
-		this.pacijent = pacijent;
+		this.korisnik = korisnik;
 		this.vakcina = vakcina;
 		this.doza = doza;
 		this.datumIVremeVakcinacije = datumIVremeVakcinacije;
 	}
-	public PrimljenaVakcina(Korisnik pacijent, Vakcina vakcina, EDoza doza, LocalDateTime datumIVremeVakcinacije) {
+	public PrimljenaVakcina(Korisnik korisnik, Vakcina vakcina, EDoza doza, LocalDateTime datumIVremeVakcinacije) {
 		super();
-		this.pacijent = pacijent;
+		this.korisnik = korisnik;
 		this.vakcina = vakcina;
 		this.doza = doza;
 		this.datumIVremeVakcinacije = datumIVremeVakcinacije;
 	}
 	@Override
 	public String toString() {
-		return "PrimljenaVakcina [id=" + id + ", pacijent=" + pacijent + ", vakcina=" + vakcina + ", doza=" + doza
+		return "PrimljenaVakcina [id=" + id + ", korisnik=" + korisnik + ", vakcina=" + vakcina + ", doza=" + doza
 				+ ", datumIVremeVakcinacije=" + datumIVremeVakcinacije + "]";
 	}
-	
-	
+
 	
 	
 	

@@ -69,10 +69,11 @@
 	 				<th>Dostupna Kolicina</th>     
 	 				<th>Proizvodjac vakcine</th>  
   
+  
 	 				  
 	 				<th></th>    
 	 			</tr>
-	 			
+	 			<form  method="post"  action="vakcine/search" >     
 	 				<tr>  
 	 				<th></th>     
 	 				<th></th>     
@@ -91,12 +92,25 @@
 						
 					</th>    
 	 				<th>
-	 				<form  
-	 					method="post"  action="vakcine/search" >      
+	 				 
 	 						<input type="submit"  value="Pretrazi" >    
-	 					</form>    
+	 					
 	 				
 	 			</tr>
+	 			<tr>     
+	 				<th></th>     
+	 				<th></th>     
+	 				<th>	<input type="submit" formaction="vakcine/ascIme" value="Rastuci" > 	
+	 				<input type="submit" formaction="vakcine/descIme" value="Opadajuci" >   </th>     
+	 				<th>	<input type="submit"  formaction="vakcine/ascKolicina" value="Rastuci" > 	
+	 				<input type="submit" formaction="vakcine/descKolicina" value="Opadajuci" >   </th>     
+	 				<th>	<input type="submit" formaction="vakcine/ascProizvodjac"  value="Rastuci" > 
+	 					<input type="submit" formaction="vakcine/descProizvodjac" value="Opadajuci" >   </th>     
+	 				
+	 				  
+	 				<th></th>    
+	 			</tr>
+	 			</form>    
 	 			
 	 		
 	 			<tr th:each="itVakcina, status: ${vakcine}">     
@@ -104,8 +118,8 @@
 	 				<td><a th:href="|vakcine/details?id=${itVakcina.id}|" th:text="${itVakcina.ime}"></a></td>    
 	 				<td th:text="${itVakcina.ime}"></td>    
 	 				<td class="broj" th:text="${itVakcina.dostupnaKolicina}"></td>    
-	 				<td th:text="|${itVakcina.proizvodjac.proizvodjac} , ${itVakcina.proizvodjac.drzavaProizvodnje} |"></td>       
-	 			
+	 				<td th:text="|${itVakcina.proizvodjac} |"></td>       
+	 				
 	 				<td>    
 	 					<form  th:if="${session.korisnik != null && session.korisnik.uloga.toString() == 'ADMINISTRATOR'}"
 	 					method="post" action="vakcine/delete" >     
@@ -114,6 +128,7 @@
 	 					</form>    
 	 				</td>   
 	 			</tr>
+	 			
 	 		</table>
 	 		</div>
 	 		</section>

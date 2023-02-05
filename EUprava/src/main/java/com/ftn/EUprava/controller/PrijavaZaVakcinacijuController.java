@@ -1,8 +1,13 @@
 package com.ftn.EUprava.controller;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.Instant;
+import java.time.Duration;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -11,17 +16,21 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ftn.EUprava.model.EDoza;
+import com.ftn.EUprava.model.EStatus;
 import com.ftn.EUprava.model.Korisnik;
+import com.ftn.EUprava.model.Nabavka;
 import com.ftn.EUprava.model.PrijavaZaVakcinaciju;
 import com.ftn.EUprava.model.Vakcina;
 import com.ftn.EUprava.service.KorisnikService;
@@ -45,7 +54,8 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 	@Autowired
 	private KorisnikService korisnikService;
 	
-	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	@PostConstruct
 	public void init() {	
 		bURL = servletContext.getContextPath()+"/";
@@ -58,7 +68,7 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 
 	@GetMapping
 	public ModelAndView index() {
-		List<PrijavaZaVakcinaciju> prijaveZaVakcinaciju = prijavaZaVakcinacijuService.findAll();		
+		List<PrijavaZaVakcinaciju> prijaveZaVakcinaciju = prijavaZaVakcinacijuService.findAll();	
 		
 		ModelAndView rezultat = new ModelAndView("prijaveZaVakcinaciju"); 
 		rezultat.addObject("prijaveZaVakcinaciju", prijaveZaVakcinaciju); 
@@ -105,6 +115,48 @@ public class PrijavaZaVakcinacijuController implements ServletContextAware {
 		PrijavaZaVakcinaciju deleted = prijavaZaVakcinacijuService.delete(id);
 		response.sendRedirect(bURL+"prijaveZaVakcinaciju");
 	}
+	@GetMapping(value="/details")
+	@ResponseBody
+	public ModelAndView details(@RequestParam Long id) {	
+		PrijavaZaVakcinaciju prijavaZaVakcinaciju  = prijavaZaVakcinacijuService.findOne(id);
+		List<Korisnik> korisnici = korisnikService.findAll();
+		List<Vakcina> vakcine = vakcinaService.findAll();
+		ModelAndView rezultat = new ModelAndView("prijavaZaVakcinaciju"); 
+		rezultat.addObject("prijavaZaVakcinaciju", prijavaZaVakcinaciju); 
+		rezultat.addObject("korisnici", korisnici); 
+		rezultat.addObject("vakcine", vakcine); 
+		return rezultat; 
+	}
 	
+//	@PostMapping(value = "/search")
+//	public ModelAndView search(@RequestParam(required=false) String ime, 
+//	                           @RequestParam(required=false) String prezime, 
+//	                           @RequestParam(required=false) String jmbg) {
+//	  List<PrijavaZaVakcinaciju> prijaveZaVakcinaciju = prijavaZaVakcinacijuService.findAll();
+//	  List<Korisnik> korisniciFilter = korisnikService.find(ime, prezime, jmbg);
+//	  ModelAndView rezlutat = new ModelAndView("prijaveZaVakcinaciju");
+//	  rezlutat.addObject("korisnici", korisniciFilter);
+//	  rezlutat.addObject("prijaveZaVakcinaciju", prijaveZaVakcinaciju);
+//	  return rezlutat;
+//	}
+
+	@PostMapping(value = "/dajVakcinu")
+	public String dajVakcinu(@RequestParam("korisnikId") Long korisnikId,
+	                        @RequestParam("vakcinaId") Long vakcinaId,
+	                        @RequestParam("doza") EDoza doza) {
+		
+	    jdbcTemplate.update("INSERT INTO primljeneVakcine(korisnikId, vakcinaId, EDoza) values(?, ?, ?)",
+                korisnikId, vakcinaId, doza.toString());
+
+	    jdbcTemplate.update("UPDATE vakcine SET dostupnaKolicina = dostupnaKolicina - 1 WHERE id = ?",
+	    		vakcinaId);
+
+
+	    jdbcTemplate.update("DELETE FROM prijaveZaVakcinaciju WHERE korisnikid = ?", korisnikId);
+
+	
+	   return "redirect:/prijaveZaVakcinaciju";
+	}
+
 	
 }
