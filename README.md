@@ -8,7 +8,7 @@ The following sections outline the main features and functionalities of the syst
 - MVC
 - MySQL
 - Thymeleaf
-- 
+  
 ## Data Model
 
 ### User
